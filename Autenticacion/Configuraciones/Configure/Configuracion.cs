@@ -1,0 +1,31 @@
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Autenticacion.Api.Startup.Configure
+{
+    public static class Configuracion
+    {
+        public static IApplicationBuilder Extenciones(this IApplicationBuilder app, IHostingEnvironment env)
+        {
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+
+            app.UseMvc();
+
+            //AUTENTICA
+            app.UseAuthentication();
+
+            return app;
+
+        }
+
+    }
+}

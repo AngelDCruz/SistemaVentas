@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Autenticacion.Dominio.Repositorio.Contratos;
-using Autenticacion.Infraestructura;
+﻿
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+
+using Autenticacion.Api.Startup.Configure;
+using Autenticacion.Api.Startup.ConfigureServices;
+using AutoMapper;
 
 namespace Autenticacion
 {
@@ -27,23 +23,18 @@ namespace Autenticacion
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddAutoMapper(typeof(Startup));
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
+            ConfiguracionServicios.Extenciones(services, Configuration);
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
 
-            app.UseMvc();
+            Configuracion.Extenciones(app, env);
+
         }
     }
 }
