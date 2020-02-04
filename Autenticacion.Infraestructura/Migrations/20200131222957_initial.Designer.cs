@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Autenticacion.Infraestructura.Migrations
 {
-    [DbContext(typeof(AutenticationDbContext))]
+    [DbContext(typeof(AutenticacionDbContext))]
     [Migration("20200131222957_initial")]
     partial class initial
     {

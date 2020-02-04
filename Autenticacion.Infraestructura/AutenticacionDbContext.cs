@@ -5,23 +5,30 @@ using Microsoft.EntityFrameworkCore;
 using Autenticacion.Dominio.Entidades;
 using Autenticacion.Infraestructura.EntidadesConfiguracion;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Autenticacion.Infraestructura
 {
-    public partial class AutenticationDbContext : IdentityDbContext<Usuarios, Roles, Guid>
+    public partial class AutenticacionDbContext : IdentityDbContext<Usuarios, Roles, Guid>
     {
 
-        public AutenticationDbContext(DbContextOptions<AutenticationDbContext> options): base(options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public AutenticacionDbContext(
+            DbContextOptions<AutenticacionDbContext> options,
+            IHttpContextAccessor httpContextAccessor
+        ) : base(options)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        public AutenticacionDbContext()
         {
 
         }
 
-        public AutenticationDbContext()
-        {
-
-        }
-
- 
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
@@ -38,5 +45,6 @@ namespace Autenticacion.Infraestructura
             base.OnModelCreating(builder);
 
         }
+
     }
 }

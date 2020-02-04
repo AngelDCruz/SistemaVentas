@@ -8,7 +8,9 @@ namespace Autenticacion.Api.DTO.Respuestas.v1
     public class UsuariosRespuestasDTO
     {
 
-        public string Usuarios { get; set; }
+        public Guid Id { get; set; }
+
+        public string Usuario { get; set; }
 
         public string Email { get; set; }
 

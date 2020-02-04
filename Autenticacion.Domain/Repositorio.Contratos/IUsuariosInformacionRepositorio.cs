@@ -12,7 +12,9 @@ namespace Autenticacion.Dominio.Repositorio.Contratos
 
         IQueryable<Usuarios> ObtenerUsuarios();
 
-        Task<Usuarios> ObtenerUsuarioPorId(Guid id);
+        Task<Usuarios> ObtenerUsuarioPorIdAsync(Guid id);
+
+        Task<Usuarios> ObtenerUsuarioEmailAsync(string email);
 
     }
 }

@@ -1,14 +1,15 @@
-﻿using Autenticacion.Dominio.Repositorio.Contratos;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-
-using Autenticacion.Infraestructura;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Autenticacion.Dominio.Entidades;
 using Microsoft.AspNetCore.Identity;
+
+using Autenticacion.Infraestructura;
+using Autenticacion.Dominio.Entidades;
+using Autenticacion.Dominio.Repositorio.Contratos;
 using Autenticacion.Infraestructura.Repositorio;
-using AutoMapper;
+using Autenticacion.Api.Servicios;
+using Microsoft.AspNetCore.Http;
 
 namespace Autenticacion.Api.Startup.ConfigureServices
 {
@@ -17,6 +18,8 @@ namespace Autenticacion.Api.Startup.ConfigureServices
 
         public static IServiceCollection Extenciones(this IServiceCollection services, IConfiguration configuration)
         {
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             Identity(services);
 
@@ -47,7 +50,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
                 opciones.Password.RequireLowercase = false;
 
             })
-            .AddEntityFrameworkStores<AutenticationDbContext>()
+            .AddEntityFrameworkStores<AutenticacionDbContext>()
             .AddDefaultTokenProviders();
 
             return services;
@@ -58,7 +61,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
         private static IServiceCollection ConexionSqlServer(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddDbContext<AutenticationDbContext>(options =>
+            services.AddDbContext<AutenticacionDbContext>(options =>
             {
 
                 options.UseSqlServer(configuration.GetConnectionString("Autenticacion"));
@@ -85,6 +88,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
         private static IServiceCollection Servicios(this IServiceCollection services)
         {
 
+            services.AddScoped<IUsuariosServicios, UsuariosServicios>();
 
             return services;
 

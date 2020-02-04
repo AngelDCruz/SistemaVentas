@@ -11,17 +11,11 @@ namespace Autenticacion.Dominio.Entidades
     public class Roles : IdentityRole<Guid>, IAuditoria
     {
 
-        [Key]
-        [Required]
-        [Column(TypeName = "UNIQUEIDENTIFIER")]
-        public Guid Id { get; set; }
-
         [Required]
         [Column(TypeName = "UNIQUEIDENTIFIER")]
         public Guid UsuarioCreacion { get; set; }
 
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime FechaCreacion { get; set; }
 
         [Column(TypeName = "UNIQUEIDENTIFIER")]

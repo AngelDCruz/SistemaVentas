@@ -1,4 +1,5 @@
 ﻿using Autenticacion.Api.DTO.Respuestas.v1;
+using Autenticacion.Api.DTO.Solicitudes.v1;
 using Autenticacion.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,15 @@ namespace Autenticacion.Api.Servicios
 
         Task<List<Usuarios>> ObtenerUsuariosAsync();
 
-        Task<Usuarios> ObtenerUsuarioAsync(Guid id);
+        Task<Usuarios> ObtenerUsuarioIdAsync(Guid id);
 
-        Task<Usuarios> CrearUsuarioAsync(Usuarios solicitud);
+        Task<Usuarios> ObtenerUsuarioEmailAsync(string email);
 
-        Task<bool> ActualizarUsuarioAsync(Usuarios solicitud);
+        Task<Guid> CrearUsuarioAsync(Usuarios usuario);
 
-        Task<bool> EliminarUsuarioAsync(Usuarios id);
+        Task<bool> ActualizarUsuarioAsync(Usuarios usuario);
+
+        Task<bool> EliminarUsuarioAsync(Guid id);
 
     }
 }

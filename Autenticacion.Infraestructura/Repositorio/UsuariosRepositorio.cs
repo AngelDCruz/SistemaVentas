@@ -2,6 +2,7 @@
 using Autenticacion.Dominio.Entidades;
 using Autenticacion.Dominio.Repositorio.Contratos;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,9 @@ namespace Autenticacion.Infraestructura.Repositorio
     {
 
         private readonly UserManager<Usuarios> _userManager;
-        private readonly AutenticationDbContext _context;
+        private readonly AutenticacionDbContext _context;
 
-        public UsuariosRepositorio(UserManager<Usuarios> userManager, AutenticationDbContext context)
+        public UsuariosRepositorio(UserManager<Usuarios> userManager, AutenticacionDbContext context)
         {
 
             _userManager = userManager;
@@ -30,26 +31,35 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<Usuarios> ObtenerUsuarioPorId(Guid id)
+        public async Task<Usuarios> ObtenerUsuarioPorIdAsync(Guid id)
         {
 
             return await _userManager.FindByIdAsync(id.ToString());
 
         }
 
-
-        public async Task<Usuarios> CrearUsuario(Usuarios usuario)
+        public async Task<Usuarios> ObtenerUsuarioEmailAsync(string email)
         {
+
+            return await _userManager.FindByEmailAsync(email);
+
+        }
+
+        public async Task<Guid> CrearUsuario(Usuarios usuario)
+        {
+
+            usuario.UsuarioCreacion = _context.UsuarioAutenticado();
 
             var respuesta = await _userManager.CreateAsync(usuario, usuario.PasswordHash);
 
-            return respuesta.Succeeded ? usuario : null;
-
+            return respuesta.Succeeded ? usuario.Id : Guid.Empty;
 
         }
 
         public async Task<bool> ActualizarUsuario(Usuarios usuario)
         {
+
+            usuario.UsuarioModificacion = _context.UsuarioAutenticado();
 
             var respuesta = await _userManager.UpdateAsync(usuario);
 
@@ -57,10 +67,10 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<bool> EliminarUsuario(Usuarios usuario)
+        public async Task<bool> EliminarUsuario(Guid id)
         {
 
-            _context.Users.Remove(usuario);
+            _context.Users.Remove(await _context.Users.FirstOrDefaultAsync(x => x.Id == id));
 
             return await _context.SaveChangesAsync() > 0 ? true : false;
 

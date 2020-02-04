@@ -15,7 +15,6 @@ namespace Autenticacion.Dominio.Entidades
         Guid UsuarioCreacion { get; set; }
 
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         DateTime FechaCreacion { get; set; }
 
         [Column(TypeName = "UNIQUEIDENTIFIER")]
