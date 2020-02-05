@@ -1,25 +1,24 @@
-﻿using Autenticacion.Api.DTO.Respuestas.v1;
-using Autenticacion.Api.DTO.Solicitudes.v1;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 using Autenticacion.Dominio.Entidades;
 using Autenticacion.Dominio.Repositorio.Contratos;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Autenticacion.Api.Servicios
 {
     public class UsuariosServicios : IUsuariosServicios
     {
 
-        private readonly IUsuariosInformacionRepositorio _usuariosInformacionRepositorio;
+        private readonly IUsuariosInfoRepositorio _usuariosInformacionRepositorio;
         private readonly IUsuariosProcesoRepositorio _usuariosProcesoRepositorio;
 
         public UsuariosServicios(
-            IUsuariosInformacionRepositorio usuariosInformacionRepositorio,
-            IUsuariosProcesoRepositorio usuariosProcesoRepositorio
+            IUsuariosInfoRepositorio usuariosInformacionRepositorio,
+            IUsuariosProcesoRepositorio usuariosProcesoRepositorio,
+            IRolesInfoRepositorio rolesInfoRepositorio
         )
         {
 
@@ -30,13 +29,7 @@ namespace Autenticacion.Api.Servicios
         public async Task<bool> ActualizarUsuarioAsync(Usuarios usuario)
         {
 
-            var actualizar = await ObtenerUsuarioIdAsync(usuario.Id);
-
-            actualizar.PhoneNumber = usuario.PhoneNumber;
-            actualizar.FechaModificacion = DateTime.Now;
-            actualizar.SecurityStamp = Guid.NewGuid().ToString();
-
-            return await _usuariosProcesoRepositorio.ActualizarUsuario(usuario);
+            return await _usuariosProcesoRepositorio.ActualizarUsuarioAsync(usuario);
             
         }
 
@@ -45,14 +38,21 @@ namespace Autenticacion.Api.Servicios
 
             usuario.FechaCreacion = DateTime.Now;
 
-            return await _usuariosProcesoRepositorio.CrearUsuario(usuario);
+            return await _usuariosProcesoRepositorio.CrearUsuarioAsync(usuario);
 
         }
 
-        public Task<bool> EliminarUsuarioAsync(Guid id)
+        public async Task<bool> CrearUsuarioRoleAsync(List<UsuariosRoles> lstUsuariosRoles)
         {
 
-            return _usuariosProcesoRepositorio.EliminarUsuario(id);
+            return await _usuariosProcesoRepositorio.CrearUsuarioRoleAsync(lstUsuariosRoles);
+
+        }
+
+        public Task<bool> EliminarUsuarioAsync(Usuarios usuario)
+        {
+
+            return _usuariosProcesoRepositorio.EliminarUsuarioAsync(usuario);
 
         }
 
@@ -67,7 +67,9 @@ namespace Autenticacion.Api.Servicios
         public async Task<List<Usuarios>> ObtenerUsuariosAsync()
         {
 
-            return await _usuariosInformacionRepositorio.ObtenerUsuarios().ToListAsync();
+            return await _usuariosInformacionRepositorio
+                .ObtenerUsuariosAsync()
+                .ToListAsync();
 
         }
 

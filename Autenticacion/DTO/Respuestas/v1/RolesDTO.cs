@@ -5,16 +5,12 @@ using System.Threading.Tasks;
 
 namespace Autenticacion.Api.DTO.Respuestas.v1
 {
-    public class UsuariosRespuestasDTO
+    public class RolesDTO
     {
 
         public Guid Id { get; set; }
 
-        public string Usuario { get; set; }
-
-        public string Email { get; set; }
-
-        public string Telefono { get; set; }
+        public string Nombre { get; set; }
 
         public string FechaCreacion { get; set; }
 

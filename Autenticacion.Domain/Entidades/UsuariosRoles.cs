@@ -9,6 +9,16 @@ namespace Autenticacion.Dominio.Entidades
     public class UsuariosRoles : IdentityUserRole<Guid>, IAuditoria
     {
 
+
+        public Guid UsuariosId { get; set; }
+
+        public Guid RolesId { get; set; }
+
+        public Usuarios Usuarios { get; set; }
+
+        public Roles Roles { get; set; }
+
+
         [Required]
         [Column(TypeName = "UNIQUEIDENTIFIER")]
         public Guid UsuarioCreacion { get; set; }
@@ -26,10 +36,6 @@ namespace Autenticacion.Dominio.Entidades
         [Column(TypeName = "CHAR(3)")]
         public string Estatus { get; set; }
 
-
-        public Usuarios Usuarios { get; set;  }
-
-        public Roles Roles { get; set; }
 
     }
 }

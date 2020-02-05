@@ -13,6 +13,8 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
 
             entidad.ToTable("UsuariosRoles", "dbo");
 
+            //entidad.HasQueryFilter(x => x.Estatus != "Baj");
+
         }
 
     }

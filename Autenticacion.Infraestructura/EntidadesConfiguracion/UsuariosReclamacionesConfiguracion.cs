@@ -15,6 +15,8 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
 
             entidad.ToTable("UsuariosReclamaciones", "dbo");
 
+            //entidad.HasQueryFilter(x => x.Estatus == "Act");
+
         }
 
     }

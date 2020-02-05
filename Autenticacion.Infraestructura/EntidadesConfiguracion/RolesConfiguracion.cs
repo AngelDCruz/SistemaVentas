@@ -10,7 +10,9 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
         public static void AplicarConfiguracion(EntityTypeBuilder<Roles> entidad)
         {
 
-            entidad.ToTable("Roles", "dbo");
+            entidad.ToTable("Roles");
+
+            //entidad.HasQueryFilter(x => x.Estatus == "Act");
 
             //RELACIONES
             entidad.HasMany(ur => ur.UsuariosRoles)

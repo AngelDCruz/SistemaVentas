@@ -25,5 +25,6 @@ namespace Autenticacion.Api.DTO.Solicitudes.v1
         [Phone(ErrorMessage = "El número de teléfono no es válido")]
         public string Telefono { get; set; }
 
+
     }
 }

@@ -36,6 +36,8 @@ namespace Autenticacion.Dominio.Entidades
 
         public List<UsuariosToken> UsuariosTokens { get; set; }
 
+        public override Guid Id { get => base.Id; set => base.Id = value; }
+
         public List<UsuariosRoles> UsuariosRoles { get; set; }
 
     }

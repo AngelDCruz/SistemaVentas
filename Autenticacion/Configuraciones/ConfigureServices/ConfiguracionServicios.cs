@@ -10,6 +10,7 @@ using Autenticacion.Dominio.Repositorio.Contratos;
 using Autenticacion.Infraestructura.Repositorio;
 using Autenticacion.Api.Servicios;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace Autenticacion.Api.Startup.ConfigureServices
 {
@@ -31,7 +32,9 @@ namespace Autenticacion.Api.Startup.ConfigureServices
 
             Automapper(services);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+             .AddJsonOptions(configuraciones => configuraciones.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             return services;
 
@@ -50,6 +53,10 @@ namespace Autenticacion.Api.Startup.ConfigureServices
                 opciones.Password.RequireLowercase = false;
 
             })
+            //.AddUserStore<Usuarios>()
+            //.AddRoleStore<Roles>()
+            //.AddUserManager<Usuarios>()
+            //.AddRoleManager<Roles>()
             .AddEntityFrameworkStores<AutenticacionDbContext>()
             .AddDefaultTokenProviders();
 
@@ -64,6 +71,8 @@ namespace Autenticacion.Api.Startup.ConfigureServices
             services.AddDbContext<AutenticacionDbContext>(options =>
             {
 
+                //options.UseLazyLoadingProxies();
+
                 options.UseSqlServer(configuration.GetConnectionString("Autenticacion"));
 
             });
@@ -77,8 +86,10 @@ namespace Autenticacion.Api.Startup.ConfigureServices
         private static IServiceCollection Repositorios(IServiceCollection services)
         {
 
-            services.AddScoped<IUsuariosInformacionRepositorio, UsuariosRepositorio>();
+            services.AddScoped<IUsuariosInfoRepositorio, UsuariosRepositorio>();
             services.AddScoped<IUsuariosProcesoRepositorio, UsuariosRepositorio>();
+            services.AddScoped<IRolesInfoRepositorio, RolesRepositorio>();
+            services.AddScoped<IRolesProcesoRepositorio, RolesRepositorio>();
 
             return services;
 
@@ -89,6 +100,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
         {
 
             services.AddScoped<IUsuariosServicios, UsuariosServicios>();
+            services.AddScoped<IRolesServicios, RolesServicios>();
 
             return services;
 

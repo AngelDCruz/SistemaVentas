@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Autenticacion.Dominio.Repositorio.Contratos
 {
-    public interface IUsuariosInformacionRepositorio
+    public interface IUsuariosInfoRepositorio
     {
 
-        IQueryable<Usuarios> ObtenerUsuarios();
+        IQueryable<Usuarios> ObtenerUsuariosAsync();
 
         Task<Usuarios> ObtenerUsuarioPorIdAsync(Guid id);
 

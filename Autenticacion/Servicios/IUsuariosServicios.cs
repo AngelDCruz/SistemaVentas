@@ -19,9 +19,11 @@ namespace Autenticacion.Api.Servicios
 
         Task<Guid> CrearUsuarioAsync(Usuarios usuario);
 
+        Task<bool> CrearUsuarioRoleAsync(List<UsuariosRoles> lstUsuariosRoles);
+
         Task<bool> ActualizarUsuarioAsync(Usuarios usuario);
 
-        Task<bool> EliminarUsuarioAsync(Guid id);
+        Task<bool> EliminarUsuarioAsync(Usuarios usuario);
 
     }
 }

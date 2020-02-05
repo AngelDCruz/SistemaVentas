@@ -12,6 +12,8 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
 
             entidad.ToTable("UsuariosLogin", "dbo");
 
+            //entidad.HasQueryFilter(x => x.Estatus == "Act");
+
         }
 
     }

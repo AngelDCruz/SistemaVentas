@@ -34,6 +34,7 @@ namespace Autenticacion.Infraestructura
 
             builder.HasDefaultSchema("Autenticacion");
 
+
             UsuariosConfiguracion.AplicarConfiguracion(builder.Entity<Usuarios>());
             RolesConfiguracion.AplicarConfiguracion(builder.Entity<Roles>());
             UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamaciones>());
@@ -41,10 +42,11 @@ namespace Autenticacion.Infraestructura
             UsuariosTokenConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosToken>());
             UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamaciones>());
             UsuariosRolesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosRoles>());
+            
+         
 
             base.OnModelCreating(builder);
 
         }
-
     }
 }

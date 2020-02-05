@@ -4,22 +4,19 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Autenticacion.Infraestructura.Migrations
 {
-    public partial class initial : Migration
+    public partial class inicio : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "dbo");
-
             migrationBuilder.EnsureSchema(
                 name: "Autenticacion");
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
-                schema: "dbo",
+                schema: "Autenticacion",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
@@ -36,7 +33,7 @@ namespace Autenticacion.Infraestructura.Migrations
 
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
-                schema: "dbo",
+                schema: "Autenticacion",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -89,14 +86,14 @@ namespace Autenticacion.Infraestructura.Migrations
                     table.ForeignKey(
                         name: "FK_AspNetRoleClaims_AspNetRoles_RolesId",
                         column: x => x.RolesId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -126,14 +123,14 @@ namespace Autenticacion.Infraestructura.Migrations
                     table.ForeignKey(
                         name: "FK_AspNetUserClaims_AspNetUsers_UsuariosId",
                         column: x => x.UsuariosId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserClaims_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -162,14 +159,14 @@ namespace Autenticacion.Infraestructura.Migrations
                     table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UsuariosId",
                         column: x => x.UsuariosId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -183,13 +180,13 @@ namespace Autenticacion.Infraestructura.Migrations
                     UserId = table.Column<Guid>(nullable: false),
                     RoleId = table.Column<Guid>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
+                    UsuariosId = table.Column<Guid>(nullable: true),
+                    RolesId = table.Column<Guid>(nullable: true),
                     UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true),
                     FechaCreacion = table.Column<DateTime>(nullable: true),
                     UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true),
                     FechaModificacion = table.Column<DateTime>(nullable: true),
-                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: true),
-                    UsuariosId = table.Column<Guid>(nullable: true),
-                    RolesId = table.Column<Guid>(nullable: true)
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -197,28 +194,28 @@ namespace Autenticacion.Infraestructura.Migrations
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetRoles_RolesId",
                         column: x => x.RolesId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UsuariosId",
                         column: x => x.UsuariosId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -247,14 +244,14 @@ namespace Autenticacion.Infraestructura.Migrations
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UsuariosId",
                         column: x => x.UsuariosId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalSchema: "dbo",
+                        principalSchema: "Autenticacion",
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -271,6 +268,14 @@ namespace Autenticacion.Infraestructura.Migrations
                 schema: "Autenticacion",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                schema: "Autenticacion",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UsuariosId",
@@ -315,32 +320,24 @@ namespace Autenticacion.Infraestructura.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserTokens_UsuariosId",
-                schema: "Autenticacion",
-                table: "AspNetUserTokens",
-                column: "UsuariosId");
-
-            migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                schema: "dbo",
-                table: "AspNetRoles",
-                column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
-                schema: "dbo",
+                schema: "Autenticacion",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
-                schema: "dbo",
+                schema: "Autenticacion",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserTokens_UsuariosId",
+                schema: "Autenticacion",
+                table: "AspNetUserTokens",
+                column: "UsuariosId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -367,11 +364,11 @@ namespace Autenticacion.Infraestructura.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles",
-                schema: "dbo");
+                schema: "Autenticacion");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers",
-                schema: "dbo");
+                schema: "Autenticacion");
         }
     }
 }

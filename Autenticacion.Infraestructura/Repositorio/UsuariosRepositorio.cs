@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Autenticacion.Infraestructura.Repositorio
 {
-    public class UsuariosRepositorio : IUsuariosInformacionRepositorio, IUsuariosProcesoRepositorio
+    public class UsuariosRepositorio : IUsuariosInfoRepositorio, IUsuariosProcesoRepositorio
     {
 
         private readonly UserManager<Usuarios> _userManager;
@@ -24,28 +24,26 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public IQueryable<Usuarios> ObtenerUsuarios()
-        {
-
-            return _userManager.Users.OfType<Usuarios>().AsQueryable();
-
-        }
+        public IQueryable<Usuarios> ObtenerUsuariosAsync() =>
+            _context.Usuarios.Where(x => x.Estatus != "Baj").AsQueryable();
 
         public async Task<Usuarios> ObtenerUsuarioPorIdAsync(Guid id)
         {
 
-            return await _userManager.FindByIdAsync(id.ToString());
+            return await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == id &&
+         x.Estatus != "Baj");
 
         }
 
         public async Task<Usuarios> ObtenerUsuarioEmailAsync(string email)
         {
 
-            return await _userManager.FindByEmailAsync(email);
+            return await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email && 
+            x.Estatus != "Baj");
 
         }
 
-        public async Task<Guid> CrearUsuario(Usuarios usuario)
+        public async Task<Guid> CrearUsuarioAsync(Usuarios usuario)
         {
 
             usuario.UsuarioCreacion = _context.UsuarioAutenticado();
@@ -56,21 +54,34 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<bool> ActualizarUsuario(Usuarios usuario)
+        public async Task<bool> CrearUsuarioRoleAsync(List<UsuariosRoles> lstUsuariosRoles)
         {
 
-            usuario.UsuarioModificacion = _context.UsuarioAutenticado();
+            await _context.UserRoles.AddRangeAsync(lstUsuariosRoles);
 
-            var respuesta = await _userManager.UpdateAsync(usuario);
+            return await _context.SaveChangesAsync() > 0 ? true : false;
+
+        }
+
+        public async Task<bool> ActualizarUsuarioAsync(Usuarios usuario)
+        {
+
+            var actualizarUsuario = await ObtenerUsuarioPorIdAsync(usuario.Id);
+            actualizarUsuario.PhoneNumber = usuario.PhoneNumber;
+            actualizarUsuario.FechaModificacion = DateTime.Now;
+            actualizarUsuario.SecurityStamp = Guid.NewGuid().ToString();
+            actualizarUsuario.UsuarioModificacion = _context.UsuarioAutenticado();
+
+            var respuesta = await _userManager.UpdateAsync(actualizarUsuario);
 
             return respuesta.Succeeded ? true : false;
 
         }
 
-        public async Task<bool> EliminarUsuario(Guid id)
+        public async Task<bool> EliminarUsuarioAsync(Usuarios usuario)
         {
 
-            _context.Users.Remove(await _context.Users.FirstOrDefaultAsync(x => x.Id == id));
+            _context.Users.Remove(usuario);
 
             return await _context.SaveChangesAsync() > 0 ? true : false;
 

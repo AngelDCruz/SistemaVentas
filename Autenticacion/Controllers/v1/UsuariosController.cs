@@ -20,15 +20,18 @@ namespace Autenticacion.Api.Controllers.v1
     {
 
         private readonly IUsuariosServicios _usuariosServicios;
+        private readonly IRolesServicios _rolesServicios;
         private readonly IMapper _mapper;
 
         public UsuariosController(
             IUsuariosServicios usuariosServicios,
+            IRolesServicios rolesServicios,
             IMapper mapper
          )
         {
 
             _usuariosServicios = usuariosServicios;
+            _rolesServicios = rolesServicios;
             _mapper = mapper;
 
         }
@@ -39,9 +42,9 @@ namespace Autenticacion.Api.Controllers.v1
 
             var lstUsuarios = await _usuariosServicios.ObtenerUsuariosAsync();
 
-            if (lstUsuarios == null) return NoContent();
+            if (lstUsuarios == null || lstUsuarios.Count <= 0) return NoContent();
 
-            var lstUsuariosDTO = _mapper.Map<List<UsuariosRespuestasDTO>>(lstUsuarios);
+            var lstUsuariosDTO = _mapper.Map<List<UsuariosDTO>>(lstUsuarios);
 
             return Ok(lstUsuariosDTO);
 
@@ -55,7 +58,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (usuario == null) return NotFound("Usuario no encontrado");
 
-            var usuarioDTO = _mapper.Map<UsuariosRespuestasDTO>(usuario);
+            var usuarioDTO = _mapper.Map<UsuariosDTO>(usuario);
 
             return Ok(usuarioDTO);
 
@@ -85,11 +88,12 @@ namespace Autenticacion.Api.Controllers.v1
 
             }
 
-            var usuarioCreadoDTO = _mapper.Map<UsuariosRespuestasDTO>(usuario);
+            var usuarioCreadoDTO = _mapper.Map<UsuariosDTO>(usuario);
 
             return CreatedAtRoute("ObtenerUsuarioId", new { id = crearUsuario}, usuarioCreadoDTO);
 
         }
+
 
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> ActualizarUsuarioAsync([FromRoute] Guid id, [FromBody] ActualizarUsuarioDTO usuarioDTO)
@@ -108,6 +112,83 @@ namespace Autenticacion.Api.Controllers.v1
             if (!actualizaUsuario) return BadRequest("El usuario no se actualizo correctamente");
 
             return NoContent();
+
+        }
+
+        [HttpDelete("{id:guid}")]
+        public async Task<ActionResult<UsuariosDTO>> EliminarUsuarioAsync([FromRoute] Guid id)
+        {
+
+            var usuarioExiste = await _usuariosServicios.ObtenerUsuarioIdAsync(id);
+
+            if (usuarioExiste == null) return BadRequest("El usuario no existe");
+
+            var respuesta = await _usuariosServicios.EliminarUsuarioAsync(usuarioExiste);
+
+            if (!respuesta) return BadRequest("El usuario no se pudo eliminar");
+
+            var usuarioEliminado = _mapper.Map<UsuariosDTO>(usuarioExiste);
+
+            return Ok(usuarioEliminado);
+
+        }
+
+
+        [HttpPost("roles")]
+        public async Task<IActionResult> AsignarRolesUsuariosAsync([FromBody] CrearUsuarioRolesDTO usuarioDTO)
+        {
+
+
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var lstUsuarioRoles = UsuariosRolesMapeo(usuarioDTO);
+
+            if (await _usuariosServicios.ObtenerUsuarioIdAsync(usuarioDTO.IdUsuario) == null)
+            {
+
+                return BadRequest("Usuario no encontrado");
+
+            }
+
+            bool crearUsuario = false;
+
+            if (lstUsuarioRoles.Count > 0)
+            {
+
+               crearUsuario = await _usuariosServicios.CrearUsuarioRoleAsync(lstUsuarioRoles);
+            
+            }
+
+            if (!crearUsuario) return BadRequest("No se asigno ningun role al usuario");
+
+
+            return Ok();//CreatedAtRoute("ObtenerUsuarioId", new { id = crearUsuario }, usuarioCreadoDTO);
+
+        }
+
+
+        private List<UsuariosRoles> UsuariosRolesMapeo(CrearUsuarioRolesDTO lstUsuariosRoles)
+        {
+
+            List<UsuariosRoles> nvLstUsuariosRoles = new List<UsuariosRoles>();
+
+            if (lstUsuariosRoles == null) return nvLstUsuariosRoles;
+
+            foreach(var role in lstUsuariosRoles.Roles)
+            {
+
+            
+                nvLstUsuariosRoles.Add(new UsuariosRoles()
+                {
+                    UserId = lstUsuariosRoles.IdUsuario,
+                    UsuariosId = lstUsuariosRoles.IdUsuario,
+                    RoleId = role,
+                    RolesId = role
+                });
+
+            }
+
+            return nvLstUsuariosRoles;
 
         }
 

@@ -4,16 +4,14 @@ using Autenticacion.Infraestructura;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Autenticacion.Infraestructura.Migrations
 {
     [DbContext(typeof(AutenticacionDbContext))]
-    [Migration("20200131222957_initial")]
-    partial class initial
+    partial class AutenticacionDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,8 +23,7 @@ namespace Autenticacion.Infraestructura.Migrations
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.Roles", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("UNIQUEIDENTIFIER");
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -35,8 +32,7 @@ namespace Autenticacion.Infraestructura.Migrations
                         .IsRequired()
                         .HasColumnType("CHAR(3)");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime>("FechaCreacion");
 
                     b.Property<DateTime>("FechaModificacion");
 
@@ -59,7 +55,7 @@ namespace Autenticacion.Infraestructura.Migrations
                         .HasName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles","dbo");
+                    b.ToTable("AspNetRoles");
                 });
 
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.Usuarios", b =>
@@ -81,8 +77,7 @@ namespace Autenticacion.Infraestructura.Migrations
                         .IsRequired()
                         .HasColumnType("CHAR(3)");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime>("FechaCreacion");
 
                     b.Property<DateTime>("FechaModificacion");
 
@@ -125,7 +120,7 @@ namespace Autenticacion.Infraestructura.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("AspNetUsers","dbo");
+                    b.ToTable("AspNetUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -244,8 +239,7 @@ namespace Autenticacion.Infraestructura.Migrations
                         .IsRequired()
                         .HasColumnType("CHAR(3)");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime>("FechaCreacion");
 
                     b.Property<DateTime>("FechaModificacion");
 
@@ -270,8 +264,7 @@ namespace Autenticacion.Infraestructura.Migrations
                         .IsRequired()
                         .HasColumnType("CHAR(3)");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime>("FechaCreacion");
 
                     b.Property<DateTime>("FechaModificacion");
 
@@ -298,8 +291,7 @@ namespace Autenticacion.Infraestructura.Migrations
                         .IsRequired()
                         .HasColumnType("CHAR(3)");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime>("FechaCreacion");
 
                     b.Property<DateTime>("FechaModificacion");
 
@@ -326,8 +318,7 @@ namespace Autenticacion.Infraestructura.Migrations
                         .IsRequired()
                         .HasColumnType("CHAR(3)");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime>("FechaCreacion");
 
                     b.Property<DateTime>("FechaModificacion");
 
@@ -358,8 +349,7 @@ namespace Autenticacion.Infraestructura.Migrations
                         .IsRequired()
                         .HasColumnType("CHAR(3)");
 
-                    b.Property<DateTime>("FechaCreacion")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<DateTime>("FechaCreacion");
 
                     b.Property<DateTime>("FechaModificacion");
 
