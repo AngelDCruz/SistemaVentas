@@ -4,7 +4,10 @@ using AutoMapper;
 using Autenticacion.Api.DTO.Respuestas.v1;
 using Autenticacion.Api.DTO.Solicitudes.v1;
 using Autenticacion.Dominio.Entidades;
-
+using Autenticacion.Api.Servicios;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Autenticacion.Api.Automapper
 {
@@ -13,7 +16,6 @@ namespace Autenticacion.Api.Automapper
 
         public UsuariosMapper()
         {
-
 
             CreateMap<Usuarios, UsuariosDTO>()
                  .ForMember(u => u.Usuario, opcion => opcion.MapFrom(src => src.UserName))

@@ -10,12 +10,12 @@ namespace Autenticacion.Infraestructura
     public partial class AutenticacionDbContext
     {
 
-        public override int SaveChanges()
-        {
-            AuditarDatos();
+        //public override int SaveChanges()
+        //{
+        //    //AuditarDatos();
 
-            return base.SaveChanges();
-        }
+        //    return base.SaveChanges();
+        //}
 
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default(CancellationToken))
         {

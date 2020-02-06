@@ -8,6 +8,7 @@ using Autenticacion.Api.Servicios;
 using Autenticacion.Dominio.Entidades;
 using Autenticacion.Dominio.Repositorio.Contratos;
 using AutoMapper;
+using Common.Paginacion;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,18 +37,24 @@ namespace Autenticacion.Api.Controllers.v1
 
         }
 
+        /*
+         * USUARIOS
+         */
         [HttpGet]
-        public async Task<IActionResult> ObtenerUsuariosAsync()
+        public async Task<IActionResult> ObtenerUsuariosAsync([FromQuery] IncluirUsuariosDTO incluir, [FromQuery] FiltroPagina filtro)
         {
 
-            var lstUsuarios = await _usuariosServicios.ObtenerUsuariosAsync();
+            var lstUsuarios = await _usuariosServicios.ObtenerUsuariosAsync(filtro.Limite, filtro.Pagina);
 
             if (lstUsuarios == null || lstUsuarios.Count <= 0) return NoContent();
 
-            var lstUsuariosDTO = _mapper.Map<List<UsuariosDTO>>(lstUsuarios);
+            var lstUsuariosPaginados = _usuariosServicios.ObtenerUsuariosRoles(incluir, filtro).ToList();
 
-            return Ok(lstUsuariosDTO);
+            var lstDatos = new Paginador<List<UsuariosDTO>>(lstUsuariosPaginados, filtro);
 
+
+            return Ok(lstDatos);
+            
         }
 
         [HttpGet("{id:Guid}", Name = "ObtenerUsuarioId")]
@@ -72,7 +79,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             var usuario = _mapper.Map<Usuarios>(usuarioDTO);
 
-            if(await _usuariosServicios.ObtenerUsuarioEmailAsync(usuario.Email) != null)
+            if (await _usuariosServicios.ObtenerUsuarioEmailAsync(usuario.Email) != null)
             {
 
                 return BadRequest("El correo electronico ya esta registrado");
@@ -90,7 +97,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             var usuarioCreadoDTO = _mapper.Map<UsuariosDTO>(usuario);
 
-            return CreatedAtRoute("ObtenerUsuarioId", new { id = crearUsuario}, usuarioCreadoDTO);
+            return CreatedAtRoute("ObtenerUsuarioId", new { id = crearUsuario }, usuarioCreadoDTO);
 
         }
 
@@ -99,7 +106,7 @@ namespace Autenticacion.Api.Controllers.v1
         public async Task<IActionResult> ActualizarUsuarioAsync([FromRoute] Guid id, [FromBody] ActualizarUsuarioDTO usuarioDTO)
         {
 
-            if(id != usuarioDTO.Id )  return BadRequest("Modelo no valido");
+            if (id != usuarioDTO.Id) return BadRequest("Modelo no valido");
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -133,15 +140,30 @@ namespace Autenticacion.Api.Controllers.v1
 
         }
 
+        ///*
+        // * USUARIOS ROLES
+        // */
+        //[HttpGet("usuarios-roles")]
+        //public ActionResult<List<UsuariosRolesDTO>> ObtenerUsuariosRolesAsync()
+        //{
 
-        [HttpPost("roles")]
+        //    var lstUsuariosRoles = _usuariosServicios.ObtenerUsuariosRoles(true);
+
+        //    if (lstUsuariosRoles == null) return NoContent();
+
+        //    return Ok(lstUsuariosRoles);
+
+        //}
+
+
+        [HttpPost("asignar-role")]
         public async Task<IActionResult> AsignarRolesUsuariosAsync([FromBody] CrearUsuarioRolesDTO usuarioDTO)
         {
 
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var lstUsuarioRoles = UsuariosRolesMapeo(usuarioDTO);
+            var lstUsuarioRoles = EstructurarRoles(usuarioDTO);
 
             if (await _usuariosServicios.ObtenerUsuarioIdAsync(usuarioDTO.IdUsuario) == null)
             {
@@ -155,19 +177,37 @@ namespace Autenticacion.Api.Controllers.v1
             if (lstUsuarioRoles.Count > 0)
             {
 
-               crearUsuario = await _usuariosServicios.CrearUsuarioRoleAsync(lstUsuarioRoles);
-            
+                crearUsuario = await _usuariosServicios.CrearUsuarioRoleAsync(lstUsuarioRoles);
+
             }
 
             if (!crearUsuario) return BadRequest("No se asigno ningun role al usuario");
 
 
-            return Ok();//CreatedAtRoute("ObtenerUsuarioId", new { id = crearUsuario }, usuarioCreadoDTO);
+            return Ok();
 
         }
 
+        [HttpDelete("{idUsuario:guid}/role/{idRole:guid}")]
+        public async Task<ActionResult> EliminarUsuarioRole([FromRoute] Guid idUsuario, Guid idRole)
+        {
 
-        private List<UsuariosRoles> UsuariosRolesMapeo(CrearUsuarioRolesDTO lstUsuariosRoles)
+            var usuarioRoleExiste = await _usuariosServicios.ObtenerUsuarioRoleAsync(idRole, idUsuario);
+
+            if (usuarioRoleExiste == null) return BadRequest("El usuario no tiene asignado este rol");
+
+            if (!_usuariosServicios.EliminarUsuarioRoleAsync(usuarioRoleExiste))
+            {
+
+                return BadRequest("El rol actual asignado a este usuario no pudo eliminarse");
+
+            }
+
+            return NoContent();
+
+        }
+
+        private List<UsuariosRoles> EstructurarRoles(CrearUsuarioRolesDTO lstUsuariosRoles)
         {
 
             List<UsuariosRoles> nvLstUsuariosRoles = new List<UsuariosRoles>();

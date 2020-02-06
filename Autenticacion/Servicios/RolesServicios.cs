@@ -12,20 +12,15 @@ namespace Autenticacion.Api.Servicios
     {
 
 
-        private readonly IRolesInfoRepositorio _rolesInfoRepositorio;
-        private readonly IRolesProcesoRepositorio _rolesProcesoRepositorio;
+        private readonly IRolesRepositorio _rolesInfoRepositorio;
 
         public RolesServicios(
-            IRolesInfoRepositorio rolesInfoRepositorio,
-            IRolesProcesoRepositorio rolesProcesoRepositorio
+            IRolesRepositorio rolesInfoRepositorio
         )
         {
 
             _rolesInfoRepositorio = rolesInfoRepositorio;
-            _rolesProcesoRepositorio = rolesProcesoRepositorio;
-
-
-
+        
         }
 
         public async Task<List<Roles>> ObtenerRolesAsync()
@@ -52,21 +47,21 @@ namespace Autenticacion.Api.Servicios
         public async Task<Roles> CrearRoleAsync(Roles role)
         {
 
-            return await _rolesProcesoRepositorio.CrearRoleAsync(role);
+            return await _rolesInfoRepositorio.CrearRoleAsync(role);
 
         }
 
         public async Task<bool> ActualizarRoleAsync(Roles role)
         {
 
-            return await _rolesProcesoRepositorio.ActualizarRoleAsync(role);
+            return await _rolesInfoRepositorio.ActualizarRoleAsync(role);
 
         }
 
         public async Task<bool> EliminarRoleAsync(Roles role)
         {
 
-            return await _rolesProcesoRepositorio.EliminarRoleIdAsync(role);
+            return await _rolesInfoRepositorio.EliminarRoleIdAsync(role);
 
         }
 

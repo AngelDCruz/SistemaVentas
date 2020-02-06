@@ -17,9 +17,11 @@ namespace Autenticacion.Api.DTO.Respuestas.v1
 
         public string Telefono { get; set; }
 
-        public string FechaCreacion { get; set; }
+        public DateTime FechaCreacion { get; set; }
 
         public string Estatus { get; set; }
+
+        public IEnumerable<RolesDTO> Roles { get; set; } = new List<RolesDTO>();
 
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Autenticacion.Infraestructura.Repositorio
 {
-    public class RolesRepositorio : IRolesInfoRepositorio, IRolesProcesoRepositorio
+    public class RolesRepositorio : IRolesRepositorio
     {
 
         private readonly RoleManager<Roles> _roleManager;

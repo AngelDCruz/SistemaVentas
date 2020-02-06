@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Autenticacion.Infraestructura.Repositorio
 {
-    public class UsuariosRepositorio : IUsuariosInfoRepositorio, IUsuariosProcesoRepositorio
+    public class UsuariosRepositorio : IUsuariosRepositorio
     {
 
         private readonly UserManager<Usuarios> _userManager;
@@ -24,8 +24,15 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public IQueryable<Usuarios> ObtenerUsuariosAsync() =>
-            _context.Usuarios.Where(x => x.Estatus != "Baj").AsQueryable();
+        /*
+         * USUARIOS
+         */
+        public IQueryable<Usuarios> ObtenerUsuariosAsync(int limite, int pagina) =>
+             _context.Usuarios
+            .Skip( (pagina -1 ) * limite )
+            .Take(limite)
+            .Where(x => x.Estatus != "Baj")
+            .AsQueryable();
 
         public async Task<Usuarios> ObtenerUsuarioPorIdAsync(Guid id)
         {
@@ -54,15 +61,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<bool> CrearUsuarioRoleAsync(List<UsuariosRoles> lstUsuariosRoles)
-        {
-
-            await _context.UserRoles.AddRangeAsync(lstUsuariosRoles);
-
-            return await _context.SaveChangesAsync() > 0 ? true : false;
-
-        }
-
+ 
         public async Task<bool> ActualizarUsuarioAsync(Usuarios usuario)
         {
 
@@ -86,6 +85,5 @@ namespace Autenticacion.Infraestructura.Repositorio
             return await _context.SaveChangesAsync() > 0 ? true : false;
 
         }
-
     }
 }

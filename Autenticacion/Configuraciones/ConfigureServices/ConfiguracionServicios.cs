@@ -86,10 +86,11 @@ namespace Autenticacion.Api.Startup.ConfigureServices
         private static IServiceCollection Repositorios(IServiceCollection services)
         {
 
-            services.AddScoped<IUsuariosInfoRepositorio, UsuariosRepositorio>();
-            services.AddScoped<IUsuariosProcesoRepositorio, UsuariosRepositorio>();
-            services.AddScoped<IRolesInfoRepositorio, RolesRepositorio>();
-            services.AddScoped<IRolesProcesoRepositorio, RolesRepositorio>();
+            services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
+          
+            services.AddScoped<IRolesRepositorio, RolesRepositorio>();
+
+            services.AddScoped<IUsuariosRolesRepositorio, UsuariosRolesRepositorio>();
 
             return services;
 
@@ -101,6 +102,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
 
             services.AddScoped<IUsuariosServicios, UsuariosServicios>();
             services.AddScoped<IRolesServicios, RolesServicios>();
+            
 
             return services;
 

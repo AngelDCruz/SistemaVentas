@@ -31,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Autenticacion.Domain\Autenticacion.Dominio.csproj" />
     <ProjectReference Include="..\Autenticacion.Infraestructura\Autenticacion.Infraestructura.csproj" />
+    <ProjectReference Include="..\Common.Helpers\Common.csproj" />
   </ItemGroup>
 
 </Project>
