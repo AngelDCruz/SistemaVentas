@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Autenticacion.Api.DTO.Respuestas.v1
+namespace Autenticacion.Dominio.DTO.Respuestas.v1
 {
     public class UsuariosRolesDTO
     {
@@ -20,7 +20,7 @@ namespace Autenticacion.Api.DTO.Respuestas.v1
 
         public string Estatus { get; set; }
 
-        public IEnumerable<RolesDTO> Roles { get; set; }
+        public IEnumerable<RolesDTO> Roles { get; set; } = new List<RolesDTO>();
 
     }
 }

@@ -12,15 +12,17 @@ namespace Autenticacion.Dominio.Repositorio.Contratos
         /*
        * USUARIOS ROLES
        */
-        Task<List<UsuariosRoles>> ObtenerUsuariosRoles();
+        Task<List<UsuariosRolesEntidad>> ObtenerUsuariosRoles();
 
-        Task<UsuariosRoles> ObtenerUsuarioRoleAsync(Guid idRole, Guid idUsuario);
+        Task<UsuariosRolesEntidad> ObtenerUsuarioRoleAsync(Guid idRole, Guid idUsuario);
 
-        Task<List<UsuariosRoles>> ObtenerUsuarioIdRolesAsync(Guid idUsuario);
+        Task<List<UsuariosRolesEntidad>> ObtenerUsuarioIdRolesAsync(Guid idUsuario);
 
-        Task<bool> CrearUsuarioRoleAsync(List<UsuariosRoles> lstUsuariosRoles);
+        Task<List<Guid>> ObtenerUsuariosRoleIdAsync(Guid idRole);
 
-        bool EliminarUsuarioRole(UsuariosRoles usuariosRole);
+        Task<bool> CrearUsuarioRoleAsync(List<UsuariosRolesEntidad> lstUsuariosRoles);
+
+        bool EliminarUsuarioRole(UsuariosRolesEntidad usuariosRole);
 
     }
 }

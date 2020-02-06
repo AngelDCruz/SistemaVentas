@@ -1,12 +1,14 @@
-﻿using Autenticacion.Dominio.Entidades;
+﻿
+
+using Autenticacion.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Autenticacion.Dominio.Repositorio.Contratos
+
+namespace Autenticacion.Dominio.Servicios.Roles
 {
-    public interface IRolesRepositorio
+    public interface IRolesServicios
     {
 
         Task<List<RolesEntidad>> ObtenerRolesAsync();
@@ -19,7 +21,7 @@ namespace Autenticacion.Dominio.Repositorio.Contratos
 
         Task<bool> ActualizarRoleAsync(RolesEntidad role);
 
-        Task<bool> EliminarRoleIdAsync(RolesEntidad Role);
+        Task<bool> EliminarRoleAsync(RolesEntidad role);
 
     }
 }

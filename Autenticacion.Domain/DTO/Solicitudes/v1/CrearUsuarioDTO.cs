@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Autenticacion.Api.DTO.Solicitudes.v1
+namespace Autenticacion.Dominio.DTO.Solicitudes.v1
 {
     public class CrearUsuarioDTO
     {

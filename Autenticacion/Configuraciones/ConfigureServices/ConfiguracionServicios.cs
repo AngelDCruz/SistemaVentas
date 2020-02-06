@@ -3,14 +3,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-
-using Autenticacion.Infraestructura;
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
-using Autenticacion.Infraestructura.Repositorio;
-using Autenticacion.Api.Servicios;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+
+using Autenticacion.Api.Servicios.Usuarios;
+
+using Autenticacion.Infraestructura;
+using Autenticacion.Infraestructura.Repositorio;
+
+using Autenticacion.Dominio.Entidades;
+using Autenticacion.Dominio.Repositorio.Contratos;
+using Autenticacion.Dominio.Servicios.Roles;
 
 namespace Autenticacion.Api.Startup.ConfigureServices
 {
@@ -44,7 +47,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
         private static IServiceCollection Identity (this IServiceCollection services)
         {
 
-            services.AddIdentity<Usuarios, Roles>(opciones => {
+            services.AddIdentity<UsuariosEntidad, RolesEntidad>(opciones => {
 
 
                 opciones.Password.RequireDigit = false;
@@ -73,7 +76,8 @@ namespace Autenticacion.Api.Startup.ConfigureServices
 
                 //options.UseLazyLoadingProxies();
 
-                options.UseSqlServer(configuration.GetConnectionString("Autenticacion"));
+                options.UseSqlServer(configuration.GetConnectionString("Autenticacion"), 
+                                     builder => builder.UseRowNumberForPaging());
 
             });
 

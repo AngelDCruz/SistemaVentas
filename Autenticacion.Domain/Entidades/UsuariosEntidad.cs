@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Autenticacion.Dominio.Entidades
 {
-    public class Usuarios : IdentityUser<Guid>, IAuditoria
+    public class UsuariosEntidad : IdentityUser<Guid>, IAuditoria
     {
 
 
@@ -30,15 +30,15 @@ namespace Autenticacion.Dominio.Entidades
         public string Estatus { get; set; }
 
 
-        public List<UsuariosReclamaciones> UsuariosReclamaciones { get; set; }
+        public List<UsuariosReclamacionesEntidad> UsuariosReclamaciones { get; set; }
 
-        public List<UsuarioLogin> UsuarioLogin { get; set; }
+        public List<UsuarioLoginEntidad> UsuarioLogin { get; set; }
 
-        public List<UsuariosToken> UsuariosTokens { get; set; }
+        public List<UsuariosTokenEntidad> UsuariosTokens { get; set; }
 
         public override Guid Id { get => base.Id; set => base.Id = value; }
 
-        public List<UsuariosRoles> UsuariosRoles { get; set; }
+        public List<UsuariosRolesEntidad> UsuariosRoles { get; set; }
 
     }
 }

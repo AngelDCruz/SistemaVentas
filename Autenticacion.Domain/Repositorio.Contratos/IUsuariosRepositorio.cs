@@ -13,17 +13,17 @@ namespace Autenticacion.Dominio.Repositorio.Contratos
         /*
          * INFORMACION DEL USUARIO
          */
-        IQueryable<Usuarios> ObtenerUsuariosAsync(int limite, int pagina);
+        IQueryable<UsuariosEntidad> ObtenerUsuariosAsync();
 
-        Task<Usuarios> ObtenerUsuarioPorIdAsync(Guid id);
+        Task<UsuariosEntidad> ObtenerUsuarioPorIdAsync(Guid id);
 
-        Task<Usuarios> ObtenerUsuarioEmailAsync(string email);
+        Task<UsuariosEntidad> ObtenerUsuarioEmailAsync(string email);
 
-        Task<Guid> CrearUsuarioAsync(Usuarios usuario);
+        Task<Guid> CrearUsuarioAsync(UsuariosEntidad usuario);
 
-        Task<bool> ActualizarUsuarioAsync(Usuarios usuario);
+        Task<bool> ActualizarUsuarioAsync(UsuariosEntidad usuario);
 
-        Task<bool> EliminarUsuarioAsync(Usuarios usuarios);
+        Task<bool> EliminarUsuarioAsync(UsuariosEntidad usuarios);
 
     }
 }

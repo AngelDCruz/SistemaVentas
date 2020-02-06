@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Autenticacion.Api.DTO.Respuestas.v1
+namespace Autenticacion.Dominio.DTO.Respuestas.v1
 {
     public class UsuariosDTO
     {

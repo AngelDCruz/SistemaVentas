@@ -8,7 +8,7 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
     public class UsuariosRolesConfiguracion
     {
 
-        public static void AplicarConfiguracion(EntityTypeBuilder<UsuariosRoles> entidad)
+        public static void AplicarConfiguracion(EntityTypeBuilder<UsuariosRolesEntidad> entidad)
         {
 
             entidad.ToTable("UsuariosRoles", "dbo");

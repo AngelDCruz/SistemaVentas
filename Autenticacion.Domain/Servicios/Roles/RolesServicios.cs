@@ -1,12 +1,14 @@
 ﻿
 
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Autenticacion.Api.Servicios
+using Autenticacion.Dominio.Entidades;
+using Autenticacion.Dominio.Repositorio.Contratos;
+
+namespace Autenticacion.Dominio.Servicios.Roles
 {
     public class RolesServicios : IRolesServicios
     {
@@ -23,42 +25,42 @@ namespace Autenticacion.Api.Servicios
         
         }
 
-        public async Task<List<Roles>> ObtenerRolesAsync()
+        public async Task<List<RolesEntidad>> ObtenerRolesAsync()
         {
 
             return await _rolesInfoRepositorio.ObtenerRolesAsync();
 
         }
 
-        public async Task<Roles> ObtenerRoleIdAsync(Guid id)
+        public async Task<RolesEntidad> ObtenerRoleIdAsync(Guid id)
         {
 
             return await _rolesInfoRepositorio.ObtenerRoleIdAsync(id);
 
         }
 
-        public async Task<Roles> ObtenerRoleNombreAsync(string nombre)
+        public async Task<RolesEntidad> ObtenerRoleNombreAsync(string nombre)
         {
 
             return await _rolesInfoRepositorio.ObtenerRoleNombreAsync(nombre);
 
         }
 
-        public async Task<Roles> CrearRoleAsync(Roles role)
+        public async Task<RolesEntidad> CrearRoleAsync(RolesEntidad role)
         {
 
             return await _rolesInfoRepositorio.CrearRoleAsync(role);
 
         }
 
-        public async Task<bool> ActualizarRoleAsync(Roles role)
+        public async Task<bool> ActualizarRoleAsync(RolesEntidad role)
         {
 
             return await _rolesInfoRepositorio.ActualizarRoleAsync(role);
 
         }
 
-        public async Task<bool> EliminarRoleAsync(Roles role)
+        public async Task<bool> EliminarRoleAsync(RolesEntidad role)
         {
 
             return await _rolesInfoRepositorio.EliminarRoleIdAsync(role);

@@ -4,10 +4,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Autenticacion.Api.DTO.Solicitudes.v1
+namespace Autenticacion.Dominio.DTO.Solicitudes.v1
 {
-    public class CrearRoleDTO
+    public class ActualizarRoleDTO
     {
+
+        [Required(ErrorMessage = "El id es requerido")]
+        public Guid Id { get; set; }
 
         [
          Required(ErrorMessage = "El role es requerido"),

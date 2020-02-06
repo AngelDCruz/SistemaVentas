@@ -5,37 +5,24 @@ using System.Linq;
 namespace Common.Paginacion
 {
 
-    public class Paginacion
+    public class Respuesta<T>
     {
 
-        public int Actual { get; set;  }
-
-        public int Anterior { get; set; }
-
-        public int Siguiente { get; set; }
-
-        public int Total { get; set; }
-
-    }
-
-    public class Paginador<T> 
-    {
-
-        public Paginador(T datos, FiltroPagina filtro)
+        public Respuesta(T Entidad)
         {
-            Datos = datos;
+            Datos = Entidad;
         }
 
-        public T Datos { get;}
-
-        public Paginacion Paginacion { get;}
+        public T Datos { get; set; }
 
     }
-
 
 
     public class FiltroPagina
     {
+
+        [FromQuery]
+        public bool Paginar { get; set; } = false;
 
         [FromQuery]
         public int Limite { get; set; } = 1;

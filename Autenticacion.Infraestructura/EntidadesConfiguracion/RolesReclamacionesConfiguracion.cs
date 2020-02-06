@@ -7,7 +7,7 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
     public class RolesReclamacionesConfiguracion
     {
 
-        public static void AplicarConfiguracion(EntityTypeBuilder<RolesReclamaciones> entidad)
+        public static void AplicarConfiguracion(EntityTypeBuilder<RolesReclamacionesEntidad> entidad)
         {
 
             entidad.ToTable("RolesReclamaciones", "dbo");

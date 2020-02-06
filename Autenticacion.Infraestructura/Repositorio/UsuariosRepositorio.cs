@@ -13,10 +13,10 @@ namespace Autenticacion.Infraestructura.Repositorio
     public class UsuariosRepositorio : IUsuariosRepositorio
     {
 
-        private readonly UserManager<Usuarios> _userManager;
+        private readonly UserManager<UsuariosEntidad> _userManager;
         private readonly AutenticacionDbContext _context;
 
-        public UsuariosRepositorio(UserManager<Usuarios> userManager, AutenticacionDbContext context)
+        public UsuariosRepositorio(UserManager<UsuariosEntidad> userManager, AutenticacionDbContext context)
         {
 
             _userManager = userManager;
@@ -27,14 +27,10 @@ namespace Autenticacion.Infraestructura.Repositorio
         /*
          * USUARIOS
          */
-        public IQueryable<Usuarios> ObtenerUsuariosAsync(int limite, int pagina) =>
-             _context.Usuarios
-            .Skip( (pagina -1 ) * limite )
-            .Take(limite)
-            .Where(x => x.Estatus != "Baj")
-            .AsQueryable();
+        public IQueryable<UsuariosEntidad> ObtenerUsuariosAsync() => 
+            _context.Usuarios.AsQueryable();
 
-        public async Task<Usuarios> ObtenerUsuarioPorIdAsync(Guid id)
+        public async Task<UsuariosEntidad> ObtenerUsuarioPorIdAsync(Guid id)
         {
 
             return await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == id &&
@@ -42,7 +38,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<Usuarios> ObtenerUsuarioEmailAsync(string email)
+        public async Task<UsuariosEntidad> ObtenerUsuarioEmailAsync(string email)
         {
 
             return await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email && 
@@ -50,7 +46,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<Guid> CrearUsuarioAsync(Usuarios usuario)
+        public async Task<Guid> CrearUsuarioAsync(UsuariosEntidad usuario)
         {
 
             usuario.UsuarioCreacion = _context.UsuarioAutenticado();
@@ -62,7 +58,7 @@ namespace Autenticacion.Infraestructura.Repositorio
         }
 
  
-        public async Task<bool> ActualizarUsuarioAsync(Usuarios usuario)
+        public async Task<bool> ActualizarUsuarioAsync(UsuariosEntidad usuario)
         {
 
             var actualizarUsuario = await ObtenerUsuarioPorIdAsync(usuario.Id);
@@ -77,7 +73,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<bool> EliminarUsuarioAsync(Usuarios usuario)
+        public async Task<bool> EliminarUsuarioAsync(UsuariosEntidad usuario)
         {
 
             _context.Users.Remove(usuario);

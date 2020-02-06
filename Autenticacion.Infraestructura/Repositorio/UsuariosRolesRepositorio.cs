@@ -25,7 +25,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<List<UsuariosRoles>> ObtenerUsuariosRoles()
+        public async Task<List<UsuariosRolesEntidad>> ObtenerUsuariosRoles()
         {
 
             return await _context.UsuariosRoles.
@@ -35,7 +35,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<UsuariosRoles> ObtenerUsuarioRoleAsync(Guid idRole, Guid idUsuario)
+        public async Task<UsuariosRolesEntidad> ObtenerUsuarioRoleAsync(Guid idRole, Guid idUsuario)
         {
 
             return await _context.UsuariosRoles
@@ -46,7 +46,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<List<UsuariosRoles>> ObtenerUsuarioIdRolesAsync(Guid idUsuario)
+        public async Task<List<UsuariosRolesEntidad>> ObtenerUsuarioIdRolesAsync(Guid idUsuario)
         {
             return await _context.UsuariosRoles
                 .Include(x => x.Usuarios)
@@ -55,7 +55,18 @@ namespace Autenticacion.Infraestructura.Repositorio
                 .ToListAsync();
         }
 
-        public async Task<bool> CrearUsuarioRoleAsync(List<UsuariosRoles> lstUsuariosRoles)
+        public async Task<List<Guid>> ObtenerUsuariosRoleIdAsync(Guid idRole)
+        {
+
+            return await _context.UsuariosRoles
+                .Where(x => x.RolesId == idRole)
+                .Select(x => x.UserId)
+                .Distinct()
+                .ToListAsync();
+
+        }
+
+        public async Task<bool> CrearUsuarioRoleAsync(List<UsuariosRolesEntidad> lstUsuariosRoles)
         {
 
             await _context.UsuariosRoles.AddRangeAsync(lstUsuariosRoles);
@@ -64,7 +75,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public bool EliminarUsuarioRole(UsuariosRoles usuariosRoles)
+        public bool EliminarUsuarioRole(UsuariosRolesEntidad usuariosRoles)
         {
 
             _context.UsuariosRoles.Remove(usuariosRoles);

@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 namespace Autenticacion.Dominio.Entidades
 {
-    public class UsuarioLogin : IdentityUserLogin<Guid>, IAuditoria
+    public class UsuariosReclamacionesEntidad : IdentityUserClaim<Guid>, IAuditoria
     {
-
 
         [Required]
         [Column(TypeName = "UNIQUEIDENTIFIER")]
@@ -21,16 +18,16 @@ namespace Autenticacion.Dominio.Entidades
 
         [Column(TypeName = "UNIQUEIDENTIFIER")]
         public Guid UsuarioModificacion { get; set; }
-        
+
         public DateTime FechaModificacion { get; set; }
 
         [Required]
         [DefaultValue("Act")]
         [Column(TypeName = "CHAR(3)")]
         public string Estatus { get; set; }
-        
-        //RELACIONES
-        public Usuarios Usuarios { get; set; }
+
+
+        public UsuariosEntidad Usuarios { get; set; }
 
     }
 }

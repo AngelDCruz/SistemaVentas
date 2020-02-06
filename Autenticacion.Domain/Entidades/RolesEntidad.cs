@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+
 
 namespace Autenticacion.Dominio.Entidades
 {
-    public class Roles : IdentityRole<Guid>, IAuditoria
+    public class RolesEntidad : IdentityRole<Guid>, IAuditoria
     {
 
         [Required]
@@ -28,9 +28,9 @@ namespace Autenticacion.Dominio.Entidades
         [Column(TypeName = "CHAR(3)")]
         public string Estatus { get; set; }
 
-        public List<UsuariosRoles> UsuariosRoles { get; set; }
+        public List<UsuariosRolesEntidad> UsuariosRoles { get; set; }
 
-        public List<RolesReclamaciones> RoleReclamacion { get; set; }
+        public List<RolesReclamacionesEntidad> RoleReclamacion { get; set; }
 
     }
 }

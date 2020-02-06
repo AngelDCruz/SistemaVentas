@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Autenticacion.Api.DTO.Respuestas.v1;
-using Autenticacion.Api.DTO.Solicitudes.v1;
-using Autenticacion.Api.Servicios;
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
-using AutoMapper;
-using Common.Paginacion;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+
+using Common.Paginacion;
+using AutoMapper;
+
+
+using Autenticacion.Api.Servicios.Usuarios;
+using Autenticacion.Dominio.Entidades;
+using Autenticacion.Dominio.Servicios.Roles;
+using Autenticacion.Dominio.DTO.Respuestas.v1;
+using Autenticacion.Dominio.DTO.Solicitudes.v1;
 
 namespace Autenticacion.Api.Controllers.v1
 {
@@ -41,19 +41,15 @@ namespace Autenticacion.Api.Controllers.v1
          * USUARIOS
          */
         [HttpGet]
-        public async Task<IActionResult> ObtenerUsuariosAsync([FromQuery] IncluirUsuariosDTO incluir, [FromQuery] FiltroPagina filtro)
+        public IActionResult ObtenerUsuariosAsync([FromQuery] IncluirUsuariosDTO incluir,
+                                                  [FromQuery] FiltroPagina filtro = null)
         {
 
-            var lstUsuarios = await _usuariosServicios.ObtenerUsuariosAsync(filtro.Limite, filtro.Pagina);
+            var lstUsuarios = _usuariosServicios.ObtenerUsuariosAsync(incluir, filtro);
 
-            if (lstUsuarios == null || lstUsuarios.Count <= 0) return NoContent();
+            if (lstUsuarios == null) return NoContent();
 
-            var lstUsuariosPaginados = _usuariosServicios.ObtenerUsuariosRoles(incluir, filtro).ToList();
-
-            var lstDatos = new Paginador<List<UsuariosDTO>>(lstUsuariosPaginados, filtro);
-
-
-            return Ok(lstDatos);
+            return Ok(new Respuesta<List<UsuariosDTO>>(lstUsuarios));
             
         }
 
@@ -67,7 +63,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             var usuarioDTO = _mapper.Map<UsuariosDTO>(usuario);
 
-            return Ok(usuarioDTO);
+            return Ok(new Respuesta<UsuariosDTO>(usuarioDTO));
 
         }
 
@@ -77,7 +73,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var usuario = _mapper.Map<Usuarios>(usuarioDTO);
+            var usuario = _mapper.Map<UsuariosEntidad>(usuarioDTO);
 
             if (await _usuariosServicios.ObtenerUsuarioEmailAsync(usuario.Email) != null)
             {
@@ -97,7 +93,11 @@ namespace Autenticacion.Api.Controllers.v1
 
             var usuarioCreadoDTO = _mapper.Map<UsuariosDTO>(usuario);
 
-            return CreatedAtRoute("ObtenerUsuarioId", new { id = crearUsuario }, usuarioCreadoDTO);
+            return CreatedAtRoute(
+                "ObtenerUsuarioId", 
+                new { id = crearUsuario }, 
+                new Respuesta<UsuariosDTO>(usuarioCreadoDTO)
+             );
 
         }
 
@@ -112,7 +112,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (await _usuariosServicios.ObtenerUsuarioIdAsync(id) == null) return BadRequest("Usuario no encontrado");
 
-            var usuario = _mapper.Map<Usuarios>(usuarioDTO);
+            var usuario = _mapper.Map<UsuariosEntidad>(usuarioDTO);
 
             var actualizaUsuario = await _usuariosServicios.ActualizarUsuarioAsync(usuario);
 
@@ -136,24 +136,55 @@ namespace Autenticacion.Api.Controllers.v1
 
             var usuarioEliminado = _mapper.Map<UsuariosDTO>(usuarioExiste);
 
-            return Ok(usuarioEliminado);
+            return Ok(new Respuesta<UsuariosDTO>(usuarioEliminado));
 
         }
 
-        ///*
-        // * USUARIOS ROLES
-        // */
-        //[HttpGet("usuarios-roles")]
-        //public ActionResult<List<UsuariosRolesDTO>> ObtenerUsuariosRolesAsync()
-        //{
+        /*
+         * USUARIOS ROLES
+         */
+        [HttpGet("role/{idRole:guid}")]
+         public async Task<ActionResult> ObtenerUsuariosRolesIdAsync([FromRoute] Guid idRole)
+        {
 
-        //    var lstUsuariosRoles = _usuariosServicios.ObtenerUsuariosRoles(true);
+            
+            var lstUsuarios = await _usuariosServicios.ObtenerUsuariosRoleIdAsync(idRole);
 
-        //    if (lstUsuariosRoles == null) return NoContent();
+            if (lstUsuarios == null) return NoContent();
 
-        //    return Ok(lstUsuariosRoles);
+            var respuesta = new Respuesta<List<UsuariosDTO>>(lstUsuarios);
 
-        //}
+            return Ok(respuesta);
+
+        }
+    
+
+         [HttpGet("{id:guid}/roles")]
+         public async Task<ActionResult> ObtenerUsuarioRoles([FromRoute] Guid id)
+        {
+
+            var usuario = await _usuariosServicios.ObtenerUsuarioIdAsync(id);
+
+            if (usuario == null) return BadRequest("Usuario no encontrado");
+
+            return Ok(new Respuesta<UsuariosDTO>(
+                    await _usuariosServicios.ObtenerUsuarioIdRoleAsync(id))
+            );
+
+        }
+
+
+        [HttpGet("roles")]
+        public ActionResult<List<UsuariosRolesDTO>> ObtenerUsuariosRolesAsync()
+        {
+
+            var lstUsuariosRoles = _usuariosServicios.ObtenerUsuariosRoles();
+
+            if (lstUsuariosRoles == null) return NoContent();
+
+            return Ok(new Respuesta<List<UsuariosRolesDTO>>(lstUsuariosRoles));
+
+        }
 
 
         [HttpPost("asignar-role")]
@@ -163,8 +194,6 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var lstUsuarioRoles = EstructurarRoles(usuarioDTO);
-
             if (await _usuariosServicios.ObtenerUsuarioIdAsync(usuarioDTO.IdUsuario) == null)
             {
 
@@ -172,16 +201,10 @@ namespace Autenticacion.Api.Controllers.v1
 
             }
 
-            bool crearUsuario = false;
-
-            if (lstUsuarioRoles.Count > 0)
-            {
-
-                crearUsuario = await _usuariosServicios.CrearUsuarioRoleAsync(lstUsuarioRoles);
-
-            }
+            var crearUsuario = await _usuariosServicios.CrearUsuarioRoleAsync(usuarioDTO);
 
             if (!crearUsuario) return BadRequest("No se asigno ningun role al usuario");
+
 
 
             return Ok();
@@ -206,32 +229,6 @@ namespace Autenticacion.Api.Controllers.v1
             return NoContent();
 
         }
-
-        private List<UsuariosRoles> EstructurarRoles(CrearUsuarioRolesDTO lstUsuariosRoles)
-        {
-
-            List<UsuariosRoles> nvLstUsuariosRoles = new List<UsuariosRoles>();
-
-            if (lstUsuariosRoles == null) return nvLstUsuariosRoles;
-
-            foreach(var role in lstUsuariosRoles.Roles)
-            {
-
-            
-                nvLstUsuariosRoles.Add(new UsuariosRoles()
-                {
-                    UserId = lstUsuariosRoles.IdUsuario,
-                    UsuariosId = lstUsuariosRoles.IdUsuario,
-                    RoleId = role,
-                    RolesId = role
-                });
-
-            }
-
-            return nvLstUsuariosRoles;
-
-        }
-
 
     }
 }

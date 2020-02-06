@@ -1,13 +1,9 @@
 ﻿
 using AutoMapper;
 
-using Autenticacion.Api.DTO.Respuestas.v1;
-using Autenticacion.Api.DTO.Solicitudes.v1;
 using Autenticacion.Dominio.Entidades;
-using Autenticacion.Api.Servicios;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Autenticacion.Dominio.DTO.Respuestas.v1;
+using Autenticacion.Dominio.DTO.Solicitudes.v1;
 
 namespace Autenticacion.Api.Automapper
 {
@@ -17,18 +13,18 @@ namespace Autenticacion.Api.Automapper
         public UsuariosMapper()
         {
 
-            CreateMap<Usuarios, UsuariosDTO>()
+            CreateMap<UsuariosEntidad, UsuariosDTO>()
                  .ForMember(u => u.Usuario, opcion => opcion.MapFrom(src => src.UserName))
                  .ForMember(u => u.Telefono, opcion => opcion.MapFrom(src => src.PhoneNumber))
                  .ReverseMap();
 
-            CreateMap<Usuarios, CrearUsuarioDTO>()
+            CreateMap<UsuariosEntidad, CrearUsuarioDTO>()
                 .ForMember(u => u.Usuario, opcion => opcion.MapFrom(src => src.UserName))
                 .ForMember(u => u.Contrasena, opcion => opcion.MapFrom(src => src.PasswordHash))
                 .ForMember(u => u.Telefono, opcion => opcion.MapFrom(src => src.PhoneNumber))
                 .ReverseMap();
 
-            CreateMap<Usuarios, ActualizarUsuarioDTO>()
+            CreateMap<UsuariosEntidad, ActualizarUsuarioDTO>()
                //.ForMember(u => u.Contrasena, opcion => opcion.MapFrom(src => src.PasswordHash))
                .ForMember(u => u.Telefono, opcion => opcion.MapFrom(src => src.PhoneNumber))
                .ReverseMap();

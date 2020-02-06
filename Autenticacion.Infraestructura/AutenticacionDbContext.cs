@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Autenticacion.Infraestructura
 {
-    public partial class AutenticacionDbContext : IdentityDbContext<Usuarios, Roles, Guid>
+    public partial class AutenticacionDbContext : IdentityDbContext<UsuariosEntidad, RolesEntidad, Guid>
     {
 
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -35,13 +35,13 @@ namespace Autenticacion.Infraestructura
             builder.HasDefaultSchema("Autenticacion");
 
 
-            UsuariosConfiguracion.AplicarConfiguracion(builder.Entity<Usuarios>());
-            RolesConfiguracion.AplicarConfiguracion(builder.Entity<Roles>());
-            UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamaciones>());
-            UsuariosLoginConfiguracion.AplicarConfiguracion(builder.Entity<UsuarioLogin>());
-            UsuariosTokenConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosToken>());
-            UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamaciones>());
-            UsuariosRolesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosRoles>());
+            UsuariosConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosEntidad>());
+            RolesConfiguracion.AplicarConfiguracion(builder.Entity<RolesEntidad>());
+            UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamacionesEntidad>());
+            UsuariosLoginConfiguracion.AplicarConfiguracion(builder.Entity<UsuarioLoginEntidad>());
+            UsuariosTokenConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosTokenEntidad>());
+            UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamacionesEntidad>());
+            UsuariosRolesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosRolesEntidad>());
             
          
 

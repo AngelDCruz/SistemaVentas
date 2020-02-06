@@ -13,11 +13,11 @@ namespace Autenticacion.Infraestructura.Repositorio
     public class RolesRepositorio : IRolesRepositorio
     {
 
-        private readonly RoleManager<Roles> _roleManager;
+        private readonly RoleManager<RolesEntidad> _roleManager;
         private readonly AutenticacionDbContext _autenticacionDbContext;
 
         public RolesRepositorio(
-            RoleManager<Roles> roleManager,
+            RoleManager<RolesEntidad> roleManager,
             AutenticacionDbContext autenticacionDbContext
          )
         {
@@ -26,15 +26,15 @@ namespace Autenticacion.Infraestructura.Repositorio
             _autenticacionDbContext = autenticacionDbContext;
         }
 
-        public async Task<List<Roles>> ObtenerRolesAsync()
+        public async Task<List<RolesEntidad>> ObtenerRolesAsync()
         {
 
-            return await _autenticacionDbContext.Roles.OfType<Roles>()
+            return await _autenticacionDbContext.Roles.OfType<RolesEntidad>()
                 .Where(x => x.Estatus != "Baj").ToListAsync();
 
         }
 
-        public async Task<Roles> ObtenerRoleIdAsync(Guid id)
+        public async Task<RolesEntidad> ObtenerRoleIdAsync(Guid id)
         {
 
             return await _autenticacionDbContext.
@@ -42,7 +42,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<Roles> ObtenerRoleNombreAsync(string nombre)
+        public async Task<RolesEntidad> ObtenerRoleNombreAsync(string nombre)
         {
 
             return await _autenticacionDbContext.
@@ -50,7 +50,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<Roles> CrearRoleAsync(Roles role)
+        public async Task<RolesEntidad> CrearRoleAsync(RolesEntidad role)
         {
 
             var respuesta = await _roleManager.CreateAsync(role);
@@ -59,7 +59,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<bool> ActualizarRoleAsync(Roles role)
+        public async Task<bool> ActualizarRoleAsync(RolesEntidad role)
         {
 
             var actualizarRole = await ObtenerRoleIdAsync(role.Id);
@@ -71,7 +71,7 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-        public async Task<bool> EliminarRoleIdAsync(Roles role)
+        public async Task<bool> EliminarRoleIdAsync(RolesEntidad role)
         {
 
             var respuesta = await _roleManager.DeleteAsync(role);

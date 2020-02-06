@@ -7,7 +7,7 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
     public class UsuariosLoginConfiguracion
     {
 
-        public static void AplicarConfiguracion(EntityTypeBuilder<UsuarioLogin> entidad)
+        public static void AplicarConfiguracion(EntityTypeBuilder<UsuarioLoginEntidad> entidad)
         {
 
             entidad.ToTable("UsuariosLogin", "dbo");

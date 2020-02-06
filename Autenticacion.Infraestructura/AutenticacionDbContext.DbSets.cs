@@ -5,19 +5,19 @@ namespace Autenticacion.Infraestructura
 {
     public partial class AutenticacionDbContext {
 
-        public DbSet<Usuarios> Usuarios { get; set; }
+        public DbSet<UsuariosEntidad> Usuarios { get; set; }
 
-        public DbSet<UsuariosReclamaciones> UsuariosReclamaciones { get; set; }
+        public DbSet<UsuariosReclamacionesEntidad> UsuariosReclamaciones { get; set; }
 
-        public DbSet<Roles> Roles { get; set; }
+        public DbSet<RolesEntidad> Roles { get; set; }
 
-        public DbSet<RolesReclamaciones> RolesReclamaciones { get; set; }
+        public DbSet<RolesReclamacionesEntidad> RolesReclamaciones { get; set; }
 
-        public DbSet<UsuarioLogin> UsuarioLogins { get; set; }
+        public DbSet<UsuarioLoginEntidad> UsuarioLogins { get; set; }
 
-        public DbSet<UsuariosRoles> UsuariosRoles { get; set; }
+        public DbSet<UsuariosRolesEntidad> UsuariosRoles { get; set; }
 
-        public DbSet<UsuariosToken> UsuariosTokens { get; set; }
+        public DbSet<UsuariosTokenEntidad> UsuariosTokens { get; set; }
 
     }
 }

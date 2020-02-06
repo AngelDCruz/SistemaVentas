@@ -1,13 +1,15 @@
 ﻿
-using Autenticacion.Api.DTO.Respuestas.v1;
-using Autenticacion.Api.DTO.Solicitudes.v1;
-using Autenticacion.Api.Servicios;
-using Autenticacion.Dominio.Entidades;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+
+using Autenticacion.Dominio.DTO.Respuestas.v1;
+using Autenticacion.Dominio.DTO.Solicitudes.v1;
+using Autenticacion.Dominio.Entidades;
+using Autenticacion.Dominio.Servicios.Roles;
+using AutoMapper;
+using Common.Paginacion;
 
 namespace Autenticacion.Api.Controllers.v1
 {
@@ -38,7 +40,9 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (lstRoles == null) return NoContent();
 
-            return Ok(_mapper.Map<List<RolesDTO>>(lstRoles));
+            var respuesta = _mapper.Map<List<RolesDTO>>(lstRoles);
+
+            return Ok(new Respuesta<List<RolesDTO>>(respuesta));
 
         }
 
@@ -50,7 +54,9 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (role == null) return NotFound("Role no encontrado");
 
-            return Ok(_mapper.Map<RolesDTO>(role));
+            var respuesta = _mapper.Map<RolesDTO>(role);
+
+            return Ok(new Respuesta<RolesDTO>(respuesta));
 
         }
 
@@ -63,7 +69,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (roleExiste != null) return BadRequest("El role ya se ha registrado anteriormente");
 
-            var role = _mapper.Map<Roles>(roleDTO);
+            var role = _mapper.Map<RolesEntidad>(roleDTO);
 
             var roleCreado = await _rolesServicios.CrearRoleAsync(role);
 
@@ -71,7 +77,9 @@ namespace Autenticacion.Api.Controllers.v1
 
             var roleCreadoDTO = _mapper.Map<RolesDTO>(roleCreado);
 
-            return CreatedAtRoute("ObtenerRoleId", new { id = roleCreado.Id }, roleCreadoDTO);
+            var respuesta = new Respuesta<RolesDTO>(roleCreadoDTO);
+
+            return CreatedAtRoute("ObtenerRoleId", new { id = roleCreado.Id }, respuesta);
 
         }
 
@@ -85,7 +93,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (roleExiste == null) return BadRequest("Role no encontrado");
 
-            var role = _mapper.Map<Roles>(roleDTO);
+            var role = _mapper.Map<RolesEntidad>(roleDTO);
 
             var respuesta = await _rolesServicios.ActualizarRoleAsync(role);
 
@@ -107,7 +115,9 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (!roleEliminado) return BadRequest("El rol no se pudo eliminar");
 
-            return Ok(_mapper.Map<RolesDTO>(roleExiste));
+            var respuesta = _mapper.Map<RolesDTO>(roleExiste);
+
+            return Ok(new Respuesta<RolesDTO>(respuesta)); 
 
         }
 

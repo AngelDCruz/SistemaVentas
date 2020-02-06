@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Autenticacion.Dominio.Entidades
 {
-    public class RolesReclamaciones : IdentityRoleClaim<Guid>, IAuditoria
+    public class UsuariosTokenEntidad :  IdentityUserToken<Guid>, IAuditoria
     {
 
         [Required]
@@ -28,7 +28,8 @@ namespace Autenticacion.Dominio.Entidades
         [Column(TypeName = "CHAR(3)")]
         public string Estatus { get; set; }
 
-        public Roles Roles { get; set; }
+
+        public UsuariosEntidad Usuarios { get; set; }
 
     }
 }
