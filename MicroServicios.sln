@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.960
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{282F9554-0608-4ADE-9D5E-87844CBEECE6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{DC382547-1814-4A2D-93B8-D3773659ED7B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservicio.Gateway", "Microservicio.Gateway", "{DC382547-1814-4A2D-93B8-D3773659ED7B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservicio.Auth", "Microservicio.Auth", "{9B74593C-647A-4D5F-A6E8-73BEE73D913D}"
 EndProject
@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Autenticacion.Infraestructu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservicio.Common", "Microservicio.Common", "{E1EFC9B4-3F3E-4C99-A366-E16C0DAC3DFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common.Helpers\Common.csproj", "{A0AF4743-8E5C-4143-B7EF-4C053B7A53C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common.Helpers\Common.csproj", "{A0AF4743-8E5C-4143-B7EF-4C053B7A53C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microservicio.Gateway.Principal", "Microservicio.Gateway.Principal\Microservicio.Gateway.Principal.csproj", "{31020A05-F3FF-43C3-9366-EBAD3BE7BA6F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{A0AF4743-8E5C-4143-B7EF-4C053B7A53C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0AF4743-8E5C-4143-B7EF-4C053B7A53C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0AF4743-8E5C-4143-B7EF-4C053B7A53C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31020A05-F3FF-43C3-9366-EBAD3BE7BA6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31020A05-F3FF-43C3-9366-EBAD3BE7BA6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31020A05-F3FF-43C3-9366-EBAD3BE7BA6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31020A05-F3FF-43C3-9366-EBAD3BE7BA6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{41A96676-6AE1-417C-84AE-179622DD8636} = {9B74593C-647A-4D5F-A6E8-73BEE73D913D}
 		{E1EFC9B4-3F3E-4C99-A366-E16C0DAC3DFB} = {282F9554-0608-4ADE-9D5E-87844CBEECE6}
 		{A0AF4743-8E5C-4143-B7EF-4C053B7A53C7} = {E1EFC9B4-3F3E-4C99-A366-E16C0DAC3DFB}
+		{31020A05-F3FF-43C3-9366-EBAD3BE7BA6F} = {DC382547-1814-4A2D-93B8-D3773659ED7B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {22442B7C-CF63-4A98-A5B7-D1A4A1BD505E}

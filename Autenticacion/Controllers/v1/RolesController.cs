@@ -40,9 +40,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (lstRoles == null) return NoContent();
 
-            var respuesta = _mapper.Map<List<RolesDTO>>(lstRoles);
-
-            return Ok(new Respuesta<List<RolesDTO>>(respuesta));
+            return Ok(_mapper.Map<List<RolesDTO>>(lstRoles));
 
         }
 
@@ -54,9 +52,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (role == null) return NotFound("Role no encontrado");
 
-            var respuesta = _mapper.Map<RolesDTO>(role);
-
-            return Ok(new Respuesta<RolesDTO>(respuesta));
+            return Ok(_mapper.Map<RolesDTO>(role));
 
         }
 
@@ -77,9 +73,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             var roleCreadoDTO = _mapper.Map<RolesDTO>(roleCreado);
 
-            var respuesta = new Respuesta<RolesDTO>(roleCreadoDTO);
-
-            return CreatedAtRoute("ObtenerRoleId", new { id = roleCreado.Id }, respuesta);
+            return CreatedAtRoute("ObtenerRoleId", new { id = roleCreado.Id }, roleCreadoDTO);
 
         }
 
@@ -115,9 +109,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (!roleEliminado) return BadRequest("El rol no se pudo eliminar");
 
-            var respuesta = _mapper.Map<RolesDTO>(roleExiste);
-
-            return Ok(new Respuesta<RolesDTO>(respuesta)); 
+            return Ok(_mapper.Map<RolesDTO>(roleExiste)); 
 
         }
 

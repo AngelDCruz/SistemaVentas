@@ -49,7 +49,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (lstUsuarios == null) return NoContent();
 
-            return Ok(new Respuesta<List<UsuariosDTO>>(lstUsuarios));
+            return Ok(lstUsuarios);
             
         }
 
@@ -61,9 +61,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (usuario == null) return NotFound("Usuario no encontrado");
 
-            var usuarioDTO = _mapper.Map<UsuariosDTO>(usuario);
-
-            return Ok(new Respuesta<UsuariosDTO>(usuarioDTO));
+            return Ok(_mapper.Map<UsuariosDTO>(usuario));
 
         }
 
@@ -95,8 +93,8 @@ namespace Autenticacion.Api.Controllers.v1
 
             return CreatedAtRoute(
                 "ObtenerUsuarioId", 
-                new { id = crearUsuario }, 
-                new Respuesta<UsuariosDTO>(usuarioCreadoDTO)
+                new { id = crearUsuario },
+                usuarioCreadoDTO
              );
 
         }
@@ -134,9 +132,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (!respuesta) return BadRequest("El usuario no se pudo eliminar");
 
-            var usuarioEliminado = _mapper.Map<UsuariosDTO>(usuarioExiste);
-
-            return Ok(new Respuesta<UsuariosDTO>(usuarioEliminado));
+            return Ok(_mapper.Map<UsuariosDTO>(usuarioExiste));
 
         }
 
@@ -152,9 +148,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (lstUsuarios == null) return NoContent();
 
-            var respuesta = new Respuesta<List<UsuariosDTO>>(lstUsuarios);
-
-            return Ok(respuesta);
+            return Ok(lstUsuarios);
 
         }
     
@@ -167,9 +161,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (usuario == null) return BadRequest("Usuario no encontrado");
 
-            return Ok(new Respuesta<UsuariosDTO>(
-                    await _usuariosServicios.ObtenerUsuarioIdRoleAsync(id))
-            );
+            return Ok(await _usuariosServicios.ObtenerUsuarioIdRoleAsync(id));
 
         }
 
@@ -182,7 +174,7 @@ namespace Autenticacion.Api.Controllers.v1
 
             if (lstUsuariosRoles == null) return NoContent();
 
-            return Ok(new Respuesta<List<UsuariosRolesDTO>>(lstUsuariosRoles));
+            return Ok(lstUsuariosRoles);
 
         }
 

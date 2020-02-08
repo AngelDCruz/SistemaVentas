@@ -1,0 +1,10 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:60084",
+    "ServiceDiscoveryProvider": {
+      "Host": "localhost",
+      "Port": 60084,
+      "Type": "Consul"
+    }
+  }
+}
