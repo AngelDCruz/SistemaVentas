@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Common.Middlewares;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,20 @@ namespace Autenticacion.Api.Startup.Configure
             }
 
 
+            app.UseAuthentication();
+
+            MiddlewarezPersonalizados(app);
+
             app.UseMvc();
 
-            //AUTENTICA
-            app.UseAuthentication();
+            return app;
+
+        }
+
+        private static IApplicationBuilder MiddlewarezPersonalizados(this IApplicationBuilder app)
+        {
+
+            app.UseMiddleware<ExcepcionesMiddleware>();
 
             return app;
 

@@ -14,6 +14,15 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
             entidad.ToTable("UsuariosRoles", "dbo");
 
             //entidad.HasQueryFilter(x => x.Estatus != "Baj");
+            entidad.HasOne(r => r.Roles)
+                        .WithMany(x => x.UsuariosRoles)
+                        .HasForeignKey(r => r.RoleId)
+                        .OnDelete(DeleteBehavior.Cascade);
+
+            entidad.HasOne(u => u.Usuarios)
+                .WithMany(x => x.UsuariosRoles)
+                .HasForeignKey(u => u.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
 

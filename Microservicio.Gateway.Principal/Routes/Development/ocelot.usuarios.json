@@ -129,7 +129,7 @@
         {
           "Name": "usuarios",
           "Version": "v1",
-          "Url": "http://localhost:60084/swagger/v1/swagger.json"
+          "Url": "http://localhost:5000/swagger/v1/swagger.json"
         }
       ]
     },
@@ -139,10 +139,18 @@
         {
           "Name": "usuariosv2",
           "Version": "v2",
-          "Url": "http://localhost:60084/swagger/v2/swagger.json"
+          "Url": "http://localhost:5000/swagger/v2/swagger.json"
         }
       ]
     }
-  ]
+  ],
+    "GlobalConfiguration": {
+      "BaseUrl": "http://localhost:60084",
+      "ServiceDiscoveryProvider": {
+        "Host": "localhost",
+        "Port": 60084,
+        "Type": "Consul"
+      }
+  }
 }
 

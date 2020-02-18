@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
+using Autenticacion.Dominio.Repositorio;
 using Microsoft.EntityFrameworkCore;
 
 namespace Autenticacion.Infraestructura.Repositorio
@@ -28,8 +28,9 @@ namespace Autenticacion.Infraestructura.Repositorio
         public async Task<List<UsuariosRolesEntidad>> ObtenerUsuariosRoles()
         {
 
-            return await _context.UsuariosRoles.
-                Include(x => x.Usuarios)
+            return await _context.UsuariosRoles
+                .OfType<UsuariosRolesEntidad>()
+                .Include(x => x.Usuarios)
                 .Include(y => y.Roles)
                 .ToListAsync();
 
@@ -39,6 +40,9 @@ namespace Autenticacion.Infraestructura.Repositorio
         {
 
             return await _context.UsuariosRoles
+                 .OfType<UsuariosRolesEntidad>()
+                .Include(x => x.Usuarios)
+                .Include(y => y.Roles)
                 .FirstOrDefaultAsync(x => x.RoleId == idRole &&
                                      x.UserId == idUsuario && 
                                      x.Estatus != "Baj"
@@ -49,19 +53,22 @@ namespace Autenticacion.Infraestructura.Repositorio
         public async Task<List<UsuariosRolesEntidad>> ObtenerUsuarioIdRolesAsync(Guid idUsuario)
         {
             return await _context.UsuariosRoles
+                .OfType<UsuariosRolesEntidad>()
                 .Include(x => x.Usuarios)
                 .Include(y => y.Roles)
                 .Where(z => z.UserId == idUsuario)
                 .ToListAsync();
         }
 
-        public async Task<List<Guid>> ObtenerUsuariosRoleIdAsync(Guid idRole)
+
+
+        public async Task<List<Guid>> ObtenerUsuariosRoleIdAsync(Guid idUsuario)
         {
 
             return await _context.UsuariosRoles
-                .Where(x => x.RolesId == idRole)
-                .Select(x => x.UserId)
-                .Distinct()
+                .OfType<UsuariosRolesEntidad>()
+                .Where(x => x.UserId == idUsuario)
+                .Select(x => x.RoleId)
                 .ToListAsync();
 
         }

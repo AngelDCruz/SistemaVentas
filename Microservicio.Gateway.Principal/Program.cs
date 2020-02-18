@@ -28,17 +28,16 @@ namespace Microservicio.Gateway.Principal
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
           WebHost.CreateDefaultBuilder(args)
+             .UseContentRoot(Directory.GetCurrentDirectory())
               .ConfigureAppConfiguration((hostingContext, config) =>
               {
                   config
                        .SetBasePath(hostingContext.HostingEnvironment.ContentRootPath)
                        .AddJsonFile("appsettings.json", true, true)
                        .AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", true, true)
-                      //.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
-                       .AddOcelot(hostingContext.HostingEnvironment)
+                       .AddJsonFile("ocelot.json", optional: true, reloadOnChange: true)
                        .AddEnvironmentVariables();
-
-             
+                       //.AddJsonFile("ocelot.roles.json")
               })
               .UseStartup<Startup>();
 

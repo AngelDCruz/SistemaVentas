@@ -1,4 +1,5 @@
 ﻿using Autenticacion.Dominio.Entidades;
+using Autenticacion.Infraestructura.EntidadesConfiguracion;
 using Microsoft.EntityFrameworkCore;
 
 namespace Autenticacion.Infraestructura
@@ -18,6 +19,10 @@ namespace Autenticacion.Infraestructura
         public DbSet<UsuariosRolesEntidad> UsuariosRoles { get; set; }
 
         public DbSet<UsuariosTokenEntidad> UsuariosTokens { get; set; }
+
+       public DbSet<TokenEntidad> Token { get; set; }
+
+        public DbSet<TokenSessionEntidad> TokenSession { get; set; }
 
     }
 }

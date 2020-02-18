@@ -4,14 +4,16 @@ using Autenticacion.Infraestructura;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Autenticacion.Infraestructura.Migrations
 {
     [DbContext(typeof(AutenticacionDbContext))]
-    partial class AutenticacionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200218042919_tokensession")]
+    partial class tokensession
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

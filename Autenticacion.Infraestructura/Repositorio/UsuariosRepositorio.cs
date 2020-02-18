@@ -1,6 +1,4 @@
 ﻿
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,27 +6,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Autenticacion.Dominio.Entidades;
+using Autenticacion.Dominio.Repositorio;
+
 namespace Autenticacion.Infraestructura.Repositorio
 {
     public class UsuariosRepositorio : IUsuariosRepositorio
     {
 
         private readonly UserManager<UsuariosEntidad> _userManager;
+
         private readonly AutenticacionDbContext _context;
 
-        public UsuariosRepositorio(UserManager<UsuariosEntidad> userManager, AutenticacionDbContext context)
+        public UsuariosRepositorio(
+            UserManager<UsuariosEntidad> userManager,
+            AutenticacionDbContext context
+         )
         {
 
             _userManager = userManager;
             _context = context;
-
         }
 
         /*
          * USUARIOS
          */
         public IQueryable<UsuariosEntidad> ObtenerUsuariosAsync() => 
-            _context.Usuarios.AsQueryable();
+            _context.Usuarios.Include(x => x.UsuariosRoles).AsQueryable();
 
         public async Task<UsuariosEntidad> ObtenerUsuarioPorIdAsync(Guid id)
         {
@@ -44,6 +48,11 @@ namespace Autenticacion.Infraestructura.Repositorio
             return await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email && 
             x.Estatus != "Baj");
 
+        }
+
+        public async Task<IList<string>> ObtenerUsuariosRolesAsync(UsuariosEntidad usuario)
+        {
+            return  await _userManager.GetRolesAsync(usuario);
         }
 
         public async Task<Guid> CrearUsuarioAsync(UsuariosEntidad usuario)
@@ -81,5 +90,14 @@ namespace Autenticacion.Infraestructura.Repositorio
             return await _context.SaveChangesAsync() > 0 ? true : false;
 
         }
+
+        public async Task<bool> VerificarCredencialesAsync(UsuariosEntidad usuario, string password)
+        {
+
+            return await _userManager.CheckPasswordAsync(usuario, password);
+
+        }
+
+   
     }
 }

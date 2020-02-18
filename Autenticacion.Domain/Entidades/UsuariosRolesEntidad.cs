@@ -10,17 +10,10 @@ namespace Autenticacion.Dominio.Entidades
     {
 
 
-        public Guid UsuariosId { get; set; }
-
-        public Guid RolesId { get; set; }
-
         public UsuariosEntidad Usuarios { get; set; }
 
         public RolesEntidad Roles { get; set; }
 
-
-        [Required]
-        [Column(TypeName = "UNIQUEIDENTIFIER")]
         public Guid UsuarioCreacion { get; set; }
 
         [Required]

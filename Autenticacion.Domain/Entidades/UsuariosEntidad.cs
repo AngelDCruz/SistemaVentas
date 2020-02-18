@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Autenticacion.Infraestructura.EntidadesConfiguracion;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,9 +37,11 @@ namespace Autenticacion.Dominio.Entidades
 
         public List<UsuariosTokenEntidad> UsuariosTokens { get; set; }
 
-        public override Guid Id { get => base.Id; set => base.Id = value; }
+        public override Guid Id { get; set; }
 
         public List<UsuariosRolesEntidad> UsuariosRoles { get; set; }
+
+        public List<TokenEntidad> Token { get; set; }
 
     }
 }

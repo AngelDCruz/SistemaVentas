@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Autenticacion.Dominio.Repositorio.Contratos
+namespace Autenticacion.Dominio.Repositorio
 {
     public interface IUsuariosRolesRepositorio
     {

@@ -18,9 +18,10 @@ namespace Autenticacion.Api.Servicios.Usuarios
         /*
          * USUARIOS
          */
-        List<UsuariosDTO> ObtenerUsuariosAsync(IncluirUsuariosDTO incluir, FiltroPagina filtro);
+        Task<List<UsuariosDTO>> ObtenerUsuariosAsync(IncluirUsuariosDTO incluir, FiltroPagina filtro);
 
         Task<UsuariosEntidad> ObtenerUsuarioIdAsync(Guid id);
+
         Task<UsuariosEntidad> ObtenerUsuarioEmailAsync(string email);
 
         Task<UsuariosDTO> ObtenerUsuarioIdRoleAsync(Guid id);
@@ -37,7 +38,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
         /*
          * USUARIOS ROLES
          */
-        List<UsuariosRolesDTO> ObtenerUsuariosRoles();
+        //Task<List<UsuariosRolesDTO>> ObtenerUsuariosRoles();
 
         Task<UsuariosRolesEntidad> ObtenerUsuarioRoleAsync(Guid idRole, Guid idUsuario);
 

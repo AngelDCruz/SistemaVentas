@@ -19,11 +19,11 @@ namespace Autenticacion.Api.Servicios.Usuarios
         /// LISTA DE USUARIOS CON RELACION DE ROLES
         /// </summary>
         /// <returns></returns>
-        public List<UsuariosRolesDTO> ObtenerUsuariosRoles()
+        public async Task<List<UsuariosDTO>> ObtenerUsuariosRoles()
         {
-            var lstUsuarios = _usuariosRepositorio.ObtenerUsuariosAsync().Where(x => x.Estatus != "Baj");
+            var lstUsuarios = _usuariosRepositorio.ObtenerUsuariosAsync();
 
-            return UsuariosRoles(lstUsuarios).ToList();
+            return await ObtenerUsuariosRelaciones(lstUsuarios);
 
         }
 

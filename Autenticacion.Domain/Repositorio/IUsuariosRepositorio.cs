@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Autenticacion.Dominio.Repositorio.Contratos
+namespace Autenticacion.Dominio.Repositorio
 {
     public interface IUsuariosRepositorio
     {
@@ -19,11 +19,15 @@ namespace Autenticacion.Dominio.Repositorio.Contratos
 
         Task<UsuariosEntidad> ObtenerUsuarioEmailAsync(string email);
 
+        Task<IList<string>> ObtenerUsuariosRolesAsync(UsuariosEntidad usuario);
+
         Task<Guid> CrearUsuarioAsync(UsuariosEntidad usuario);
 
         Task<bool> ActualizarUsuarioAsync(UsuariosEntidad usuario);
 
         Task<bool> EliminarUsuarioAsync(UsuariosEntidad usuarios);
+
+        Task<bool> VerificarCredencialesAsync(UsuariosEntidad usuario, string password);
 
     }
 }

@@ -21,7 +21,7 @@ namespace Autenticacion.Dominio.DTO.Respuestas.v1
 
         public string Estatus { get; set; }
 
-        public IEnumerable<RolesDTO> Roles { get; set; } = new List<RolesDTO>();
+        public List<RolesDTO> Roles { get; set; } = new List<RolesDTO>();
 
     }
 }

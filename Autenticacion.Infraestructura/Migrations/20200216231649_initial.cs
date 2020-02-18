@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Autenticacion.Infraestructura.Migrations
 {
-    public partial class inicio : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -182,7 +182,7 @@ namespace Autenticacion.Infraestructura.Migrations
                     Discriminator = table.Column<string>(nullable: false),
                     UsuariosId = table.Column<Guid>(nullable: true),
                     RolesId = table.Column<Guid>(nullable: true),
-                    UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true),
+                    UsuarioCreacion = table.Column<Guid>(nullable: true),
                     FechaCreacion = table.Column<DateTime>(nullable: true),
                     UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true),
                     FechaModificacion = table.Column<DateTime>(nullable: true),
@@ -250,6 +250,31 @@ namespace Autenticacion.Infraestructura.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "Autenticacion",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Token",
+                schema: "Autenticacion",
+                columns: table => new
+                {
+                    Token = table.Column<string>(nullable: false),
+                    JwtId = table.Column<string>(nullable: true),
+                    Usado = table.Column<bool>(nullable: false),
+                    Valido = table.Column<bool>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    Expiracion = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Token", x => x.Token);
+                    table.ForeignKey(
+                        name: "FK_Token_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalSchema: "Autenticacion",
                         principalTable: "AspNetUsers",
@@ -338,6 +363,12 @@ namespace Autenticacion.Infraestructura.Migrations
                 schema: "Autenticacion",
                 table: "AspNetUserTokens",
                 column: "UsuariosId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Token_UserId",
+                schema: "Autenticacion",
+                table: "Token",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -360,6 +391,10 @@ namespace Autenticacion.Infraestructura.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens",
+                schema: "Autenticacion");
+
+            migrationBuilder.DropTable(
+                name: "Token",
                 schema: "Autenticacion");
 
             migrationBuilder.DropTable(

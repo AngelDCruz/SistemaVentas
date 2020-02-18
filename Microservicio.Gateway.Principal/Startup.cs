@@ -36,8 +36,6 @@ namespace Microservicio.Gateway.Principal
             services.AddOcelot()
                     .AddConsul();
 
-            services.AddSwaggerForOcelot(Configuration);
-
             //CONFIGURACION SWAGGER
             services.AddSwaggerGen(configuracion => {
 
@@ -86,6 +84,8 @@ namespace Microservicio.Gateway.Principal
                 configuracion.IncludeXmlComments(xmlPath);
 
             });
+
+            services.AddSwaggerForOcelot(Configuration);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

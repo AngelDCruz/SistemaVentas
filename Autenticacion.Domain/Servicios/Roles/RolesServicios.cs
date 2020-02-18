@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
+using Autenticacion.Dominio.Repositorio;
 
 namespace Autenticacion.Dominio.Servicios.Roles
 {

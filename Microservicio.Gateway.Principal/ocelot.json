@@ -1,1 +1,211 @@
-{"ReRoutes":[],"DynamicReRoutes":[],"Aggregates":[],"GlobalConfiguration":{"RequestIdKey":null,"ServiceDiscoveryProvider":{"Host":null,"Port":0,"Type":null,"Token":null,"ConfigurationKey":null,"PollingInterval":0,"Namespace":null},"RateLimitOptions":{"ClientIdHeader":"ClientId","QuotaExceededMessage":null,"RateLimitCounterPrefix":"ocelot","DisableRateLimitHeaders":false,"HttpStatusCode":429},"QoSOptions":{"ExceptionsAllowedBeforeBreaking":0,"DurationOfBreak":0,"TimeoutValue":0},"BaseUrl":null,"LoadBalancerOptions":{"Type":null,"Key":null,"Expiry":0},"DownstreamScheme":null,"HttpHandlerOptions":{"AllowAutoRedirect":false,"UseCookieContainer":false,"UseTracing":false,"UseProxy":true}}}
+{
+  "ReRoutes": [
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // "CONFIGURACIONES DE ENDPOINT PARA USUARIOS
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //OBTIENE LISTA DE USUARIOS
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Post"
+      ],
+      "SwaggerKey": "usuariosV1"
+    },
+
+    //OBTIENE USUARIO POR ID
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios/{id}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Delete"
+      ],
+      "SwaggerKey": "usuariosV1"
+    },
+
+    //OBTIENE USUARIO POR ID CON SUS ROLES
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios/{id}/roles",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios/{id}/roles",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "SwaggerKey": "usuariosV1"
+    },
+    //ELIMINAR ROL DE USUARIO
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios/{idUsuario}/role/{idRole}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios/{idUsuario}/role/{idRole}",
+      "UpstreamHttpMethod": [
+        "Delete"
+      ],
+      "SwaggerKey": "usuariosV1"
+    },
+    //ASIGNA UN ROL O ROLES A USUARIO
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios/asignar-role",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios/asignacion-roles",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "SwaggerKey": "usuariosV1"
+    },
+    //LISTA DE USUARIOS CON ROLES
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios/roles",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios/roles-asignados",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "SwaggerKey": "usuariosV1"
+    },
+    //
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios/asignar-role",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios/agregar-roles",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "SwaggerKey": "usuariosV1"
+    },
+    {
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "DownstreamPathTemplate": "/api/v2/usuarios",
+      "DownstreamScheme": "http",
+      "SwaggerKey": "usuariosv2",
+      "UpstreamHttpMethod": [ "Get" ],
+      "UpstreamPathTemplate": "/api/v2/usuarios"
+    },
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // CONFIGURACIONES PARA ENDPOINT PARA ROLES
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    {
+      "DownstreamPathTemplate": "/api/v1/roles",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/roles",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Post",
+        "Put"
+      ],
+      "SwaggerKey": "rolesV1"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/roles/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/roles/{id}",
+      "UpstreamHttpMethod": [
+        "Delete", "Put"
+      ],
+      "SwaggerKey": "rolesV1"
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  ],
+
+  // CONFIGURACIONES PARA DOCUMENTACION SWAGGER
+  "SwaggerEndPoints": [
+    {
+      "Key": "usuariosV1",
+      "Config": [
+        {
+          "Name": "usuarios",
+          "Version": "v1",
+          "Url": "http://localhost:5000/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "rolesV1",
+      "Config": [
+        {
+          "Name": "roles",
+          "Version": "v2",
+          "Url": "http://localhost:5000/swagger/v2/swagger.json"
+        }
+      ]
+    }
+  ],
+    "GlobalConfiguration": {
+      "BaseUrl": "http://localhost:60084",
+      "ServiceDiscoveryProvider": {
+        "Host": "localhost",
+        "Port": 60084,
+        "Type": "Consul"
+      }
+  }
+}
+

@@ -1,5 +1,4 @@
 ﻿using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Autenticacion.Dominio.Repositorio;
+using System.Security.Claims;
 
 namespace Autenticacion.Infraestructura.Repositorio
 {
@@ -38,7 +40,9 @@ namespace Autenticacion.Infraestructura.Repositorio
         {
 
             return await _autenticacionDbContext.
-                Roles.FirstOrDefaultAsync(x => x.Id == id && x.Estatus != "Baj");
+                Roles
+                .Include(x => x.UsuariosRoles)
+                .FirstOrDefaultAsync(x => x.Id == id && x.Estatus != "Baj");
 
         }
 
@@ -47,6 +51,13 @@ namespace Autenticacion.Infraestructura.Repositorio
 
             return await _autenticacionDbContext.
                 Roles.FirstOrDefaultAsync(x => x.Name == nombre && x.Estatus != "Baj");
+
+        }
+
+        public async Task<IEnumerable<Claim>> ObtenerRoleClaimAsync(RolesEntidad roles)
+        {
+
+            return await _roleManager.GetClaimsAsync(roles);
 
         }
 
