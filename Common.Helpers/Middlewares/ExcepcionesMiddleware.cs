@@ -85,7 +85,7 @@ namespace Common.Middlewares
                 var respuesta = context.Response;
 
                 respuesta.ContentType = "application/json";
-                respuesta.StatusCode = (int)HttpStatusCode.BadRequest;
+                respuesta.StatusCode = respuesta.StatusCode;
 
                 _logger.Error(ex.Message, ex.StackTrace);
 

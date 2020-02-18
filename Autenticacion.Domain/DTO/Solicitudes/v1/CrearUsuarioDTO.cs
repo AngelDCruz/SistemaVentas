@@ -26,5 +26,7 @@ namespace Autenticacion.Dominio.DTO.Solicitudes.v1
         public string Telefono { get; set; }
 
 
+
+
     }
 }

@@ -145,18 +145,14 @@ namespace Autenticacion.Api.Servicios.Usuarios
                 {
 
                     var role = await _rolesServicicios.ObtenerRoleIdAsync(idRole);
-
-                    var roleactual = usuario.UsuariosRoles.FirstOrDefault(x => x.RoleId == idRole);
-                    DateTime Fecha = roleactual.FechaCreacion;
-                    string Estatus = roleactual.Estatus;
-
+                    var roleActualUsuarios = await _usuariosRolesRepositorio.ObtenerUsuarioRoleAsync(idRole, usuario.Id);
 
                     lstRolesDTO.Add(new RolesDTO
                     {
                         Id = role.Id,
                         Nombre = role.Name,
-                        Estatus = Estatus,
-                        FechaCreacion = Fecha
+                        Estatus = roleActualUsuarios.Estatus,
+                        FechaCreacion = roleActualUsuarios.FechaCreacion
                     });
 
                 }

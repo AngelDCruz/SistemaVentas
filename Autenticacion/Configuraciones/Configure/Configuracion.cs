@@ -32,7 +32,7 @@ namespace Autenticacion.Api.Startup.Configure
         private static IApplicationBuilder MiddlewarezPersonalizados(this IApplicationBuilder app)
         {
 
-            app.UseMiddleware<ExcepcionesMiddleware>();
+            //app.UseMiddleware<ExcepcionesMiddleware>();
 
             return app;
 

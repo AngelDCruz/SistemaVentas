@@ -8,7 +8,7 @@ using Autenticacion.Api.Helpers.Sesiones;
 using Autenticacion.Api.Servicios.Usuarios;
 using Autenticacion.Dominio.DTO.Solicitudes.v1;
 using Autenticacion.Dominio.Servicios.Autenticacion;
-
+using Common.Decoradores;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +38,7 @@ namespace Autenticacion.Api.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-       
+        [LlaveAutorizacion]
         [HttpPost("iniciar-sesion")]
         public async Task<IActionResult> Login([FromBody] LoginDTO login)
         {
@@ -67,6 +67,7 @@ namespace Autenticacion.Api.Controllers
 
         }
 
+        [LlaveAutorizacion]
         [HttpPost("refresh-token")]
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenDTO refreshToken)
         {

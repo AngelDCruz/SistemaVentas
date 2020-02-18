@@ -13,6 +13,7 @@ using Autenticacion.Dominio.Servicios.Roles;
 using Autenticacion.Dominio.DTO.Respuestas.v1;
 using Autenticacion.Dominio.DTO.Solicitudes.v1;
 using Common.Mensajeria;
+using Common.Decoradores;
 
 namespace Autenticacion.Api.Controllers.v1
 {
@@ -66,6 +67,7 @@ namespace Autenticacion.Api.Controllers.v1
 
         }
 
+        [LlaveAutorizacion]
         [HttpPost]
         public async Task<IActionResult> CrearUsuarioAsync([FromBody] CrearUsuarioDTO usuarioDTO)
         {
