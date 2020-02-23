@@ -1,15 +1,18 @@
 ﻿using System.Linq;
 using System;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Autenticacion.Dominio.DTO.Respuestas.v1;
+
 using Autenticacion.Dominio.DTO.Solicitudes.v1;
 using Autenticacion.Dominio.Entidades;
 using Autenticacion.Dominio.Repositorio;
+
 using Common.Paginacion;
-using Microsoft.EntityFrameworkCore;
+
 using Autenticacion.Dominio.Servicios.Roles;
+using Autenticacion.Aplicacion.DTO.Respuestas.v1;
 
 namespace Autenticacion.Api.Servicios.Usuarios
 {
@@ -46,6 +49,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
 
             var lstUsuarios = _usuariosRepositorio.ObtenerUsuariosAsync()
                               .Include(x => x.UsuariosRoles)
+                              .Include(x => x.DatosPersonales)
                               .Where(x => x.Estatus != "Baj");
 
             if (lstUsuarios == null) return null;
@@ -63,6 +67,26 @@ namespace Autenticacion.Api.Servicios.Usuarios
             }
 
             return await ObtenerUsuariosRelaciones(lstUsuarios, incluir);
+
+        }
+
+        public  async Task<UsuariosDTO> ObtenerUsuarioIdRelacionesAsync(Guid idUsuario, IncluirUsuariosDTO incluir)
+        {
+
+            var lstUsuarios =  _usuariosRepositorio.ObtenerUsuariosAsync();
+
+            if (incluir.Datos) lstUsuarios = lstUsuarios.Include(x => x.DatosPersonales);
+
+            if (incluir.Role) lstUsuarios = lstUsuarios.Include(x => x.UsuariosRoles);
+
+            var usuarioEntidad = lstUsuarios.FirstOrDefault(x => x.Id == idUsuario);
+
+            if (usuarioEntidad == null)
+            {
+                return new UsuariosDTO();
+            }
+            
+            return await ObtenerUsuariosRelaciones(usuarioEntidad, incluir);
 
         }
 
@@ -119,6 +143,13 @@ namespace Autenticacion.Api.Servicios.Usuarios
 
         }
 
+        public async Task<UsuariosEntidad> ObtenerUsuariosNombreAsync(string nombreUsuario)
+        {
+
+            return await _usuariosRepositorio.ObtenerUsuarioNombreAsync(nombreUsuario);
+
+        }
+
         /// <summary>
         /// CREA UN USUARIO
         /// </summary>
@@ -126,6 +157,9 @@ namespace Autenticacion.Api.Servicios.Usuarios
         /// <returns></returns>
         public async Task<Guid> CrearUsuarioAsync(UsuariosEntidad usuario)
         {
+
+
+            
 
             usuario.FechaCreacion = DateTime.Now;
 
@@ -166,6 +200,29 @@ namespace Autenticacion.Api.Servicios.Usuarios
         {
 
             return await _usuariosRepositorio.ObtenerUsuarioEmailAsync(email);
+
+        }
+
+        /// <summary>
+        /// ACTUALIZA LOS DATOS PERSONALES DE UN USUARIO EN ESPECIFICO
+        /// </summary>
+        /// <param name="datosPersonales"></param>
+        /// <param name="idUsuario"></param>
+        /// <returns></returns>
+        public async Task<bool> ActualizarDatosPersonalesUsuarioAsync(DatosPersonalesEntidad datosPersonales, Guid idUsuario)
+        {
+
+            var usuario = await _usuariosRepositorio.ObtenerUsuarioPorIdAsync(idUsuario);
+            usuario.DatosPersonales.Nombre = datosPersonales.Nombre;
+            usuario.DatosPersonales.ApellidoPaterno = datosPersonales.ApellidoPaterno;
+            usuario.DatosPersonales.ApellidoMaterno = datosPersonales.ApellidoMaterno;
+            usuario.DatosPersonales.Pais = datosPersonales.Pais;
+            usuario.DatosPersonales.Ciudad = datosPersonales.Ciudad;
+            usuario.DatosPersonales.Calle = datosPersonales.Calle;
+            usuario.DatosPersonales.Nombre = datosPersonales.Nombre;
+            usuario.DatosPersonales.Telefono = datosPersonales.Telefono;
+
+            return await _usuariosRepositorio.ActualizarDatosPersonalesUsuarioAsync(usuario);
 
         }
     }

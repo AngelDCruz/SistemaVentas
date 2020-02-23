@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Autenticacion.Dominio.Entidades
 {
+
     public class RolesEntidad : IdentityRole<Guid>, IAuditoria
     {
 

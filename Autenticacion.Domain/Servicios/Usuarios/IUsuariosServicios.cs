@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Autenticacion.Dominio.DTO.Respuestas.v1;
+using Autenticacion.Aplicacion.DTO.Respuestas.v1;
+using Autenticacion.Aplicacion.DTO.Solicitudes.v1;
+
 using Autenticacion.Dominio.DTO.Solicitudes.v1;
 using Autenticacion.Dominio.Entidades;
 
@@ -28,6 +30,10 @@ namespace Autenticacion.Api.Servicios.Usuarios
 
         Task<List<UsuariosDTO>> ObtenerUsuariosRoleIdAsync(Guid idRole);
 
+        Task<UsuariosEntidad> ObtenerUsuariosNombreAsync(string nombreUsuario);
+
+        Task<UsuariosDTO> ObtenerUsuarioIdRelacionesAsync(Guid idUsuario, IncluirUsuariosDTO incluir);
+
         Task<Guid> CrearUsuarioAsync(UsuariosEntidad usuario);
         
         Task<bool> ActualizarUsuarioAsync(UsuariosEntidad usuario);
@@ -38,13 +44,17 @@ namespace Autenticacion.Api.Servicios.Usuarios
         /*
          * USUARIOS ROLES
          */
-        //Task<List<UsuariosRolesDTO>> ObtenerUsuariosRoles();
 
         Task<UsuariosRolesEntidad> ObtenerUsuarioRoleAsync(Guid idRole, Guid idUsuario);
 
         Task<bool> CrearUsuarioRoleAsync(CrearUsuarioRolesDTO usuarioRoleDTO);
 
         bool EliminarUsuarioRoleAsync(UsuariosRolesEntidad usuariosRoles);
+
+        /*
+         *  DATOS PERSONALES
+         */
+        Task<bool> ActualizarDatosPersonalesUsuarioAsync(DatosPersonalesEntidad datos, Guid idUsuario);
 
     }
 }

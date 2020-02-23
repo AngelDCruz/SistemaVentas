@@ -11,7 +11,7 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
         public static void AplicarConfiguracion(EntityTypeBuilder<UsuariosRolesEntidad> entidad)
         {
 
-            entidad.ToTable("UsuariosRoles", "dbo");
+            entidad.ToTable("UsuariosRoles");
 
             //entidad.HasQueryFilter(x => x.Estatus != "Baj");
             entidad.HasOne(r => r.Roles)

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
+using Autenticacion.Aplicacion.DTO.Respuestas.v1;
+using Autenticacion.Aplicacion.DTO.Solicitudes.v1;
+
 using Autenticacion.Dominio.Entidades;
 
 
@@ -48,7 +49,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
         public async Task<bool> CrearUsuarioRoleAsync(CrearUsuarioRolesDTO usuarioRolesDTO)
         {
 
-            var usuarioRoles = AsignarRolesUsuario(usuarioRolesDTO);
+            var usuarioRoles = await AsignarRolesUsuarioAsync(usuarioRolesDTO);
 
             if (usuarioRoles != null)
             {

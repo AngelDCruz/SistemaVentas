@@ -8,6 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 
 namespace Autenticacion.Infraestructura
 {
@@ -32,20 +33,25 @@ namespace Autenticacion.Infraestructura
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
+
+            base.OnModelCreating(builder);
+
             builder.HasDefaultSchema("Autenticacion");
 
+            builder.Ignore<IdentityUserLogin<Guid>>();
+            builder.Ignore<IdentityUserToken<Guid>>();
 
+             builder.Entity<IdentityUserRole<Guid>>().ToTable("UsuariosRoles");
+             builder.Entity<IdentityUserClaim<Guid>>().ToTable("UsuarioReclamaciones");
+             builder.Entity<UsuariosRolesEntidad>().ToTable("UsuariosReclamaciones");
+             builder.Entity<IdentityRoleClaim<Guid>>().ToTable("RoleReclamaciones");
+    
             UsuariosConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosEntidad>());
             RolesConfiguracion.AplicarConfiguracion(builder.Entity<RolesEntidad>());
             UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamacionesEntidad>());
-            UsuariosLoginConfiguracion.AplicarConfiguracion(builder.Entity<UsuarioLoginEntidad>());
-            UsuariosTokenConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosTokenEntidad>());
             UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamacionesEntidad>());
             UsuariosRolesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosRolesEntidad>());
-            
-         
-
-            base.OnModelCreating(builder);
+            DatosPersonalesConfiguracion.AplicarConfiguracion(builder.Entity<DatosPersonalesEntidad>());
 
         }
     }

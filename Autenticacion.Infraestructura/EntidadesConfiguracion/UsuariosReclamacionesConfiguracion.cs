@@ -13,7 +13,7 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
         public static void AplicarConfiguracion(EntityTypeBuilder<UsuariosReclamacionesEntidad> entidad)
         {
 
-            entidad.ToTable("UsuariosReclamaciones", "dbo");
+            entidad.ToTable("UsuariosReclamaciones");
 
             //entidad.HasQueryFilter(x => x.Estatus == "Act");
 

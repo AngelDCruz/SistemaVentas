@@ -1,0 +1,239 @@
+{
+  "ReRoutes": [
+
+    /// AUTENTICACION
+    {
+      "DownstreamPathTemplate": "/api/v1/auth",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/auth",
+      "UpstreamHttpMethod": [
+        "Post",
+        "Put"
+      ],
+      "SwaggerKey": "authv1"
+    },
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+
+    /// USUARIOS
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Post"
+      ],
+      "SwaggerKey": "usuariov1"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios/{id}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Delete"
+      ],
+      "SwaggerKey": "usuariov1"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Usuarios/role/{idRole}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/Usuarios/role/{idRole}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "SwaggerKey": "usuariov1"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios/role/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios/role/{id}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "SwaggerKey": "usuariov1"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios/asignar-role",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios/asignar-role",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "SwaggerKey": "usuariov1"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/usuarios/{idUsuario}/role/{idRole}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/usuarios/{idUsuario}/role/{idRole}",
+      "UpstreamHttpMethod": [
+        "Delete"
+      ],
+      "SwaggerKey": "usuariov1"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Usuarios/{idUsuario}/datos-personales",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/Usuarios/{idUsuario}/datos-personales",
+      "UpstreamHttpMethod": [
+        "Put"
+      ],
+      "SwaggerKey": "usuariov1"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Usuarios/cambio-password",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/Usuarios/cambio-password",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "SwaggerKey": "usuariov1"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Usuarios/{id}/cambiar-nombre/{nombre}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/Usuarios/{id}/cambiar-nombre/{nombre}",
+      "UpstreamHttpMethod": [
+        "Put"
+      ],
+      "SwaggerKey": "usuariov1"
+    },
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+
+    /// ROLES
+    {
+      "DownstreamPathTemplate": "/api/v1/roles",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/roles",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Post"
+      ],
+      "SwaggerKey": "rolev1"
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/roles/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 61096
+        }
+      ],
+      "UpstreamPathTemplate": "/api/v1/roles/{id}",
+      "UpstreamHttpMethod": [
+        "Get",
+        "Put",
+        "Delete"
+      ],
+      "SwaggerKey": "rolev1"
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "usuariov1",
+      "Config": [
+        {
+          "Name": "usuarios",
+          "Version": "v1",
+          "Url": "http://localhost:65370/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "rolev1",
+      "Config": [
+        {
+          "Name": "roles",
+          "Version": "v1",
+          "Url": "http://localhost:65370/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "authv1",
+      "Config": [
+        {
+          "Name": "autenticacion",
+          "Version": "v1",
+          "Url": "http://localhost:65370/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:65370"
+  }
+}

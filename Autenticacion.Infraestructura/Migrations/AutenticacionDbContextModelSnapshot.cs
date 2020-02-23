@@ -20,6 +20,51 @@ namespace Autenticacion.Infraestructura.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Autenticacion.Dominio.Entidades.DatosPersonalesEntidad", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("ApellidoMaterno")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("ApellidoPaterno")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Calle")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Ciudad")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Estatus")
+                        .IsRequired()
+                        .HasColumnType("CHAR(3)");
+
+                    b.Property<DateTime>("FechaCreacion");
+
+                    b.Property<DateTime>("FechaModificacion");
+
+                    b.Property<string>("Nombre")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Pais")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Telefono")
+                        .HasMaxLength(13);
+
+                    b.Property<Guid>("UsuarioCreacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<Guid>("UsuarioModificacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DatosPersonales");
+                });
+
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.RolesEntidad", b =>
                 {
                     b.Property<Guid>("Id")
@@ -55,19 +100,7 @@ namespace Autenticacion.Infraestructura.Migrations
                         .HasName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("AspNetRoles");
-                });
-
-            modelBuilder.Entity("Autenticacion.Dominio.Entidades.TokenSessionEntidad", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("TokenSession");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TokenSession");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.UsuariosEntidad", b =>
@@ -75,15 +108,16 @@ namespace Autenticacion.Infraestructura.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AccessFailedCount");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnName("IntentosFallidos");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<Guid?>("DatosPersonalesId");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256);
-
-                    b.Property<bool>("EmailConfirmed");
 
                     b.Property<string>("Estatus")
                         .IsRequired()
@@ -93,27 +127,16 @@ namespace Autenticacion.Infraestructura.Migrations
 
                     b.Property<DateTime>("FechaModificacion");
 
-                    b.Property<bool>("LockoutEnabled");
+                    b.Property<string>("ImagenPerfil")
+                        .HasColumnType("VARCHAR(MAX)");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
-
-                    b.Property<string>("PhoneNumber");
-
-                    b.Property<bool>("PhoneNumberConfirmed");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnName("Password");
 
                     b.Property<string>("SecurityStamp");
 
-                    b.Property<bool>("TwoFactorEnabled");
-
                     b.Property<string>("UserName")
+                        .HasColumnName("Usuario")
                         .HasMaxLength(256);
 
                     b.Property<Guid>("UsuarioCreacion")
@@ -124,15 +147,9 @@ namespace Autenticacion.Infraestructura.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasName("EmailIndex");
+                    b.HasIndex("DatosPersonalesId");
 
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("Autenticacion.Infraestructura.EntidadesConfiguracion.TokenEntidad", b =>
@@ -176,9 +193,7 @@ namespace Autenticacion.Infraestructura.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims");
+                    b.ToTable("RoleReclamaciones");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityRoleClaim<Guid>");
                 });
@@ -200,33 +215,9 @@ namespace Autenticacion.Infraestructura.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("UsuarioReclamaciones");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserClaim<Guid>");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
-                {
-                    b.Property<string>("LoginProvider");
-
-                    b.Property<string>("ProviderKey");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<string>("ProviderDisplayName");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("LoginProvider", "ProviderKey");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserLogins");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserLogin<Guid>");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
@@ -240,31 +231,9 @@ namespace Autenticacion.Infraestructura.Migrations
 
                     b.HasKey("UserId", "RoleId");
 
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("UsuariosRoles");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<Guid>");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId");
-
-                    b.Property<string>("LoginProvider");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<string>("Value");
-
-                    b.HasKey("UserId", "LoginProvider", "Name");
-
-                    b.ToTable("AspNetUserTokens");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserToken<Guid>");
                 });
 
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.RolesReclamacionesEntidad", b =>
@@ -279,15 +248,13 @@ namespace Autenticacion.Infraestructura.Migrations
 
                     b.Property<DateTime>("FechaModificacion");
 
-                    b.Property<Guid?>("RolesId");
-
                     b.Property<Guid>("UsuarioCreacion")
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.Property<Guid>("UsuarioModificacion")
                         .HasColumnType("UNIQUEIDENTIFIER");
 
-                    b.HasIndex("RolesId");
+                    b.HasIndex("RoleId");
 
                     b.HasDiscriminator().HasValue("RolesReclamacionesEntidad");
                 });
@@ -310,40 +277,11 @@ namespace Autenticacion.Infraestructura.Migrations
                     b.Property<Guid>("UsuarioModificacion")
                         .HasColumnType("UNIQUEIDENTIFIER");
 
-                    b.Property<Guid?>("UsuariosId");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("UsuariosId");
-
-                    b.ToTable("UsuariosReclamaciones","dbo");
+                    b.ToTable("UsuariosReclamaciones");
 
                     b.HasDiscriminator().HasValue("UsuariosReclamacionesEntidad");
-                });
-
-            modelBuilder.Entity("Autenticacion.Dominio.Entidades.UsuarioLoginEntidad", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>");
-
-                    b.Property<string>("Estatus")
-                        .IsRequired()
-                        .HasColumnType("CHAR(3)");
-
-                    b.Property<DateTime>("FechaCreacion");
-
-                    b.Property<DateTime>("FechaModificacion");
-
-                    b.Property<Guid>("UsuarioCreacion")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.Property<Guid>("UsuarioModificacion")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.Property<Guid?>("UsuariosId");
-
-                    b.HasIndex("UsuariosId");
-
-                    b.ToTable("UsuariosLogin","dbo");
-
-                    b.HasDiscriminator().HasValue("UsuarioLoginEntidad");
                 });
 
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.UsuariosRolesEntidad", b =>
@@ -358,49 +296,24 @@ namespace Autenticacion.Infraestructura.Migrations
 
                     b.Property<DateTime>("FechaModificacion");
 
-                    b.Property<Guid?>("RolesId");
-
                     b.Property<Guid>("UsuarioCreacion");
 
                     b.Property<Guid>("UsuarioModificacion")
                         .HasColumnType("UNIQUEIDENTIFIER");
 
-                    b.Property<Guid?>("UsuariosId");
+                    b.HasIndex("RoleId");
 
-                    b.HasIndex("RolesId");
-
-                    b.HasIndex("UsuariosId");
-
-                    b.ToTable("UsuariosRoles","dbo");
+                    b.ToTable("UsuariosRoles");
 
                     b.HasDiscriminator().HasValue("UsuariosRolesEntidad");
                 });
 
-            modelBuilder.Entity("Autenticacion.Dominio.Entidades.UsuariosTokenEntidad", b =>
+            modelBuilder.Entity("Autenticacion.Dominio.Entidades.UsuariosEntidad", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>");
-
-                    b.Property<string>("Estatus")
-                        .IsRequired()
-                        .HasColumnType("CHAR(3)");
-
-                    b.Property<DateTime>("FechaCreacion");
-
-                    b.Property<DateTime>("FechaModificacion");
-
-                    b.Property<Guid>("UsuarioCreacion")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.Property<Guid>("UsuarioModificacion")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.Property<Guid?>("UsuariosId");
-
-                    b.HasIndex("UsuariosId");
-
-                    b.ToTable("UsuariosToken","dbo");
-
-                    b.HasDiscriminator().HasValue("UsuariosTokenEntidad");
+                    b.HasOne("Autenticacion.Dominio.Entidades.DatosPersonalesEntidad", "DatosPersonales")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("DatosPersonalesId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Autenticacion.Infraestructura.EntidadesConfiguracion.TokenEntidad", b =>
@@ -411,88 +324,33 @@ namespace Autenticacion.Infraestructura.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
-                {
-                    b.HasOne("Autenticacion.Dominio.Entidades.RolesEntidad")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
-                {
-                    b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
-                {
-                    b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.HasOne("Autenticacion.Dominio.Entidades.RolesEntidad")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
-                {
-                    b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.RolesReclamacionesEntidad", b =>
                 {
                     b.HasOne("Autenticacion.Dominio.Entidades.RolesEntidad", "Roles")
                         .WithMany("RoleReclamacion")
-                        .HasForeignKey("RolesId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.UsuariosReclamacionesEntidad", b =>
                 {
                     b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad", "Usuarios")
                         .WithMany("UsuariosReclamaciones")
-                        .HasForeignKey("UsuariosId");
-                });
-
-            modelBuilder.Entity("Autenticacion.Dominio.Entidades.UsuarioLoginEntidad", b =>
-                {
-                    b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad", "Usuarios")
-                        .WithMany("UsuarioLogin")
-                        .HasForeignKey("UsuariosId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.UsuariosRolesEntidad", b =>
                 {
                     b.HasOne("Autenticacion.Dominio.Entidades.RolesEntidad", "Roles")
                         .WithMany("UsuariosRoles")
-                        .HasForeignKey("RolesId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad", "Usuarios")
                         .WithMany("UsuariosRoles")
-                        .HasForeignKey("UsuariosId");
-                });
-
-            modelBuilder.Entity("Autenticacion.Dominio.Entidades.UsuariosTokenEntidad", b =>
-                {
-                    b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad", "Usuarios")
-                        .WithMany("UsuariosTokens")
-                        .HasForeignKey("UsuariosId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

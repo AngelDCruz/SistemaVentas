@@ -12,7 +12,19 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
 
             entidad.ToTable("Usuarios");
 
-            //entidad.HasQueryFilter(x => x.Estatus == "Act");
+            //CAMPOS IGNORADOS
+            entidad.Ignore(x => x.PhoneNumberConfirmed);
+            entidad.Ignore(x => x.TwoFactorEnabled);
+            entidad.Ignore(x => x.LockoutEnd);
+            entidad.Ignore(x => x.LockoutEnabled);
+            entidad.Ignore(x => x.EmailConfirmed);
+            entidad.Ignore(x => x.NormalizedEmail);
+            entidad.Ignore(x => x.NormalizedUserName);
+            entidad.Ignore(x => x.PhoneNumber);
+
+            entidad.Property(x => x.AccessFailedCount).HasColumnName("IntentosFallidos");
+            entidad.Property(x => x.UserName).HasColumnName("Usuario");
+            entidad.Property(x => x.PasswordHash).HasColumnName("Password");
 
             //RELACIONES
             entidad.HasMany(ur => ur.UsuariosReclamaciones)
@@ -20,20 +32,13 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
                 .HasForeignKey(u => u.UserId)
                 .IsRequired();
 
-            entidad.HasMany(ul => ul.UsuarioLogin)
-                .WithOne(u => u.Usuarios)
-                .HasForeignKey(u => u.UserId)
-                .IsRequired();
-
-            entidad.HasMany(ut => ut.UsuariosTokens)
-                .WithOne(u => u.Usuarios)
-                .HasForeignKey(x => x.UserId)
-                .IsRequired();
-
             entidad.HasMany(ur => ur.UsuariosRoles)
                 .WithOne(u => u.Usuarios)
                 .HasForeignKey(u => u.UserId)
                 .IsRequired();
+
+            entidad.HasOne(d => d.DatosPersonales)
+                .WithMany(u => u.Usuarios);
 
         }
 

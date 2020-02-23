@@ -3,18 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
 using Autenticacion.Dominio.Entidades;
 using Autenticacion.Dominio.Servicios.Roles;
+
+using Autenticacion.Aplicacion.DTO.Respuestas.v1;
+using Autenticacion.Aplicacion.DTO.Solicitudes.v1;
+
 using AutoMapper;
-using Common.Paginacion;
 
 namespace Autenticacion.Api.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class RolesController : ControllerBase
     {
 
@@ -32,6 +36,10 @@ namespace Autenticacion.Api.Controllers.v1
 
         }
 
+        /// <summary>
+        /// OBTIENE LISTA DE ROLES 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<RolesDTO>>> ObtenerRolesAsync()
         {
@@ -43,6 +51,12 @@ namespace Autenticacion.Api.Controllers.v1
             return Ok(_mapper.Map<List<RolesDTO>>(lstRoles));
 
         }
+
+        /// <summary>
+        /// OBTIENE ROL POR SU IDENTIFICADOR
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
 
         [HttpGet("{id:guid}", Name = "ObtenerRoleId")]
         public async Task<ActionResult<RolesDTO>> ObtenerRoleIdAsync([FromRoute] Guid id)
@@ -56,6 +70,11 @@ namespace Autenticacion.Api.Controllers.v1
 
         }
 
+        /// <summary>
+        /// CREA UN ROL
+        /// </summary>
+        /// <param name="roleDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult<RolesDTO>> CrearRoleAsync([FromBody] CrearRoleDTO roleDTO)
         {
@@ -77,6 +96,12 @@ namespace Autenticacion.Api.Controllers.v1
 
         }
 
+        /// <summary>
+        /// ACTUALIZA UN ROL
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="roleDTO"></param>
+        /// <returns></returns>
         [HttpPut("{id:guid}")]
         public async Task<ActionResult> ActualizarRoleAsync([FromRoute] Guid id, [FromBody] ActualizarRoleDTO roleDTO)
         {
@@ -97,6 +122,11 @@ namespace Autenticacion.Api.Controllers.v1
 
         }
 
+        /// <summary>
+        /// ELIMINA UN ROLE POR SU IDENTIFICADOR
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete("{id:guid}")]
         public async Task<ActionResult> EliminarRoleIdAsync([FromRoute] Guid id)
         {

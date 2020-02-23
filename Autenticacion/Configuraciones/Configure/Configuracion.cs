@@ -16,12 +16,18 @@ namespace Autenticacion.Api.Startup.Configure
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                Swagger(app);
+
             }
 
+            app.UseStaticFiles();
 
             app.UseAuthentication();
 
             MiddlewarezPersonalizados(app);
+
+            app.UseHttpsRedirection();
 
             app.UseMvc();
 
@@ -36,6 +42,23 @@ namespace Autenticacion.Api.Startup.Configure
 
             return app;
 
+        }
+
+        private static IApplicationBuilder Swagger(this IApplicationBuilder app)
+        {
+
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(configuracion =>
+            {
+
+                configuracion.SwaggerEndpoint("/swagger/v1/swagger.json", "Version 1");
+                configuracion.SwaggerEndpoint("/swagger/v2/swagger.json", "Version 2");
+
+            });
+
+            return app;
         }
 
     }

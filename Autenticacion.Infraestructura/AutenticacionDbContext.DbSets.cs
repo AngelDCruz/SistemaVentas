@@ -14,15 +14,11 @@ namespace Autenticacion.Infraestructura
 
         public DbSet<RolesReclamacionesEntidad> RolesReclamaciones { get; set; }
 
-        public DbSet<UsuarioLoginEntidad> UsuarioLogins { get; set; }
-
         public DbSet<UsuariosRolesEntidad> UsuariosRoles { get; set; }
-
-        public DbSet<UsuariosTokenEntidad> UsuariosTokens { get; set; }
 
        public DbSet<TokenEntidad> Token { get; set; }
 
-        public DbSet<TokenSessionEntidad> TokenSession { get; set; }
+        public DbSet<DatosPersonalesEntidad> DatosPersonales { get; set; }
 
     }
 }

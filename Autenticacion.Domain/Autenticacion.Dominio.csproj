@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Autenticacion.Aplicacion\Autenticacion.Aplicacion.csproj" />
     <ProjectReference Include="..\Common.Helpers\Common.csproj" />
   </ItemGroup>
 

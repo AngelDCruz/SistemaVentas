@@ -1,9 +1,7 @@
-﻿using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
 using System.Threading.Tasks;
+
+using Autenticacion.Aplicacion.DTO.Respuestas.v1;
 
 namespace Autenticacion.Dominio.Repositorio
 {

@@ -1,20 +1,22 @@
-﻿using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
-using Autenticacion.Dominio.Entidades;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Autenticacion.Aplicacion.DTO.Respuestas.v1;
+using Autenticacion.Aplicacion.DTO.Solicitudes.v1;
+
+using Autenticacion.Dominio.DTO.Solicitudes.v1;
+using Autenticacion.Dominio.Entidades;
+using DatosPersonalesDTO = Autenticacion.Aplicacion.DTO.Respuestas.v1.DatosPersonalesDTO;
 
 namespace Autenticacion.Api.Servicios.Usuarios
 {
     public partial class UsuariosServicios
     {
 
-
-
         //LOGICA DE NEGOCIOS 
-
 
         /// <summary>
         /// OBTIENE UN USUARIO CON SUS RELACIONES, DEPENDIENDO SI DESEA UTILIZARLAS O NO.
@@ -43,7 +45,6 @@ namespace Autenticacion.Api.Servicios.Usuarios
                         Id = usuario.Id,
                         Usuario = usuario.UserName,
                         Email = usuario.Email,
-                        Telefono = usuario.PhoneNumber,
                         FechaCreacion = usuario.FechaCreacion,
                         Estatus = usuario.Estatus
                     };
@@ -52,6 +53,12 @@ namespace Autenticacion.Api.Servicios.Usuarios
                     {
 
                         usuarioDTO.Roles = await ObtenerRolesUsuarioAsync(usuario);
+
+                    }
+
+                    if (incluir.Datos)
+                    {
+                        usuarioDTO.DatosPersonales = ObtenerDatosPersonalesUsuario(usuario.DatosPersonales);
 
                     }
 
@@ -70,6 +77,52 @@ namespace Autenticacion.Api.Servicios.Usuarios
         /// <param name="incluir"></param>
         /// <param name="lstUsuarios"></param>
         /// <returns>LISTA DE USUARIOS MAPEADOS CON DTO</returns>
+        private async Task<UsuariosDTO> ObtenerUsuariosRelaciones(
+                                                          UsuariosEntidad usuario,
+                                                          IncluirUsuariosDTO incluir = null)
+        {
+
+
+            Guid UsuarioActual = Guid.Empty;
+            UsuariosDTO usuarioDTO = new UsuariosDTO();
+
+            if (usuario != null)
+            {
+                    usuarioDTO = new UsuariosDTO
+                    {
+                        Id = usuario.Id,
+                        Usuario = usuario.UserName,
+                        Email = usuario.Email,
+                        FechaCreacion = usuario.FechaCreacion,
+                        Estatus = usuario.Estatus,
+                        Roles = new List<RolesDTO>(),
+                    };
+
+                    if (incluir.Role)
+                    {
+
+                        usuarioDTO.Roles = await ObtenerRolesUsuarioAsync(usuario);
+
+                    }
+
+                if (incluir.Datos)
+                {
+                    usuarioDTO.DatosPersonales = ObtenerDatosPersonalesUsuario(usuario.DatosPersonales);
+
+                }
+            }
+
+            return usuarioDTO;
+
+        }
+
+
+        /// <summary>
+        /// OBTIENE UN USUARIO CON SUS RELACIONES, DEPENDIENDO SI DESEA UTILIZARLAS O NO.
+        /// </summary>
+        /// <param name="incluir"></param>
+        /// <param name="lstUsuarios"></param>
+        /// <returns>LISTA DE USUARIOS MAPEADOS CON DTO</returns>
         private async Task<UsuariosDTO> ObtenerUsuariosRoles(UsuariosEntidad usuario)
         {
 
@@ -80,18 +133,18 @@ namespace Autenticacion.Api.Servicios.Usuarios
             if (usuario != null)
             {
 
-                    var usuarioDTO = new UsuariosDTO
-                    {
-                        Id = usuario.Id,
-                        Usuario = usuario.UserName,
-                        Email = usuario.Email,
-                        Telefono = usuario.PhoneNumber,
-                        FechaCreacion = usuario.FechaCreacion,
-                        Estatus = usuario.Estatus
-                    };
+                var roles = await ObtenerRolesUsuarioAsync(usuario);
 
+                var usuarioDTO = new UsuariosDTO
+                {
+                    Id = usuario.Id,
+                    Usuario = usuario.UserName,
+                    Email = usuario.Email,
+                    FechaCreacion = usuario.FechaCreacion,
+                    Estatus = usuario.Estatus
+                };
 
-                    UsuariosRolesDTO.Roles = await ObtenerRolesUsuarioAsync(usuario);
+              
             }
 
             return UsuariosRolesDTO;
@@ -103,7 +156,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
         /// </summary>
         /// <param name="usuarioRolesDTO"></param>
         /// <returns>LISTA DE USUARIOS ROLES</returns>
-        private List<UsuariosRolesEntidad> AsignarRolesUsuario(CrearUsuarioRolesDTO usuarioRolesDTO)
+        private async Task<List<UsuariosRolesEntidad>> AsignarRolesUsuarioAsync(CrearUsuarioRolesDTO usuarioRolesDTO)
         {
 
             List<UsuariosRolesEntidad> lstUsuariosRoles = new List<UsuariosRolesEntidad>();
@@ -114,6 +167,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
 
                 foreach (var role in usuarioRolesDTO.Roles)
                 {
+                    if( await _usuariosRolesRepositorio.ObtenerUsuarioRoleAsync(role, usuarioRolesDTO.IdUsuario) == null )
 
                     lstUsuariosRoles.Add(
                         new UsuariosRolesEntidad
@@ -160,6 +214,34 @@ namespace Autenticacion.Api.Servicios.Usuarios
             }
 
             return lstRolesDTO;
+        }
+
+        private DatosPersonalesDTO ObtenerDatosPersonalesUsuario(DatosPersonalesEntidad datosPersonales)
+        {
+
+            DatosPersonalesDTO datosPersonalesDTO = new DatosPersonalesDTO(); 
+
+            if (datosPersonales != null)
+            {
+
+                datosPersonalesDTO = new DatosPersonalesDTO
+                {
+                    Id = datosPersonales.Id,
+                    Nombre = datosPersonales.Nombre,
+                    ApellidoPaterno = datosPersonales.ApellidoPaterno,
+                    ApellidoMaterno = datosPersonales.ApellidoMaterno,
+                    Pais = datosPersonales.Pais,
+                    Ciudad = datosPersonales.Ciudad,
+                    Calle = datosPersonales.Calle,
+                    Telefono = datosPersonales.Telefono,
+                    UsuarioCreacion = datosPersonales.UsuarioCreacion,
+                    FechaCreacion = datosPersonales.FechaCreacion,
+                    Estatus = datosPersonales.Estatus
+                };
+
+            }
+
+            return datosPersonalesDTO;
         }
 
     }

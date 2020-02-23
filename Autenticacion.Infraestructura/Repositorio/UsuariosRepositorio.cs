@@ -32,13 +32,18 @@ namespace Autenticacion.Infraestructura.Repositorio
          * USUARIOS
          */
         public IQueryable<UsuariosEntidad> ObtenerUsuariosAsync() => 
-            _context.Usuarios.Include(x => x.UsuariosRoles).AsQueryable();
+            _context.Usuarios.
+            Include(x => x.UsuariosRoles)
+            .Include(d => d.DatosPersonales)
+            .AsQueryable();
 
         public async Task<UsuariosEntidad> ObtenerUsuarioPorIdAsync(Guid id)
         {
 
-            return await _context.Usuarios.FirstOrDefaultAsync(x => x.Id == id &&
-         x.Estatus != "Baj");
+            return await _context.Usuarios
+                .Include(x=>x.UsuariosRoles)
+                .Include(y => y.DatosPersonales)
+                .FirstOrDefaultAsync(x => x.Id == id && x.Estatus != "Baj");
 
         }
 
@@ -53,6 +58,13 @@ namespace Autenticacion.Infraestructura.Repositorio
         public async Task<IList<string>> ObtenerUsuariosRolesAsync(UsuariosEntidad usuario)
         {
             return  await _userManager.GetRolesAsync(usuario);
+        }
+
+        public async Task<UsuariosEntidad> ObtenerUsuarioNombreAsync(string nombreUsuario)
+        {
+
+            return await _userManager.FindByNameAsync(nombreUsuario);
+
         }
 
         public async Task<Guid> CrearUsuarioAsync(UsuariosEntidad usuario)
@@ -98,6 +110,13 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
-   
+        public async Task<bool> ActualizarDatosPersonalesUsuarioAsync(UsuariosEntidad usuario)
+        {
+
+            _context.Entry(usuario).State = EntityState.Modified;
+
+            return await _context.SaveChangesAsync() > 0 ? true : false;
+
+        }
     }
 }

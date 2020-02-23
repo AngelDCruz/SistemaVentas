@@ -58,12 +58,14 @@ namespace Common.Peticiones
 
         }
 
-        public async Task<HttpResponseMessage> PostAsync<T>(string uri, T elemento, string autorizacionToken = null, string metodoAutorizacion = "Bearer")
+        public async Task<HttpResponseMessage> PostAsync<T>(string uri, T elemento, string autorizacionToken = null, 
+                                                                                                        string metodoAutorizacion = "Bearer")
         {
             return await PeticionPostPutAsync(HttpMethod.Post, uri, elemento, autorizacionToken, metodoAutorizacion);
         }
 
-        public async Task<HttpResponseMessage> PutAsync<T>(string uri, T elemento, string autorizacionToken = null, string metodoAutorizacion = "Bearer")
+        public async Task<HttpResponseMessage> PutAsync<T>(string uri, T elemento, string autorizacionToken = null,
+                                                                                                    string metodoAutorizacion = "Bearer")
         {
             return await PeticionPostPutAsync(HttpMethod.Put, uri, elemento, autorizacionToken, metodoAutorizacion);
         }

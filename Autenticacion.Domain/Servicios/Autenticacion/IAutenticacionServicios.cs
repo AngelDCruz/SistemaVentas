@@ -1,6 +1,6 @@
-﻿using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
+﻿
 using System.Threading.Tasks;
+using Autenticacion.Aplicacion.DTO.Respuestas.v1;
 
 namespace Autenticacion.Dominio.Servicios.Autenticacion
 {

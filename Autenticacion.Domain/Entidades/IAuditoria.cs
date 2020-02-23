@@ -12,20 +12,21 @@ namespace Autenticacion.Dominio.Entidades
 
         [Required]
         [Column(TypeName = "UNIQUEIDENTIFIER")]
-        Guid UsuarioCreacion { get; set; }
+         Guid UsuarioCreacion { get; set; }
 
         [Required]
-        DateTime FechaCreacion { get; set; }
+         DateTime FechaCreacion { get; set; }
 
         [Column(TypeName = "UNIQUEIDENTIFIER")]
-        Guid UsuarioModificacion { get; set; }
+         Guid UsuarioModificacion { get; set; }
 
-        DateTime FechaModificacion { get; set; }
+         DateTime FechaModificacion { get; set; }
 
         [Required]
         [DefaultValue("Act")]
         [Column(TypeName = "CHAR(3)")]
-        string Estatus { get; set; }
+         string Estatus { get; set; }
+
 
     }
 }

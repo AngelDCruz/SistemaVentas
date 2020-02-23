@@ -19,6 +19,8 @@ namespace Autenticacion.Dominio.Repositorio
 
         Task<UsuariosEntidad> ObtenerUsuarioEmailAsync(string email);
 
+        Task<UsuariosEntidad> ObtenerUsuarioNombreAsync(string nombreUsuario);
+
         Task<IList<string>> ObtenerUsuariosRolesAsync(UsuariosEntidad usuario);
 
         Task<Guid> CrearUsuarioAsync(UsuariosEntidad usuario);
@@ -28,6 +30,8 @@ namespace Autenticacion.Dominio.Repositorio
         Task<bool> EliminarUsuarioAsync(UsuariosEntidad usuarios);
 
         Task<bool> VerificarCredencialesAsync(UsuariosEntidad usuario, string password);
+
+        Task<bool> ActualizarDatosPersonalesUsuarioAsync(UsuariosEntidad usuario);
 
     }
 }

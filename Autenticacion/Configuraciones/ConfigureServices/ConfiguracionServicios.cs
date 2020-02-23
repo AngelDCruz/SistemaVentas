@@ -16,9 +16,15 @@ using Autenticacion.Dominio.Servicios.Roles;
 using Autenticacion.Dominio.Entidades;
 using Autenticacion.Infraestructura;
 using Autenticacion.Dominio.Servicios.Autenticacion;
+using Autenticacion.Dominio.Servicios.Cuenta;
 
 using Serilog;
-using Autenticacion.Dominio.Servicios.TokenSession;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
+using System;
+using System.Linq;
+using Autenticacion.Dominio.Swagger;
 
 namespace Autenticacion.Api.Startup.ConfigureServices
 {
@@ -28,7 +34,9 @@ namespace Autenticacion.Api.Startup.ConfigureServices
         public static IServiceCollection Extenciones(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+      
+
+            services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
 
             Identity(services);
 
@@ -38,15 +46,15 @@ namespace Autenticacion.Api.Startup.ConfigureServices
 
             Servicios(services);
 
-            Automapper(services);
-
             SeriLog(services, configuration);
 
             JWTAutenticacion(services, configuration);
 
+            Swagger(services);
+
             services.AddMvc()
-             .AddJsonOptions(configuraciones => configuraciones.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+       .AddJsonOptions(configuraciones => configuraciones.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+      .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             return services;
 
@@ -65,10 +73,6 @@ namespace Autenticacion.Api.Startup.ConfigureServices
                 opciones.Password.RequireLowercase = false;
 
             })
-            //.AddUserStore<Usuarios>()
-            //.AddRoleStore<Roles>()
-            //.AddUserManager<Usuarios>()
-            //.AddRoleManager<Roles>()
             .AddEntityFrameworkStores<AutenticacionDbContext>()
             .AddDefaultTokenProviders();
 
@@ -94,20 +98,15 @@ namespace Autenticacion.Api.Startup.ConfigureServices
 
         }
 
-
         //REPOSITORIOS Y ABSTRACCIONES
         private static IServiceCollection Repositorios(IServiceCollection services)
         {
 
-            services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
-          
+            services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();    
             services.AddScoped<IRolesRepositorio, RolesRepositorio>();
-
             services.AddScoped<IUsuariosRolesRepositorio, UsuariosRolesRepositorio>();
-
             services.AddScoped<ITokenRepositorio, TokenRepositorio>();
-
-            services.AddScoped<ITokenSessionRepositorio, TokenSessionRepositorio>();
+            services.AddScoped<ICuentaRepositorio, CuentaRepositorio>();
 
             return services;
 
@@ -117,20 +116,14 @@ namespace Autenticacion.Api.Startup.ConfigureServices
         private static IServiceCollection Servicios(this IServiceCollection services)
         {
 
+    
+
             services.AddScoped<IUsuariosServicios, UsuariosServicios>();
             services.AddScoped<IRolesServicios, RolesServicios>();
             services.AddScoped<IAutenticacionServicios, AutenticacionServicios>();
-            services.AddScoped<ITokenSessionServicios, TokenSessionServicios>();
-           
+            services.AddScoped<ICuentaServicios, CuentaServicios>();
+
             return services;
-
-        }
-
-        private static IServiceCollection Automapper(this IServiceCollection services)
-        {
-
-   
-           return services;
 
         }
 
@@ -194,6 +187,42 @@ namespace Autenticacion.Api.Startup.ConfigureServices
             return services;
 
         }
+
+        private static IServiceCollection Swagger(this IServiceCollection services)
+        {
+
+
+            //CONFIGURACION SWAGGER
+            services.AddSwaggerGen(configuracion => {
+
+                configuracion.SwaggerDoc("v1", new OpenApiInfo
+                {
+
+                Title = "DOCUMENTACION",
+                    Description = "Documentacion de recursos expuestos para consumo del cliente",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Angel Reynaldo Ortiz De La Cruz",
+                        Email = "aldo_amor-@hotmail.com",
+                        Url = new Uri("https://www.facebook.com/angelus.ocrz")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "SIA SOFTWARE",
+                        Url = new Uri("https://www.siasw.com/index.php/es/")
+                    }
+
+                });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                configuracion.IncludeXmlComments(xmlPath);
+
+            });
+
+            return services;
+
+        } 
 
     }
 }

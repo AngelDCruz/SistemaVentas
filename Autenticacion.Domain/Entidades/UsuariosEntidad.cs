@@ -12,6 +12,8 @@ namespace Autenticacion.Dominio.Entidades
     public class UsuariosEntidad : IdentityUser<Guid>, IAuditoria
     {
 
+        [Column(TypeName = "VARCHAR(MAX)")]
+        public string ImagenPerfil { get; set; }
 
         [Required]
         [Column(TypeName = "UNIQUEIDENTIFIER")]
@@ -33,15 +35,13 @@ namespace Autenticacion.Dominio.Entidades
 
         public List<UsuariosReclamacionesEntidad> UsuariosReclamaciones { get; set; }
 
-        public List<UsuarioLoginEntidad> UsuarioLogin { get; set; }
-
-        public List<UsuariosTokenEntidad> UsuariosTokens { get; set; }
-
         public override Guid Id { get; set; }
 
         public List<UsuariosRolesEntidad> UsuariosRoles { get; set; }
 
         public List<TokenEntidad> Token { get; set; }
+
+        public DatosPersonalesEntidad DatosPersonales { get; set; }
 
     }
 }

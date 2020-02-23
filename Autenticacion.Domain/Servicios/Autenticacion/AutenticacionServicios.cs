@@ -6,16 +6,19 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio;
-using Autenticacion.Dominio.Servicios.TokenSession;
-using Autenticacion.Infraestructura.EntidadesConfiguracion;
-using Common.Excepciones;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+
+using Autenticacion.Dominio.Entidades;
+using Autenticacion.Dominio.Repositorio;
+
+using Autenticacion.Infraestructura.EntidadesConfiguracion;
+
+using Autenticacion.Aplicacion.DTO.Respuestas.v1;
+using Common.Excepciones;
+
+
 using Newtonsoft.Json;
 
 namespace Autenticacion.Dominio.Servicios.Autenticacion
@@ -28,7 +31,6 @@ namespace Autenticacion.Dominio.Servicios.Autenticacion
         private readonly ITokenRepositorio _tokenRepositorio;
         private readonly IUsuariosRepositorio _usuariosRepositorio;
         private readonly IRolesRepositorio _rolesRepositorio;
-        private readonly ITokenSessionServicios _tokenSessionServicios;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AutenticacionServicios(
@@ -37,7 +39,6 @@ namespace Autenticacion.Dominio.Servicios.Autenticacion
             IRolesRepositorio rolesRepositorio,
             TokenValidationParameters tokenValidationParameters,
             IConfiguration configuration,
-            ITokenSessionServicios tokenSessionServicios,
             IHttpContextAccessor httpContextAccessor
          )
         {
@@ -47,7 +48,6 @@ namespace Autenticacion.Dominio.Servicios.Autenticacion
             _rolesRepositorio = rolesRepositorio;
             _configuration = configuration;
             _tokenValidationParameters = tokenValidationParameters;
-            _tokenSessionServicios = tokenSessionServicios;
             _httpContextAccessor = httpContextAccessor;
         }
 
