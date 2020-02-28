@@ -32,9 +32,13 @@ namespace Autenticacion.Api.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        [LlaveAutorizacion]
         [HttpPost]
-        public async Task<ActionResult> Login([FromHeader] string grant_type ,[FromBody] LoginDTO login)
+        public async Task<ActionResult> Login(
+            [FromHeader] string grantType,
+             [FromHeader] string password,
+             [FromHeader] string userName,
+            [FromBody] LoginDTO login
+            )
         {
 
            if( await  _usuariosServicios.ObtenerUsuarioEmailAsync(login.Login) == null)
@@ -61,7 +65,6 @@ namespace Autenticacion.Api.Controllers
 
         }
 
-        [LlaveAutorizacion]
         [HttpPut]
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenDTO refreshToken)
         {

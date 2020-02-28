@@ -208,7 +208,7 @@
         {
           "Name": "usuarios",
           "Version": "v1",
-          "Url": "http://localhost:65370/swagger/v1/swagger.json"
+          "Url": "http://localhost:61096/swagger/v1/swagger.json"
         }
       ]
     },
@@ -218,7 +218,7 @@
         {
           "Name": "roles",
           "Version": "v1",
-          "Url": "http://localhost:65370/swagger/v1/swagger.json"
+          "Url": "http://localhost:61096/swagger/v1/swagger.json"
         }
       ]
     },
@@ -228,12 +228,12 @@
         {
           "Name": "autenticacion",
           "Version": "v1",
-          "Url": "http://localhost:65370/swagger/v1/swagger.json"
+          "Url": "http://localhost:61096/swagger/v1/swagger.json"
         }
       ]
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:65370"
+    "BaseUrl": "http://localhost:54341"
   }
 }
