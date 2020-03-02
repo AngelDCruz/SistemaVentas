@@ -4,15 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace Autenticacion.Dominio.Entidades
+namespace SistemaVentas.Dominio.Entidades
 {
     public class UsuariosRolesEntidad : IdentityUserRole<Guid>, IAuditoria
     {
 
 
-        public Guid UsuariosId { get; set; }
+        //public Guid UsuariosId { get; set; }
 
-        public Guid RolesId { get; set; }
+        //public Guid RolesId { get; set; }
 
         public UsuariosEntidad Usuarios { get; set; }
 

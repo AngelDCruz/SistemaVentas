@@ -1,8 +1,9 @@
-﻿using Autenticacion.Dominio.Entidades;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SistemaVentas.Dominio.Entidades;
 
-namespace Autenticacion.Infraestructura.EntidadesConfiguracion
+namespace SistemaVentas.Infraestructura.EntidadesConfiguracion
 {
     public class UsuariosTokenConfiguracion
     {

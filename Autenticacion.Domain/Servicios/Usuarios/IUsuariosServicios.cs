@@ -1,16 +1,15 @@
 ﻿
-
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
-using Autenticacion.Dominio.Entidades;
+using SistemaVentas.Dominio.Entidades;
+using SistemaVentas.DTO.Respuestas.v1;
+using SistemaVentas.DTO.Solicitudes.v1;
 
 using Common.Paginacion;
 
-namespace Autenticacion.Api.Servicios.Usuarios
+namespace SistemaVentas.Api.Servicios.Usuarios
 {
     public interface IUsuariosServicios
     {
@@ -18,9 +17,10 @@ namespace Autenticacion.Api.Servicios.Usuarios
         /*
          * USUARIOS
          */
-        List<UsuariosDTO> ObtenerUsuariosAsync(IncluirUsuariosDTO incluir, FiltroPagina filtro);
+        Task<List<UsuariosDTO>> ObtenerUsuariosAsync(IncluirUsuariosDTO incluir, FiltroPagina filtro);
 
         Task<UsuariosEntidad> ObtenerUsuarioIdAsync(Guid id);
+
         Task<UsuariosEntidad> ObtenerUsuarioEmailAsync(string email);
 
         Task<UsuariosDTO> ObtenerUsuarioIdRoleAsync(Guid id);
@@ -28,7 +28,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
         Task<List<UsuariosDTO>> ObtenerUsuariosRoleIdAsync(Guid idRole);
 
         Task<Guid> CrearUsuarioAsync(UsuariosEntidad usuario);
-        
+
         Task<bool> ActualizarUsuarioAsync(UsuariosEntidad usuario);
 
         Task<bool> EliminarUsuarioAsync(UsuariosEntidad usuario);
@@ -37,7 +37,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
         /*
          * USUARIOS ROLES
          */
-        List<UsuariosRolesDTO> ObtenerUsuariosRoles();
+        //Task<List<UsuariosRolesDTO>> ObtenerUsuariosRoles();
 
         Task<UsuariosRolesEntidad> ObtenerUsuarioRoleAsync(Guid idRole, Guid idUsuario);
 

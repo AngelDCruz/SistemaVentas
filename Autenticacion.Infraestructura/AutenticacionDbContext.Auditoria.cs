@@ -1,11 +1,15 @@
-﻿using Autenticacion.Dominio.Entidades;
-using Microsoft.EntityFrameworkCore;
+﻿
+
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Autenticacion.Infraestructura
+
+using Microsoft.EntityFrameworkCore;
+using SistemaVentas.Dominio.Entidades;
+
+namespace SistemaVentas.Infraestructura
 {
     public partial class AutenticacionDbContext
     {

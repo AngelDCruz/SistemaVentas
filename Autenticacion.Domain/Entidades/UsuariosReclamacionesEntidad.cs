@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
-namespace Autenticacion.Dominio.Entidades
+namespace SistemaVentas.Dominio.Entidades
 {
     public class UsuariosReclamacionesEntidad : IdentityUserClaim<Guid>, IAuditoria
     {

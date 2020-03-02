@@ -8,12 +8,19 @@ using Newtonsoft.Json;
 
 using Autenticacion.Api.Servicios.Usuarios;
 
-using Autenticacion.Infraestructura;
-using Autenticacion.Infraestructura.Repositorio;
 
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
-using Autenticacion.Dominio.Servicios.Roles;
+
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
+using System;
+using System.Collections.Generic;
+using SistemaVentas.Api.Servicios.Usuarios;
+using SistemaVentas.Dominio.Servicios.Roles;
+using SistemaVentas.Dominio.Repositorio.Contratos;
+using SistemaVentas.Infraestructura.Repositorio;
+using SistemaVentas.Dominio.Entidades;
+using SistemaVentas.Infraestructura;
 
 namespace Autenticacion.Api.Startup.ConfigureServices
 {
@@ -34,6 +41,8 @@ namespace Autenticacion.Api.Startup.ConfigureServices
             Servicios(services);
 
             Automapper(services);
+
+            Swagger(services);
 
             services.AddMvc()
              .AddJsonOptions(configuraciones => configuraciones.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
@@ -85,7 +94,6 @@ namespace Autenticacion.Api.Startup.ConfigureServices
 
         }
 
-
         //REPOSITORIOS Y ABSTRACCIONES
         private static IServiceCollection Repositorios(IServiceCollection services)
         {
@@ -117,6 +125,38 @@ namespace Autenticacion.Api.Startup.ConfigureServices
 
    
            return services;
+
+        }
+
+        private static IServiceCollection Swagger(this IServiceCollection services)
+        {
+
+            //REGISTRO DE DEFINICIONES DE VERSIONES DE API
+            services.AddSwaggerGen(configuracion =>
+            {
+
+                var authInformacion = new OpenApiInfo()
+                {
+
+                    Title = "Version v1",
+                    Version = "v1",
+                    Description = "Primeras versiones de api"
+
+                };
+
+                configuracion.SwaggerDoc("v1", authInformacion);
+
+               
+                //CONFIGURACION EN DOCUMENTACION MICROSOFT 
+                //Estable documentacion para Swagger JSON Y UI
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                configuracion.IncludeXmlComments(xmlPath);
+
+
+            });
+
+            return services;
 
         }
     }

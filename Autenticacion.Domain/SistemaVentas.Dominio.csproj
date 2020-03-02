@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Repositorio.Contratos\IUsuariosRolesRepositorio.cs~RF1f20dcde.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Helpers\SistemaVentas.Common.csproj" />
+    <ProjectReference Include="..\SistemaVentas.DTO\SistemaVentas.DTO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Servicios\Roles\IRolesServicios.cs">
+      <CustomToolNamespace>Autenticacion.Dominio.Servicios.Roles</CustomToolNamespace>
+    </Compile>
+  </ItemGroup>
+
+</Project>

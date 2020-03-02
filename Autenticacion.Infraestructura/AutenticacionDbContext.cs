@@ -1,15 +1,13 @@
 ﻿
+using System;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Infraestructura.EntidadesConfiguracion;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace Autenticacion.Infraestructura
+using SistemaVentas.Infraestructura.EntidadesConfiguracion;
+using SistemaVentas.Dominio.Entidades;
+
+namespace SistemaVentas.Infraestructura
 {
     public partial class AutenticacionDbContext : IdentityDbContext<UsuariosEntidad, RolesEntidad, Guid>
     {
@@ -32,7 +30,7 @@ namespace Autenticacion.Infraestructura
         protected override void OnModelCreating(ModelBuilder builder)
         {
 
-            builder.HasDefaultSchema("Autenticacion");
+            builder.HasDefaultSchema("SistemaVentas");
 
 
             UsuariosConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosEntidad>());

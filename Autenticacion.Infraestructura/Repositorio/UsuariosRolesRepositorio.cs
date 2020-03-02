@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
-using Microsoft.EntityFrameworkCore;
 
-namespace Autenticacion.Infraestructura.Repositorio
+using Microsoft.EntityFrameworkCore;
+using SistemaVentas.Dominio.Entidades;
+using SistemaVentas.Dominio.Repositorio.Contratos;
+
+namespace SistemaVentas.Infraestructura.Repositorio
 {
 
     /*
@@ -55,12 +56,12 @@ namespace Autenticacion.Infraestructura.Repositorio
                 .ToListAsync();
         }
 
-        public async Task<List<Guid>> ObtenerUsuariosRoleIdAsync(Guid idRole)
+        public async Task<List<Guid>> ObtenerUsuariosRoleIdAsync(Guid idUsuario)
         {
 
             return await _context.UsuariosRoles
-                .Where(x => x.RolesId == idRole)
-                .Select(x => x.UserId)
+                .Where(x => x.UserId == idUsuario)
+                .Select(x => x.RoleId)
                 .Distinct()
                 .ToListAsync();
 

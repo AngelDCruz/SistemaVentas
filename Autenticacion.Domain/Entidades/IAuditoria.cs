@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Autenticacion.Dominio.Entidades
+namespace SistemaVentas.Dominio.Entidades
 {
     public interface IAuditoria
     {

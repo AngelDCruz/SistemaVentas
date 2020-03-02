@@ -4,11 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SistemaVentas.Dominio.Entidades;
+using SistemaVentas.Dominio.Repositorio.Contratos;
 
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
-
-namespace Autenticacion.Dominio.Servicios.Roles
+namespace SistemaVentas.Dominio.Servicios.Roles
 {
     public class RolesServicios : IRolesServicios
     {

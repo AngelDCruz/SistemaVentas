@@ -1,12 +1,13 @@
 ﻿
 
-using Autenticacion.Dominio.Entidades;
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using SistemaVentas.Dominio.Entidades;
 
-namespace Autenticacion.Dominio.Servicios.Roles
+namespace SistemaVentas.Dominio.Servicios.Roles
 {
     public interface IRolesServicios
     {

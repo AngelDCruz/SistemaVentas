@@ -1,7 +1,9 @@
-﻿using Autenticacion.Dominio.Entidades;
+﻿
 using Microsoft.EntityFrameworkCore;
 
-namespace Autenticacion.Infraestructura
+using SistemaVentas.Dominio.Entidades;
+
+namespace SistemaVentas.Infraestructura
 {
     public partial class AutenticacionDbContext {
 

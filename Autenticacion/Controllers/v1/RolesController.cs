@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Servicios.Roles;
 using AutoMapper;
 using Common.Paginacion;
+using SistemaVentas.DTO.Solicitudes.v1;
+using SistemaVentas.Dominio.Entidades;
+using SistemaVentas.DTO.Respuestas.v1;
+using SistemaVentas.Dominio.Servicios.Roles;
 
 namespace Autenticacion.Api.Controllers.v1
 {

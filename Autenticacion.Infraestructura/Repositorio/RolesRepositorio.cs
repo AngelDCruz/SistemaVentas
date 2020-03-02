@@ -1,14 +1,16 @@
-﻿using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Repositorio.Contratos;
+﻿
 using Microsoft.AspNetCore.Identity;
+
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Autenticacion.Infraestructura.Repositorio
+using SistemaVentas.Dominio.Entidades;
+using SistemaVentas.Dominio.Repositorio.Contratos;
+
+namespace SistemaVentas.Infraestructura.Repositorio
 {
     public class RolesRepositorio : IRolesRepositorio
     {

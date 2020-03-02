@@ -25,7 +25,6 @@ namespace Autenticacion
         public void ConfigureServices(IServiceCollection services)
         {
 
-
             services.AddAutoMapper(typeof(Startup));
 
             ConfiguracionServicios.Extenciones(services, Configuration);

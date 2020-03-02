@@ -6,12 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Common.Paginacion;
 using AutoMapper;
 
-
-using Autenticacion.Api.Servicios.Usuarios;
-using Autenticacion.Dominio.Entidades;
-using Autenticacion.Dominio.Servicios.Roles;
-using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
+using SistemaVentas.DTO.Solicitudes.v1;
+using SistemaVentas.Dominio.Servicios.Roles;
+using SistemaVentas.Api.Servicios.Usuarios;
+using SistemaVentas.DTO.Respuestas.v1;
+using SistemaVentas.Dominio.Entidades;
 
 namespace Autenticacion.Api.Controllers.v1
 {
@@ -41,11 +40,11 @@ namespace Autenticacion.Api.Controllers.v1
          * USUARIOS
          */
         [HttpGet]
-        public IActionResult ObtenerUsuariosAsync([FromQuery] IncluirUsuariosDTO incluir,
+        public async Task<IActionResult> ObtenerUsuariosAsync([FromQuery] IncluirUsuariosDTO incluir,
                                                   [FromQuery] FiltroPagina filtro = null)
         {
 
-            var lstUsuarios = _usuariosServicios.ObtenerUsuariosAsync(incluir, filtro);
+            var lstUsuarios = await _usuariosServicios.ObtenerUsuariosAsync(incluir, filtro);
 
             if (lstUsuarios == null) return NoContent();
 
@@ -166,19 +165,6 @@ namespace Autenticacion.Api.Controllers.v1
         }
 
 
-        [HttpGet("roles")]
-        public ActionResult<List<UsuariosRolesDTO>> ObtenerUsuariosRolesAsync()
-        {
-
-            var lstUsuariosRoles = _usuariosServicios.ObtenerUsuariosRoles();
-
-            if (lstUsuariosRoles == null) return NoContent();
-
-            return Ok(lstUsuariosRoles);
-
-        }
-
-
         [HttpPost("asignar-role")]
         public async Task<IActionResult> AsignarRolesUsuariosAsync([FromBody] CrearUsuarioRolesDTO usuarioDTO)
         {
@@ -221,6 +207,8 @@ namespace Autenticacion.Api.Controllers.v1
             return NoContent();
 
         }
+
+       
 
     }
 }

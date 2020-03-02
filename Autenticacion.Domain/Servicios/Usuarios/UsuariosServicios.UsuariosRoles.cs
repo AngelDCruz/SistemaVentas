@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
-using Autenticacion.Dominio.Entidades;
-
+using Common.Excepciones;
+using SistemaVentas.Dominio.Entidades;
+using SistemaVentas.DTO.Respuestas.v1;
+using SistemaVentas.DTO.Solicitudes.v1;
 
 namespace Autenticacion.Api.Servicios.Usuarios
 {
@@ -19,11 +18,12 @@ namespace Autenticacion.Api.Servicios.Usuarios
         /// LISTA DE USUARIOS CON RELACION DE ROLES
         /// </summary>
         /// <returns></returns>
-        public List<UsuariosRolesDTO> ObtenerUsuariosRoles()
+        /// 
+        public async Task<List<UsuariosDTO>> ObtenerUsuariosRoles()
         {
-            var lstUsuarios = _usuariosRepositorio.ObtenerUsuariosAsync().Where(x => x.Estatus != "Baj");
+            var lstUsuarios = _usuariosRepositorio.ObtenerUsuariosAsync();
 
-            return UsuariosRoles(lstUsuarios).ToList();
+            return await ObtenerUsuariosRelaciones(lstUsuarios);
 
         }
 
@@ -53,7 +53,24 @@ namespace Autenticacion.Api.Servicios.Usuarios
             if (usuarioRoles != null)
             {
 
-                return await _usuariosRolesRepositorio.CrearUsuarioRoleAsync(usuarioRoles);
+                if(usuarioRolesDTO.Roles.Count > 0)
+                {
+
+                    foreach(var ele in usuarioRolesDTO.Roles)
+                    {
+
+                       if(await _usuariosRolesRepositorio.ObtenerUsuarioRoleAsync(ele, usuarioRolesDTO.IdUsuario) == null)
+                        {
+
+
+                             return await _usuariosRolesRepositorio.CrearUsuarioRoleAsync(usuarioRoles);
+
+                        }
+
+                    }
+
+                }
+
 
             }
 

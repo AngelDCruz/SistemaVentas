@@ -1,11 +1,13 @@
 ﻿
-
-using Autenticacion.Dominio.DTO.Respuestas.v1;
-using Autenticacion.Dominio.DTO.Solicitudes.v1;
-using Autenticacion.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+
+using SistemaVentas.Dominio.Entidades;
+using SistemaVentas.DTO.Respuestas.v1;
+using SistemaVentas.DTO.Solicitudes.v1;
+
 
 namespace Autenticacion.Api.Servicios.Usuarios
 {
@@ -13,32 +15,32 @@ namespace Autenticacion.Api.Servicios.Usuarios
     {
 
 
-
         //LOGICA DE NEGOCIOS 
 
-  
+
         /// <summary>
         /// OBTIENE UN USUARIO CON SUS RELACIONES, DEPENDIENDO SI DESEA UTILIZARLAS O NO.
         /// </summary>
         /// <param name="incluir"></param>
         /// <param name="lstUsuarios"></param>
         /// <returns>LISTA DE USUARIOS MAPEADOS CON DTO</returns>
-        private IEnumerable<UsuariosDTO> ObtenerUsuariosRelaciones(IncluirUsuariosDTO incluir,
-                                                          IQueryable<UsuariosEntidad> lstUsuarios)
+        private async Task<List<UsuariosDTO>> ObtenerUsuariosRelaciones(
+                                                          IQueryable<UsuariosEntidad> lstUsuarios,
+                                                          IncluirUsuariosDTO incluir = null)
         {
 
 
             Guid UsuarioActual = Guid.Empty;
+            List<UsuariosDTO> lstUsuariosDTO = new List<UsuariosDTO>();
 
             if (lstUsuarios != null)
             {
 
-                UsuariosDTO UsuariosRolesDTO = null;
 
                 foreach (var usuario in lstUsuarios)
                 {
 
-                    UsuariosRolesDTO = new UsuariosDTO
+                    var usuarioDTO = new UsuariosDTO
                     {
                         Id = usuario.Id,
                         Usuario = usuario.UserName,
@@ -47,154 +49,56 @@ namespace Autenticacion.Api.Servicios.Usuarios
                         FechaCreacion = usuario.FechaCreacion,
                         Estatus = usuario.Estatus
                     };
-
 
                     if (incluir.Role)
                     {
 
-                        foreach (var prop in _usuariosRolesRepositorio.ObtenerUsuarioIdRolesAsync(usuario.Id).Result)
-                        {
-
-
-                            if (UsuarioActual == prop.UserId) continue;
-
-                            UsuariosRolesDTO.Roles = ObtenerRolesDTO(prop);
-
-                            UsuarioActual = prop.UserId;
-
-                        }
+                        usuarioDTO.Roles = await ObtenerRolesUsuarioAsync(usuario);
 
                     }
 
-                    yield return UsuariosRolesDTO;
+                    lstUsuariosDTO.Add(usuarioDTO);
 
                 }
             }
 
+            return lstUsuariosDTO;
+
         }
 
-
         /// <summary>
-        /// LISTA DE USUARIOS CON RELACION DE ROLES
+        /// OBTIENE UN USUARIO CON SUS RELACIONES, DEPENDIENDO SI DESEA UTILIZARLAS O NO.
         /// </summary>
+        /// <param name="incluir"></param>
         /// <param name="lstUsuarios"></param>
-        /// <returns>LISTA DE USUARIOS CON ROLES</returns>
-        private UsuariosDTO UsuarioRoles(UsuariosEntidad usuario)
+        /// <returns>LISTA DE USUARIOS MAPEADOS CON DTO</returns>
+        private async Task<UsuariosDTO> ObtenerUsuariosRoles(UsuariosEntidad usuario)
         {
 
-            UsuariosDTO UsuariosRolesDTO = null;
 
             Guid UsuarioActual = Guid.Empty;
+            UsuariosDTO UsuariosRolesDTO = null;
 
             if (usuario != null)
             {
 
-
-
-                UsuariosRolesDTO = new UsuariosDTO
+                var usuarioDTO = new UsuariosDTO
                 {
-                   Id = usuario.Id,
-                   Usuario = usuario.UserName,
-                   Email = usuario.Email,
-                   Telefono = usuario.PhoneNumber,
-                   FechaCreacion = usuario.FechaCreacion,
-                   Estatus = usuario.Estatus
-                 };
+                    Id = usuario.Id,
+                    Usuario = usuario.UserName,
+                    Email = usuario.Email,
+                    Telefono = usuario.PhoneNumber,
+                    FechaCreacion = usuario.FechaCreacion,
+                    Estatus = usuario.Estatus
+                };
 
 
-                 foreach (var prop in _usuariosRolesRepositorio.ObtenerUsuarioIdRolesAsync(usuario.Id).Result)
-                 {
+                UsuariosRolesDTO.Roles = await ObtenerRolesUsuarioAsync(usuario);
+            }
 
-
-                    if (UsuarioActual == prop.UserId) continue;
-
-                        UsuariosRolesDTO.Roles = ObtenerRolesDTO(prop);
-
-                        UsuarioActual = prop.UserId;
-
-                    }
-
-
-                }
-            
             return UsuariosRolesDTO;
 
         }
-
-        /// <summary>
-        /// LISTA DE USUARIOS CON RELACION DE ROLES
-        /// </summary>
-        /// <param name="lstUsuarios"></param>
-        /// <returns>LISTA DE USUARIOS CON ROLES</returns>
-        private IEnumerable<UsuariosRolesDTO> UsuariosRoles(IQueryable<UsuariosEntidad> lstUsuarios)
-        {
-
-
-            Guid UsuarioActual = Guid.Empty;
-
-            if (lstUsuarios != null)
-            {
-
-                UsuariosRolesDTO UsuariosRolesDTO = null;
-
-                foreach (var usuario in lstUsuarios)
-                {
-
-                    UsuariosRolesDTO = new UsuariosRolesDTO
-                    {
-                        Id = usuario.Id,
-                        Usuario = usuario.UserName,
-                        Email = usuario.Email,
-                        Telefono = usuario.PhoneNumber,
-                        FechaCreacion = usuario.FechaCreacion,
-                        Estatus = usuario.Estatus
-                    };
-
-
-                    foreach (var prop in _usuariosRolesRepositorio.ObtenerUsuarioIdRolesAsync(usuario.Id).Result)
-                    {
-
-
-                        if (UsuarioActual == prop.UserId) continue;
-
-                        UsuariosRolesDTO.Roles = ObtenerRolesDTO(prop);
-
-                        UsuarioActual = prop.UserId;
-
-                    }
-
-                    yield return UsuariosRolesDTO;
-
-                }
-            }
-
-        }
-
-        /// <summary>
-        /// MAPEA UNA LISTA DE ROLES A DTO
-        /// </summary>
-        /// <param name="usuariosRoles"></param>
-        /// <returns>LISTA DE ROLES DTO</returns>
-        private IEnumerable<RolesDTO> ObtenerRolesDTO(UsuariosRolesEntidad usuariosRoles)
-        {
-
-
-            foreach (var roles in usuariosRoles.Usuarios.UsuariosRoles)
-            {
-
-                if (roles != null)
-                {
-                    yield return new RolesDTO()
-                    {
-                        Id = roles.RoleId,
-                        Nombre = roles.Roles.Name,
-                        FechaCreacion = roles.FechaCreacion,
-                        Estatus = roles.Roles.Estatus
-                    };
-                }
-            }
-        }
-
 
         /// <summary>
         /// CREA UNA LISTA DE USUARIOS ROLES PARA ALMACENAR EN LA BASE DE DATOS
@@ -217,9 +121,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
                         new UsuariosRolesEntidad
                         {
                             RoleId = role,
-                            UserId = usuarioRolesDTO.IdUsuario,
-                            RolesId = role,
-                            UsuariosId = usuarioRolesDTO.IdUsuario,
+                            UserId = usuarioRolesDTO.IdUsuario
                         }
                     );
 
@@ -230,6 +132,38 @@ namespace Autenticacion.Api.Servicios.Usuarios
             return lstUsuariosRoles;
 
         }
+
+        private async Task<List<RolesDTO>> ObtenerRolesUsuarioAsync(UsuariosEntidad usuario)
+        {
+
+            List<RolesDTO> lstRolesDTO = new List<RolesDTO>();
+
+            var lstRolesId = await _usuariosRolesRepositorio.ObtenerUsuariosRoleIdAsync(usuario.Id);
+
+            if (lstRolesId != null)
+            {
+
+                foreach (var idRole in lstRolesId)
+                {
+
+                    var role = await _rolesServicicios.ObtenerRoleIdAsync(idRole);
+                    var roleActualUsuarios = await _usuariosRolesRepositorio.ObtenerUsuarioRoleAsync(idRole, usuario.Id);
+
+                    lstRolesDTO.Add(new RolesDTO
+                    {
+                        Id = role.Id,
+                        Nombre = role.Name,
+                        Estatus = roleActualUsuarios.Estatus,
+                        FechaCreacion = roleActualUsuarios.FechaCreacion
+                    });
+
+                }
+
+            }
+
+            return lstRolesDTO;
+        }
+
 
     }
 }

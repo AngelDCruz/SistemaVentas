@@ -1,8 +1,10 @@
-﻿using Autenticacion.Dominio.Entidades;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Autenticacion.Infraestructura.EntidadesConfiguracion
+using SistemaVentas.Dominio.Entidades;
+
+namespace SistemaVentas.Infraestructura.EntidadesConfiguracion
 {
     public class RolesConfiguracion
     {

@@ -1,11 +1,12 @@
-﻿using Autenticacion.Dominio.Entidades;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using SistemaVentas.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Autenticacion.Infraestructura.EntidadesConfiguracion
+namespace SistemaVentas.Infraestructura.EntidadesConfiguracion
 {
     public class UsuariosReclamacionesConfiguracion
     {

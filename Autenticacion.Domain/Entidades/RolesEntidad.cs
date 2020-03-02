@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Autenticacion.Dominio.Entidades
+namespace SistemaVentas.Dominio.Entidades
 {
     public class RolesEntidad : IdentityRole<Guid>, IAuditoria
     {
