@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Autenticacion.Aplicacion\Autenticacion.Aplicacion.csproj" />
-    <ProjectReference Include="..\Common.Helpers\Common.csproj" />
+    <ProjectReference Include="..\Autenticacion.Aplicacion\SistemaVentas.Aplicacion.csproj" />
+    <ProjectReference Include="..\Common.Helpers\SistemaVentas.Infraestructura.Transversal.csproj" />
   </ItemGroup>
 
   <ItemGroup>

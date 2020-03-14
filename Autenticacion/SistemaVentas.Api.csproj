@@ -27,16 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Autenticacion.Aplicacion\Autenticacion.Aplicacion.csproj" />
-    <ProjectReference Include="..\Autenticacion.Domain\Autenticacion.Dominio.csproj" />
-    <ProjectReference Include="..\Autenticacion.Infraestructura\Autenticacion.Infraestructura.csproj" />
-    <ProjectReference Include="..\Common.Helpers\Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="ocelot.json">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+    <ProjectReference Include="..\Autenticacion.Aplicacion\SistemaVentas.Aplicacion.csproj" />
+    <ProjectReference Include="..\Autenticacion.Domain\SistemaVentas.Dominio.csproj" />
+    <ProjectReference Include="..\Autenticacion.Infraestructura\SistemaVentas.Infraestructura.csproj" />
+    <ProjectReference Include="..\Common.Helpers\SistemaVentas.Infraestructura.Transversal.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
