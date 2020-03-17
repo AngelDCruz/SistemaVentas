@@ -17,7 +17,6 @@ namespace Autenticacion.Api.Startup.Configure
             {
                 app.UseDeveloperExceptionPage();
 
-                Swagger(app);
 
             }
 
@@ -27,7 +26,7 @@ namespace Autenticacion.Api.Startup.Configure
 
             MiddlewarezPersonalizados(app);
 
-            app.UseHttpsRedirection();
+             Swagger(app);
 
             app.UseMvc();
 
@@ -54,7 +53,6 @@ namespace Autenticacion.Api.Startup.Configure
             {
 
                 configuracion.SwaggerEndpoint("/swagger/v1/swagger.json", "Version 1");
-                configuracion.SwaggerEndpoint("/swagger/v2/swagger.json", "Version 2");
 
             });
 

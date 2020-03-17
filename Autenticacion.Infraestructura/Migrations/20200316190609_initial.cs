@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Autenticacion.Infraestructura.Migrations
+namespace SistemaVentas.Infraestructura.Migrations
 {
     public partial class initial : Migration
     {
@@ -12,8 +12,25 @@ namespace Autenticacion.Infraestructura.Migrations
                 name: "Autenticacion");
 
             migrationBuilder.CreateTable(
+                name: "Categorias",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false, defaultValueSql: "NEWID()"),
+                    Nombre = table.Column<string>(type: "VARCHAR(50)", nullable: false),
+                    Descripcion = table.Column<string>(type: "VARCHAR(100)", nullable: true),
+                    UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categorias", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DatosPersonales",
-                schema: "Autenticacion",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -37,7 +54,6 @@ namespace Autenticacion.Infraestructura.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Roles",
-                schema: "Autenticacion",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -56,17 +72,40 @@ namespace Autenticacion.Infraestructura.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Productos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false, defaultValueSql: "NEWID()"),
+                    Nombre = table.Column<string>(type: "VARCHAR(50)", nullable: false),
+                    Descripcion = table.Column<string>(type: "VARCHAR(100)", nullable: true),
+                    UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false),
+                    CategoriaId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Productos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Productos_Categorias_CategoriaId",
+                        column: x => x.CategoriaId,
+                        principalTable: "Categorias",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Usuarios",
-                schema: "Autenticacion",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     Usuario = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
-                    PasswordHash = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
                     IntentosFallidos = table.Column<int>(nullable: false),
                     ImagenPerfil = table.Column<string>(type: "VARCHAR(MAX)", nullable: true),
                     UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -74,7 +113,7 @@ namespace Autenticacion.Infraestructura.Migrations
                     UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     FechaModificacion = table.Column<DateTime>(nullable: false),
                     Estatus = table.Column<string>(type: "CHAR(3)", nullable: false),
-                    DatosPersonalesId = table.Column<Guid>(nullable: false)
+                    DatosPersonalesId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,7 +121,6 @@ namespace Autenticacion.Infraestructura.Migrations
                     table.ForeignKey(
                         name: "FK_Usuarios_DatosPersonales_DatosPersonalesId",
                         column: x => x.DatosPersonalesId,
-                        principalSchema: "Autenticacion",
                         principalTable: "DatosPersonales",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -90,7 +128,6 @@ namespace Autenticacion.Infraestructura.Migrations
 
             migrationBuilder.CreateTable(
                 name: "RoleReclamaciones",
-                schema: "Autenticacion",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -111,8 +148,64 @@ namespace Autenticacion.Infraestructura.Migrations
                     table.ForeignKey(
                         name: "FK_RoleReclamaciones_Roles_RoleId",
                         column: x => x.RoleId,
-                        principalSchema: "Autenticacion",
                         principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsuarioReclamaciones",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<Guid>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: false),
+                    UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true),
+                    FechaCreacion = table.Column<DateTime>(nullable: true),
+                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true),
+                    FechaModificacion = table.Column<DateTime>(nullable: true),
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsuarioReclamaciones", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UsuarioReclamaciones_Usuarios_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsuariosRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    UsuarioCreacion = table.Column<Guid>(nullable: true),
+                    FechaCreacion = table.Column<DateTime>(nullable: true),
+                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true),
+                    FechaModificacion = table.Column<DateTime>(nullable: true),
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsuariosRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_UsuariosRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UsuariosRoles_Usuarios_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -136,142 +229,80 @@ namespace Autenticacion.Infraestructura.Migrations
                     table.ForeignKey(
                         name: "FK_Token_Usuarios_UserId",
                         column: x => x.UserId,
-                        principalSchema: "Autenticacion",
-                        principalTable: "Usuarios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UsuarioReclamaciones",
-                schema: "Autenticacion",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<Guid>(nullable: false),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    Discriminator = table.Column<string>(nullable: false),
-                    UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true),
-                    FechaCreacion = table.Column<DateTime>(nullable: true),
-                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true),
-                    FechaModificacion = table.Column<DateTime>(nullable: true),
-                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UsuarioReclamaciones", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UsuarioReclamaciones_Usuarios_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "Autenticacion",
-                        principalTable: "Usuarios",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UsuariosRoles",
-                schema: "Autenticacion",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(nullable: false),
-                    RoleId = table.Column<Guid>(nullable: false),
-                    Discriminator = table.Column<string>(nullable: false),
-                    UsuarioCreacion = table.Column<Guid>(nullable: true),
-                    FechaCreacion = table.Column<DateTime>(nullable: true),
-                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: true),
-                    FechaModificacion = table.Column<DateTime>(nullable: true),
-                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UsuariosRoles", x => new { x.UserId, x.RoleId });
-                    table.ForeignKey(
-                        name: "FK_UsuariosRoles_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "Autenticacion",
-                        principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UsuariosRoles_Usuarios_UserId",
-                        column: x => x.UserId,
-                        principalSchema: "Autenticacion",
                         principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Productos_CategoriaId",
+                table: "Productos",
+                column: "CategoriaId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RoleReclamaciones_RoleId",
-                schema: "Autenticacion",
                 table: "RoleReclamaciones",
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
-                schema: "Autenticacion",
                 table: "Roles",
                 column: "NormalizedName",
                 unique: true,
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Token_UserId",
-                schema: "Autenticacion",
-                table: "Token",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UsuarioReclamaciones_UserId",
-                schema: "Autenticacion",
                 table: "UsuarioReclamaciones",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_DatosPersonalesId",
-                schema: "Autenticacion",
                 table: "Usuarios",
                 column: "DatosPersonalesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsuariosRoles_RoleId",
-                schema: "Autenticacion",
                 table: "UsuariosRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Token_UserId",
+                schema: "Autenticacion",
+                table: "Token",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RoleReclamaciones",
-                schema: "Autenticacion");
+                name: "Productos");
+
+            migrationBuilder.DropTable(
+                name: "RoleReclamaciones");
+
+            migrationBuilder.DropTable(
+                name: "UsuarioReclamaciones");
+
+            migrationBuilder.DropTable(
+                name: "UsuariosRoles");
 
             migrationBuilder.DropTable(
                 name: "Token",
                 schema: "Autenticacion");
 
             migrationBuilder.DropTable(
-                name: "UsuarioReclamaciones",
-                schema: "Autenticacion");
+                name: "Categorias");
 
             migrationBuilder.DropTable(
-                name: "UsuariosRoles",
-                schema: "Autenticacion");
+                name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Roles",
-                schema: "Autenticacion");
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
-                name: "Usuarios",
-                schema: "Autenticacion");
-
-            migrationBuilder.DropTable(
-                name: "DatosPersonales",
-                schema: "Autenticacion");
+                name: "DatosPersonales");
         }
     }
 }

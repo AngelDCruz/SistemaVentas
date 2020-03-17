@@ -23,8 +23,11 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
 using System;
-using System.Linq;
-using Autenticacion.Dominio.Swagger;
+
+using SistemaVentas.Dominio.Repositorio;
+using SistemaVentas.Infraestructura.Repositorio;
+using SistemaVentas.Dominio.Servicios.Categoria;
+using SistemaVentas.Dominio.Servicios.Productos;
 
 namespace Autenticacion.Api.Startup.ConfigureServices
 {
@@ -42,6 +45,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
 
             ConexionSqlServer(services, configuration);
 
+
             Repositorios(services);
 
             Servicios(services);
@@ -55,6 +59,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
             services.AddMvc()
        .AddJsonOptions(configuraciones => configuraciones.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
       .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
 
             return services;
 
@@ -73,7 +78,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
                 opciones.Password.RequireLowercase = false;
 
             })
-            .AddEntityFrameworkStores<AutenticacionDbContext>()
+            .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
             return services;
@@ -84,7 +89,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
         private static IServiceCollection ConexionSqlServer(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddDbContext<AutenticacionDbContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
             {
 
                 //options.UseLazyLoadingProxies();
@@ -107,6 +112,8 @@ namespace Autenticacion.Api.Startup.ConfigureServices
             services.AddScoped<IUsuariosRolesRepositorio, UsuariosRolesRepositorio>();
             services.AddScoped<ITokenRepositorio, TokenRepositorio>();
             services.AddScoped<ICuentaRepositorio, CuentaRepositorio>();
+            services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
+            services.AddScoped<IProductosRepositorio, ProductosRepositorio>();
 
             return services;
 
@@ -116,12 +123,12 @@ namespace Autenticacion.Api.Startup.ConfigureServices
         private static IServiceCollection Servicios(this IServiceCollection services)
         {
 
-    
-
             services.AddScoped<IUsuariosServicios, UsuariosServicios>();
             services.AddScoped<IRolesServicios, RolesServicios>();
             services.AddScoped<IAutenticacionServicios, AutenticacionServicios>();
             services.AddScoped<ICuentaServicios, CuentaServicios>();
+            services.AddScoped<ICategoriaServicios, CategoriaServicios>();
+            services.AddScoped<IProductosServicios, ProductosServicios>();
 
             return services;
 
@@ -213,7 +220,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
                     }
 
                 });
-                // Set the comments path for the Swagger JSON and UI.
+
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 configuracion.IncludeXmlComments(xmlPath);

@@ -9,23 +9,25 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using SistemaVentas.Infraestructura.EntidadesConfiguracion;
+using SistemaVentas.Dominio.Entidades;
 
 namespace Autenticacion.Infraestructura
 {
-    public partial class AutenticacionDbContext : IdentityDbContext<UsuariosEntidad, RolesEntidad, Guid>
+    public partial class AppDbContext : IdentityDbContext<UsuariosEntidad, RolesEntidad, Guid>
     {
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AutenticacionDbContext(
-            DbContextOptions<AutenticacionDbContext> options,
+        public AppDbContext(
+            DbContextOptions<AppDbContext> options,
             IHttpContextAccessor httpContextAccessor
         ) : base(options)
         {
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public AutenticacionDbContext()
+        public AppDbContext()
         {
 
         }
@@ -36,7 +38,7 @@ namespace Autenticacion.Infraestructura
 
             base.OnModelCreating(builder);
 
-            builder.HasDefaultSchema("Autenticacion");
+            // builder.HasDefaultSchema("Autenticacion");
 
             builder.Ignore<IdentityUserLogin<Guid>>();
             builder.Ignore<IdentityUserToken<Guid>>();
@@ -52,6 +54,9 @@ namespace Autenticacion.Infraestructura
             UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamacionesEntidad>());
             UsuariosRolesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosRolesEntidad>());
             DatosPersonalesConfiguracion.AplicarConfiguracion(builder.Entity<DatosPersonalesEntidad>());
+
+            CategoriasConfiguracion.AplicarConfiguracion(builder.Entity<CategoriasEntidad>());
+            ProductosConfiguracion.AplicarConfiguracion(builder.Entity<ProductosEntidad>());
 
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Autenticacion.Infraestructura
 {
-    public partial class AutenticacionDbContext
+    public partial class AppDbContext
     {
 
         //public override int SaveChanges()

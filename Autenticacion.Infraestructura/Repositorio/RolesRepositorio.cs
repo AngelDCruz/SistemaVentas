@@ -16,11 +16,11 @@ namespace Autenticacion.Infraestructura.Repositorio
     {
 
         private readonly RoleManager<RolesEntidad> _roleManager;
-        private readonly AutenticacionDbContext _autenticacionDbContext;
+        private readonly AppDbContext _autenticacionDbContext;
 
         public RolesRepositorio(
             RoleManager<RolesEntidad> roleManager,
-            AutenticacionDbContext autenticacionDbContext
+            AppDbContext autenticacionDbContext
          )
         {
             

@@ -16,9 +16,9 @@ namespace Autenticacion.Infraestructura.Repositorio
     public class UsuariosRolesRepositorio : IUsuariosRolesRepositorio
     {
 
-        private readonly AutenticacionDbContext _context;
+        private readonly AppDbContext _context;
 
-        public UsuariosRolesRepositorio(AutenticacionDbContext context)
+        public UsuariosRolesRepositorio(AppDbContext context)
         {
 
             _context = context;

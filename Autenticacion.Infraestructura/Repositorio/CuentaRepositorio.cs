@@ -12,9 +12,9 @@ namespace Autenticacion.Infraestructura.Repositorio
     public class CuentaRepositorio : ICuentaRepositorio
     {
 
-        private readonly AutenticacionDbContext _dbContext;
+        private readonly AppDbContext _dbContext;
 
-        public CuentaRepositorio(AutenticacionDbContext dbContext)
+        public CuentaRepositorio(AppDbContext dbContext)
         {
 
             _dbContext = dbContext;

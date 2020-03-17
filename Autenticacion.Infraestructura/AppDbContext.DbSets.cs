@@ -1,10 +1,11 @@
 ﻿using Autenticacion.Dominio.Entidades;
 using Autenticacion.Infraestructura.EntidadesConfiguracion;
 using Microsoft.EntityFrameworkCore;
+using SistemaVentas.Dominio.Entidades;
 
 namespace Autenticacion.Infraestructura
 {
-    public partial class AutenticacionDbContext {
+    public partial class AppDbContext {
 
         public DbSet<UsuariosEntidad> Usuarios { get; set; }
 
@@ -16,9 +17,13 @@ namespace Autenticacion.Infraestructura
 
         public DbSet<UsuariosRolesEntidad> UsuariosRoles { get; set; }
 
-       public DbSet<TokenEntidad> Token { get; set; }
+        public DbSet<TokenEntidad> Token { get; set; }
 
-        public DbSet<DatosPersonalesEntidad> DatosPersonales { get; set; }
+        public DbSet<DatosPersonalesEntidad> DatosPersonales { get; set; } 
+
+        public DbSet<CategoriasEntidad> Categorias { get; set; }
+
+        public DbSet<ProductosEntidad> Productos { get; set; }
 
     }
 }

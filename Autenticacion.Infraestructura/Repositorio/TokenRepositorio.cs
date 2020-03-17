@@ -10,9 +10,9 @@ namespace Autenticacion.Infraestructura.Repositorio
    public  class TokenRepositorio : ITokenRepositorio
     {
 
-        private readonly AutenticacionDbContext _context;
+        private readonly AppDbContext _context;
 
-        public TokenRepositorio(AutenticacionDbContext context)
+        public TokenRepositorio(AppDbContext context)
         {
 
             _context = context;

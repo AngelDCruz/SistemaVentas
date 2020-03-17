@@ -16,11 +16,11 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         private readonly UserManager<UsuariosEntidad> _userManager;
 
-        private readonly AutenticacionDbContext _context;
+        private readonly AppDbContext _context;
 
         public UsuariosRepositorio(
             UserManager<UsuariosEntidad> userManager,
-            AutenticacionDbContext context
+            AppDbContext context
          )
         {
 
