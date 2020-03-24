@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Paginacion;
+using Microsoft.EntityFrameworkCore;
 using SistemaVentas.Dominio.Entidades;
 using SistemaVentas.Dominio.Repositorio;
 
@@ -19,30 +22,25 @@ namespace SistemaVentas.Dominio.Servicios.Categoria
 
         }
 
-        public async Task<bool> ActualizarCategoriaAsync(CategoriasEntidad categoria)
+        public async Task<List<CategoriasEntidad>> ObtenerCategoriasAsync(FiltroPagina filtro)
         {
 
-            var categoriaActualizar = await _categoriaRepositorio.ObtenerCategoriaPorIdAsync(categoria.Id);
-            categoriaActualizar.Nombre = categoria.Nombre;
-            categoriaActualizar.Descripcion = categoria.Descripcion;
+             var lstCategorias = _categoriaRepositorio.ObtenerCategoriasAsync(); 
 
-            return await _categoriaRepositorio.ActualizarCategoriaAsync(categoriaActualizar);
+            if ( filtro != null )
+            {
+
+                var pagina = (filtro.Pagina  -1) * filtro.Limite;
+                var limite = filtro.Limite;
+
+                lstCategorias = lstCategorias.Skip(pagina).Take(limite);
+
+            }
+
+            return await lstCategorias.ToListAsync(); 
 
         }
 
-        public async Task<CategoriasEntidad> CrearCategoriaAsync(CategoriasEntidad categoria)
-        {
-
-            return await _categoriaRepositorio.CrearCategoriaAsync(categoria);
-
-        }
-
-        public async Task<bool> EliminarCategoriaAsync(CategoriasEntidad categoria)
-        {
-
-            return await _categoriaRepositorio.EliminarCategoriaAsync(categoria);
-
-        }
 
         public async Task<CategoriasEntidad> ObtenerCategoriaPorIdAsync(Guid id)
         {
@@ -58,10 +56,46 @@ namespace SistemaVentas.Dominio.Servicios.Categoria
 
         }
 
-        public async Task<List<CategoriasEntidad>> ObtenerCategoriasAsync()
+
+        public async Task<CategoriasEntidad> CrearCategoriaAsync(CategoriasEntidad categoria)
         {
 
-            return await _categoriaRepositorio.ObtenerCategoriasAsync();
+            categoria.Estatus = "Act";
+
+            return await _categoriaRepositorio.CrearCategoriaAsync(categoria);
+
+        }
+
+        public async Task<bool> ActualizarCategoriaAsync(CategoriasEntidad categoria)
+        {
+
+            var categoriaActualizar = await _categoriaRepositorio.ObtenerCategoriaPorIdAsync(categoria.Id);
+            categoriaActualizar.Nombre = categoria.Nombre;
+            categoriaActualizar.Descripcion = categoria.Descripcion;
+
+            return await _categoriaRepositorio.ActualizarCategoriaAsync(categoriaActualizar);
+
+        }
+
+
+        public async Task<bool> EliminarCategoriaAsync(CategoriasEntidad categoria)
+        {
+
+            return await _categoriaRepositorio.EliminarCategoriaAsync(categoria);
+
+        }
+
+        public async Task<List<CategoriasEntidad>> ObtenerFiltroCategoriasAsync(string nombre)
+        {
+
+            var lstCategorias = _categoriaRepositorio.ObtenerCategoriasAsync();
+
+            if(lstCategorias == null)
+            {
+                return null;
+            }
+
+            return await lstCategorias.Where(x => x.Nombre.Contains(nombre)).ToListAsync();
 
         }
     }

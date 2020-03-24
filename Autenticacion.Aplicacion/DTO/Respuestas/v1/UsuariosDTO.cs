@@ -23,7 +23,5 @@ namespace Autenticacion.Aplicacion.DTO.Respuestas.v1
 
         public List<RolesDTO> Roles { get; set; }
 
-        public DatosPersonalesDTO DatosPersonales { get; set; } 
-
     }
 }

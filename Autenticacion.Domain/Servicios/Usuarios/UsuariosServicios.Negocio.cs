@@ -56,12 +56,6 @@ namespace Autenticacion.Api.Servicios.Usuarios
 
                     }
 
-                    if (incluir.Datos)
-                    {
-                        usuarioDTO.DatosPersonales = ObtenerDatosPersonalesUsuario(usuario.DatosPersonales);
-
-                    }
-
                     lstUsuariosDTO.Add(usuarioDTO);
 
                 }
@@ -104,12 +98,6 @@ namespace Autenticacion.Api.Servicios.Usuarios
                         usuarioDTO.Roles = await ObtenerRolesUsuarioAsync(usuario);
 
                     }
-
-                if (incluir.Datos)
-                {
-                    usuarioDTO.DatosPersonales = ObtenerDatosPersonalesUsuario(usuario.DatosPersonales);
-
-                }
             }
 
             return usuarioDTO;

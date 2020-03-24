@@ -54,8 +54,5 @@ namespace Autenticacion.Dominio.Entidades
         [Column(TypeName = "CHAR(3)")]
         public string Estatus { get; set; }
 
-
-        public List<UsuariosEntidad> Usuarios { get; set; }
-
     }
 }

@@ -49,7 +49,6 @@ namespace Autenticacion.Api.Servicios.Usuarios
 
             var lstUsuarios = _usuariosRepositorio.ObtenerUsuariosAsync()
                               .Include(x => x.UsuariosRoles)
-                              .Include(x => x.DatosPersonales)
                               .Where(x => x.Estatus != "Baj");
 
             if (lstUsuarios == null) return null;
@@ -74,8 +73,6 @@ namespace Autenticacion.Api.Servicios.Usuarios
         {
 
             var lstUsuarios =  _usuariosRepositorio.ObtenerUsuariosAsync();
-
-            if (incluir.Datos) lstUsuarios = lstUsuarios.Include(x => x.DatosPersonales);
 
             if (incluir.Role) lstUsuarios = lstUsuarios.Include(x => x.UsuariosRoles);
 
@@ -213,14 +210,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
         {
 
             var usuario = await _usuariosRepositorio.ObtenerUsuarioPorIdAsync(idUsuario);
-            usuario.DatosPersonales.Nombre = datosPersonales.Nombre;
-            usuario.DatosPersonales.ApellidoPaterno = datosPersonales.ApellidoPaterno;
-            usuario.DatosPersonales.ApellidoMaterno = datosPersonales.ApellidoMaterno;
-            usuario.DatosPersonales.Pais = datosPersonales.Pais;
-            usuario.DatosPersonales.Ciudad = datosPersonales.Ciudad;
-            usuario.DatosPersonales.Calle = datosPersonales.Calle;
-            usuario.DatosPersonales.Nombre = datosPersonales.Nombre;
-            usuario.DatosPersonales.Telefono = datosPersonales.Telefono;
+
 
             return await _usuariosRepositorio.ActualizarDatosPersonalesUsuarioAsync(usuario);
 

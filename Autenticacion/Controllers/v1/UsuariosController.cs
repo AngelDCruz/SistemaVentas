@@ -26,7 +26,7 @@ namespace Autenticacion.Api.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsuariosController : ControllerBase
     {
 
@@ -94,7 +94,7 @@ namespace Autenticacion.Api.Controllers.v1
         /// </summary>
         /// <param name="usuarioDTO"></param>
         /// <returns></returns>
-        [LlaveAutorizacion]
+        //[LlaveAutorizacion]
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CrearUsuarioAsync([FromBody] CrearUsuarioDTO usuarioDTO)

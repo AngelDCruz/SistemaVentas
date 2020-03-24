@@ -13,9 +13,7 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
         public static void AplicarConfiguracion(EntityTypeBuilder<DatosPersonalesEntidad> entidad)
         {
 
-            entidad.HasMany(u => u.Usuarios)
-                .WithOne(d => d.DatosPersonales)
-                .OnDelete(DeleteBehavior.Cascade);
+
 
         }
 

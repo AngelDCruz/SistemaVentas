@@ -34,7 +34,6 @@ namespace Autenticacion.Infraestructura.Repositorio
         public IQueryable<UsuariosEntidad> ObtenerUsuariosAsync() => 
             _context.Usuarios.
             Include(x => x.UsuariosRoles)
-            .Include(d => d.DatosPersonales)
             .AsQueryable();
 
         public async Task<UsuariosEntidad> ObtenerUsuarioPorIdAsync(Guid id)
@@ -42,7 +41,6 @@ namespace Autenticacion.Infraestructura.Repositorio
 
             return await _context.Usuarios
                 .Include(x=>x.UsuariosRoles)
-                .Include(y => y.DatosPersonales)
                 .FirstOrDefaultAsync(x => x.Id == id && x.Estatus != "Baj");
 
         }

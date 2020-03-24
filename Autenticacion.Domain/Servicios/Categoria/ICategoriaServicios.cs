@@ -1,4 +1,5 @@
-﻿using SistemaVentas.Dominio.Entidades;
+﻿using Common.Paginacion;
+using SistemaVentas.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,9 @@ namespace SistemaVentas.Dominio.Servicios.Categoria
     public interface ICategoriaServicios
     {
 
-        Task<List<CategoriasEntidad>> ObtenerCategoriasAsync();
+        Task<List<CategoriasEntidad>> ObtenerCategoriasAsync(FiltroPagina filtro);
+
+        Task<List<CategoriasEntidad>> ObtenerFiltroCategoriasAsync(string nombre);
 
         Task<CategoriasEntidad> ObtenerCategoriaPorIdAsync(Guid id);
 

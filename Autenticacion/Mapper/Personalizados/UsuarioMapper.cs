@@ -23,21 +23,6 @@ namespace Autenticacion.Api.Mapper.Personalizados
                 usuario.PasswordHash = entidad.Contrasena;
                 usuario.Email = entidad.Email;
 
-                if (usuario.DatosPersonales != null)
-                {
-
-                    usuario.DatosPersonales = new DatosPersonalesEntidad
-                    {
-                        Nombre = entidad.DatosPersonales.Nombre,
-                        ApellidoPaterno = entidad.DatosPersonales.ApellidoMaterno,
-                        ApellidoMaterno = entidad.DatosPersonales.ApellidoMaterno,
-                        Pais = entidad.DatosPersonales.Pais,
-                        Ciudad = entidad.DatosPersonales.Ciudad,
-                        Calle = entidad.DatosPersonales.Calle,
-                        Telefono = entidad.DatosPersonales.Telefono,
-                    };
-
-                }
 
                 if (entidad.Roles.Count > 0)
                 {

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Common.Paginacion;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SistemaVentas.Aplicacion.DTO.Respuestas.v1;
@@ -14,6 +17,7 @@ namespace SistemaVentas.Api.Controllers.v1
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoriasController : ControllerBase
     {
 
@@ -33,10 +37,10 @@ namespace SistemaVentas.Api.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<ActionResult> ObtenerCategoriasAsync()
+        public async Task<ActionResult> ObtenerCategoriasAsync([FromQuery] FiltroPagina filtro)
         {
 
-            var lstCategorias = await _categoriaServicios.ObtenerCategoriasAsync();
+            var lstCategorias = await _categoriaServicios.ObtenerCategoriasAsync(filtro);
 
             if (lstCategorias == null) return NoContent();
 
@@ -116,6 +120,19 @@ namespace SistemaVentas.Api.Controllers.v1
             return Ok(_mapper.Map<CategoriasDTO>(categoria));
 
         }
+
+        [HttpPost("filtrar")]
+        public async Task<ActionResult> ObtenerFiltroCategoriasAsync([FromBody] FiltroCategoriaDTO filtro )
+        {
+
+            var lstCategorias = await _categoriaServicios.ObtenerFiltroCategoriasAsync(filtro.Nombre);
+
+            if (lstCategorias == null) return NoContent();
+
+            return Ok(_mapper.Map<List<CategoriasDTO>>(lstCategorias));
+
+        }
+
 
     }
 }

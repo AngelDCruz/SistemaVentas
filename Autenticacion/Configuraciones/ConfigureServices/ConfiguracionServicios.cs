@@ -28,6 +28,7 @@ using SistemaVentas.Dominio.Repositorio;
 using SistemaVentas.Infraestructura.Repositorio;
 using SistemaVentas.Dominio.Servicios.Categoria;
 using SistemaVentas.Dominio.Servicios.Productos;
+using System.Collections.Generic;
 
 namespace Autenticacion.Api.Startup.ConfigureServices
 {
@@ -45,6 +46,7 @@ namespace Autenticacion.Api.Startup.ConfigureServices
 
             ConexionSqlServer(services, configuration);
 
+            Cors(services);
 
             Repositorios(services);
 
@@ -60,6 +62,16 @@ namespace Autenticacion.Api.Startup.ConfigureServices
        .AddJsonOptions(configuraciones => configuraciones.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
       .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+
+            return services;
+
+        }
+
+        // CORS
+        private static IServiceCollection Cors(this IServiceCollection services)
+        {
+
+            services.AddCors();
 
             return services;
 
@@ -217,6 +229,39 @@ namespace Autenticacion.Api.Startup.ConfigureServices
                     {
                         Name = "SIA SOFTWARE",
                         Url = new Uri("https://www.siasw.com/index.php/es/")
+                    }
+
+                });
+
+                // CONFIGURACION SEGURIDAD
+                configuracion.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+
+                    Name = "Authorization",
+                    Description = "Autorización de esquemas utilizando el portador jwt",
+                    In =  ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+
+                });
+
+                configuracion.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+
+                    {
+
+                        new OpenApiSecurityScheme
+                        {
+
+                            Reference = new OpenApiReference
+                            {
+
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
+
+                            }
+
+                        }, new List<string>()
+
                     }
 
                 });

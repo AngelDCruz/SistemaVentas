@@ -29,7 +29,7 @@ namespace Autenticacion.Infraestructura
         public void AuditarDatos()
         {
 
-            if (!Autenticado())
+            if (Autenticado())
             {
 
                 Guid id = UsuarioAutenticado();

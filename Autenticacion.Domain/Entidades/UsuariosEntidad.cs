@@ -41,7 +41,7 @@ namespace Autenticacion.Dominio.Entidades
 
         public List<TokenEntidad> Token { get; set; }
 
-        public DatosPersonalesEntidad DatosPersonales { get; set; }
+
 
     }
 }

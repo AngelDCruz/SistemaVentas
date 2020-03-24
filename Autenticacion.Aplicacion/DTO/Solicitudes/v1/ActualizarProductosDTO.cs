@@ -22,7 +22,7 @@ namespace SistemaVentas.Aplicacion.DTO.Solicitudes.v1
         [MinLength(10, ErrorMessage = "La longitud miníma del código es de 10 caracteres")]
         public string Codigo { get; set; }
 
-        public Guid CategoriaId { get; set; }
+        public Guid Categoria { get; set; }
 
     }
 }

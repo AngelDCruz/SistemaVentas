@@ -35,7 +35,7 @@ namespace SistemaVentas.Dominio.Entidades
         [Column(TypeName = "CHAR(3)")]
         public string Estatus { get; set; }
 
-        public ProductosEntidad Productos { get; set; }
+        public List<ProductosEntidad> Productos { get; set; }
 
     }
 }

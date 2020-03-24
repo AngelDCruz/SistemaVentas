@@ -22,13 +22,25 @@ namespace Autenticacion.Api.Startup.Configure
 
             app.UseStaticFiles();
 
+
             app.UseAuthentication();
+
+            Cors(app);
 
             MiddlewarezPersonalizados(app);
 
              Swagger(app);
 
             app.UseMvc();
+
+            return app;
+
+        }
+
+        private static  IApplicationBuilder Cors(this IApplicationBuilder app)
+        {
+
+            app.UseCors(configuracion => configuracion.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             return app;
 

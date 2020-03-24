@@ -23,9 +23,6 @@ namespace Autenticacion.Aplicacion.DTO.Solicitudes.v1
         [EmailAddress(ErrorMessage = "Ingrese una cuenta de correo electronico valido")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Los datos personales del usuario son requerido")]
-        public DatosPersonalesDTO DatosPersonales { get;  set; }
-
         [Required(ErrorMessage = "El rol o los roles son requeridos")]
         public List<Guid> Roles { get; set; }
 

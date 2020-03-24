@@ -20,10 +20,10 @@ namespace SistemaVentas.Infraestructura.Repositorio
             _context = context;
         }
 
-        public async Task<List<CategoriasEntidad>> ObtenerCategoriasAsync()
+        public  IQueryable<CategoriasEntidad> ObtenerCategoriasAsync()
         {
 
-            return  await _context.Categorias.Where(x => x.Estatus != "Baj").ToListAsync();
+            return   _context.Categorias.Where(x => x.Estatus != "Baj").AsQueryable();
 
         }
 
@@ -34,6 +34,8 @@ namespace SistemaVentas.Infraestructura.Repositorio
 
         public async Task<CategoriasEntidad> CrearCategoriaAsync(CategoriasEntidad categoria)
         {
+
+            categoria.Estatus = "Act";
 
             await _context.Categorias.AddAsync(categoria);
 

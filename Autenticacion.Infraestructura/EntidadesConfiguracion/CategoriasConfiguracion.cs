@@ -27,9 +27,9 @@ namespace SistemaVentas.Infraestructura.EntidadesConfiguracion
                 .HasColumnType("VARCHAR(100)");
 
             //RELACIONES
-            entidad.HasOne(c => c.Productos)
+            entidad.HasMany(c => c.Productos)
                  .WithOne(p => p.Categorias)
-                 .HasForeignKey<ProductosEntidad>(p => p.CategoriaId);
+                 .HasForeignKey(p => p.CategoriaId);
 
 
         }

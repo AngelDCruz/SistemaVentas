@@ -25,7 +25,7 @@ namespace Common.Paginacion
         public bool Paginar { get; set; } = false;
 
         [FromQuery]
-        public int Limite { get; set; } = 1;
+        public int Limite { get; set; } = 1000;
 
         [FromQuery]
         public int Pagina { get; set; } = 1;
