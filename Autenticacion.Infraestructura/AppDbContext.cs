@@ -53,10 +53,10 @@ namespace Autenticacion.Infraestructura
             UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamacionesEntidad>());
             UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamacionesEntidad>());
             UsuariosRolesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosRolesEntidad>());
-            DatosPersonalesConfiguracion.AplicarConfiguracion(builder.Entity<DatosPersonalesEntidad>());
 
             CategoriasConfiguracion.AplicarConfiguracion(builder.Entity<CategoriasEntidad>());
             ProductosConfiguracion.AplicarConfiguracion(builder.Entity<ProductosEntidad>());
+            PersonaConfiguracion.AplicarConfiguracion(builder.Entity<PersonaEntidad>());
 
         }
     }

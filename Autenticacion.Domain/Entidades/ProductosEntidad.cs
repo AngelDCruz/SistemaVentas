@@ -46,5 +46,7 @@ namespace SistemaVentas.Dominio.Entidades
 
         public CategoriasEntidad Categorias { get; set; }
 
+        public List<DetalleIngresoEntidad> DetalleIngresos { get; set; }
+
     }
 }

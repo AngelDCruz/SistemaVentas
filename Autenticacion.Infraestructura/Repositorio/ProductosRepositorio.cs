@@ -24,17 +24,19 @@ namespace SistemaVentas.Infraestructura.Repositorio
 
         }
 
+
+
+        public  IQueryable<ProductosEntidad> ObtenerProductosAsync()
+        {
+
+            return  _context.Productos.OrderBy(x => x.Estatus).AsQueryable();
+
+        }
+   
         public async Task<ProductosEntidad> ObtenerProductoPorIdAsync(Guid id)
         {
 
-            return await _context.Productos.FirstOrDefaultAsync(x => x.Id == id && x.Estatus != "Baj");
-
-        }
-
-        public async Task<List<ProductosEntidad>> ObtenerProductosAsync()
-        {
-
-            return await _context.Productos.Where(x => x.Estatus != "Baj").ToListAsync();
+            return await _context.Productos.Include(x => x.Categorias).FirstOrDefaultAsync(x => x.Id == id);
 
         }
 

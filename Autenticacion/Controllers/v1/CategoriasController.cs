@@ -37,10 +37,10 @@ namespace SistemaVentas.Api.Controllers.v1
         }
 
         [HttpGet]
-        public async Task<ActionResult> ObtenerCategoriasAsync([FromQuery] FiltroPagina filtro)
+        public async Task<ActionResult> ObtenerCategoriasAsync([FromQuery] FiltroPagina filtro, [FromQuery] string estatus = "todos")
         {
 
-            var lstCategorias = await _categoriaServicios.ObtenerCategoriasAsync(filtro);
+            var lstCategorias = await _categoriaServicios.ObtenerCategoriasAsync(filtro, estatus);
 
             if (lstCategorias == null) return NoContent();
 
@@ -133,6 +133,21 @@ namespace SistemaVentas.Api.Controllers.v1
 
         }
 
+        [HttpGet("{Id:guid}/activar-categoria")]
+        public async Task<ActionResult> ActivarCategoriaAsync([FromRoute] Guid Id)
+        {
+
+            var existeCategoria = await _categoriaServicios.ObtenerCategoriaPorIdAsync(Id);
+
+            if (existeCategoria == null) return NotFound("Categoría no encontrada");
+
+            var respuesta = await _categoriaServicios.ActivarCategoriaAsync(Id);
+
+            if (!respuesta) return BadRequest("La categoria no pudo activarse correctamente");
+
+            return NoContent();
+
+        }
 
     }
 }

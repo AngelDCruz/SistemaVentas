@@ -23,13 +23,13 @@ namespace SistemaVentas.Infraestructura.Repositorio
         public  IQueryable<CategoriasEntidad> ObtenerCategoriasAsync()
         {
 
-            return   _context.Categorias.Where(x => x.Estatus != "Baj").AsQueryable();
+            return   _context.Categorias.OrderBy(x => x.Estatus).AsQueryable();
 
         }
 
         public async Task<CategoriasEntidad> ObtenerCategoriaPorIdAsync(Guid id)
         {
-            return await _context.Categorias.FirstOrDefaultAsync(x => x.Id == id && x.Estatus != "Baj");
+            return await _context.Categorias.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<CategoriasEntidad> CrearCategoriaAsync(CategoriasEntidad categoria)

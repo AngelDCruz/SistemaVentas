@@ -29,6 +29,9 @@ using SistemaVentas.Infraestructura.Repositorio;
 using SistemaVentas.Dominio.Servicios.Categoria;
 using SistemaVentas.Dominio.Servicios.Productos;
 using System.Collections.Generic;
+using SistemaVentas.Dominio.Servicios.Clientes;
+using SistemaVentas.Dominio.Servicios.Proveedores;
+using SistemaVentas.Dominio.Servicios.Ingresos;
 
 namespace Autenticacion.Api.Startup.ConfigureServices
 {
@@ -126,6 +129,8 @@ namespace Autenticacion.Api.Startup.ConfigureServices
             services.AddScoped<ICuentaRepositorio, CuentaRepositorio>();
             services.AddScoped<ICategoriaRepositorio, CategoriaRepositorio>();
             services.AddScoped<IProductosRepositorio, ProductosRepositorio>();
+            services.AddScoped<IPersonaRepositorio, PersonaRepositorio>();
+            services.AddScoped<IIngresoRepositorio, IngresoRepositorio>();
 
             return services;
 
@@ -139,8 +144,11 @@ namespace Autenticacion.Api.Startup.ConfigureServices
             services.AddScoped<IRolesServicios, RolesServicios>();
             services.AddScoped<IAutenticacionServicios, AutenticacionServicios>();
             services.AddScoped<ICuentaServicios, CuentaServicios>();
-            services.AddScoped<ICategoriaServicios, CategoriaServicios>();
             services.AddScoped<IProductosServicios, ProductosServicios>();
+            services.AddScoped<ICategoriaServicios, CategoriaServicios>();
+            services.AddScoped<IClientesServicios, ClientesServicios>();
+            services.AddScoped<IProveedoresServicios, ProveedoresServicios>();
+            services.AddScoped<IIngresosServicios, IngresosServicios>();
 
             return services;
 

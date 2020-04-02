@@ -1,6 +1,7 @@
 ﻿using SistemaVentas.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace SistemaVentas.Dominio.Repositorio
     public interface  IProductosRepositorio
     {
 
-        Task<List<ProductosEntidad>> ObtenerProductosAsync();
+        IQueryable<ProductosEntidad> ObtenerProductosAsync();
 
         Task<ProductosEntidad> ObtenerProductoPorIdAsync(Guid id);
 

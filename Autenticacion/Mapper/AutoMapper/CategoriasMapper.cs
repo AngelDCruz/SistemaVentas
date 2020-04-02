@@ -15,13 +15,16 @@ namespace SistemaVentas.Api.Mapper.AutoMapper
         public CategoriasMapper()
         {
 
-            CreateMap<CategoriasEntidad, CrearCategoriaDTO>()
-                .ForMember(x => x.Nombre, opcion => opcion.MapFrom(x => x.Nombre))
-                .ForMember(x => x.Descripcion, opcion => opcion.MapFrom(x => x.Descripcion))
-                .ReverseMap();
 
             CreateMap<CategoriasEntidad, CategoriasDTO>()
                 .ForMember(x => x.Id, opcion => opcion.MapFrom(x => x.Id))
+                .ForMember(x => x.Nombre, opcion => opcion.MapFrom(x => x.Nombre))
+                .ForMember(x => x.Descripcion, opcion => opcion.MapFrom(x => x.Descripcion))
+                .ForMember(x => x.Estatus, opcion => opcion.MapFrom(x => x.Estatus))
+                .ReverseMap();
+
+
+            CreateMap<CategoriasEntidad, CrearCategoriaDTO>()
                 .ForMember(x => x.Nombre, opcion => opcion.MapFrom(x => x.Nombre))
                 .ForMember(x => x.Descripcion, opcion => opcion.MapFrom(x => x.Descripcion))
                 .ReverseMap();

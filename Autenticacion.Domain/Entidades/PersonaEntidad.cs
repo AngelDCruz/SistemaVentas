@@ -1,41 +1,31 @@
-﻿
-
-
+﻿using Autenticacion.Dominio.Entidades;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace Autenticacion.Dominio.Entidades
+namespace SistemaVentas.Dominio.Entidades
 {
-    public class DatosPersonalesEntidad : IAuditoria
+    public class PersonaEntidad : IAuditoria
     {
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        [MaxLength(50)]
-        public string Nombre { get; set; }
+        public string  Nombre { get; set; }
 
-        [MaxLength(50)]
-        public string ApellidoPaterno { get; set; }
+        public string Direccion { get; set; }
 
-        [MaxLength(50)]
-        public string ApellidoMaterno { get; set; }
-
-        [MaxLength(50)]
-        public string Pais { get; set; }
-
-        [MaxLength(50)]
-        public string Ciudad { get; set; }
-
-        [MaxLength(50)]
-        public string Calle { get; set; }
-
-        [MaxLength(13)]
         public string Telefono { get; set; }
+
+        public string Email { get; set; }
+
+        public string TipoDocumento { get; set; }
+
+        public string NumDocumento { get; set; }
+
+        public string TipoPersona { get; set; }
 
         [Required]
         [Column(TypeName = "UNIQUEIDENTIFIER")]
@@ -53,6 +43,8 @@ namespace Autenticacion.Dominio.Entidades
         [DefaultValue("Act")]
         [Column(TypeName = "CHAR(3)")]
         public string Estatus { get; set; }
+
+        public List<IngresoEntidad> Ingresos { get; set; }
 
     }
 }

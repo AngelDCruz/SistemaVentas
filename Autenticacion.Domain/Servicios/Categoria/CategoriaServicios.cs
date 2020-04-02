@@ -22,7 +22,7 @@ namespace SistemaVentas.Dominio.Servicios.Categoria
 
         }
 
-        public async Task<List<CategoriasEntidad>> ObtenerCategoriasAsync(FiltroPagina filtro)
+        public async Task<List<CategoriasEntidad>> ObtenerCategoriasAsync(FiltroPagina filtro, string Estatus = "todos")
         {
 
              var lstCategorias = _categoriaRepositorio.ObtenerCategoriasAsync(); 
@@ -36,6 +36,10 @@ namespace SistemaVentas.Dominio.Servicios.Categoria
                 lstCategorias = lstCategorias.Skip(pagina).Take(limite);
 
             }
+
+            if (Estatus == "activos") return  await lstCategorias.Where(x => x.Estatus == "Act").ToListAsync();
+
+            if (Estatus == "bajas") return  await lstCategorias.Where(x => x.Estatus == "Baj").ToListAsync();
 
             return await lstCategorias.ToListAsync(); 
 
@@ -96,6 +100,16 @@ namespace SistemaVentas.Dominio.Servicios.Categoria
             }
 
             return await lstCategorias.Where(x => x.Nombre.Contains(nombre)).ToListAsync();
+
+        }
+
+        public async Task<bool> ActivarCategoriaAsync(Guid id)
+        {
+
+            var categoriaActualizar = await _categoriaRepositorio.ObtenerCategoriaPorIdAsync(id);
+            categoriaActualizar.Estatus = "Act";
+
+            return await _categoriaRepositorio.ActualizarCategoriaAsync(categoriaActualizar);
 
         }
     }

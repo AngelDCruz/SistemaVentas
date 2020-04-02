@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Common.Paginacion;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -43,12 +45,17 @@ namespace SistemaVentas.Api.Controllers.v1
             _hostingEnvironment = hostingEnvironment;
         }
 
-
+        /// <summary>
+        /// OBTENE LISTA DE PRODUCTOS
+        /// </summary>
+        /// <param name="filtro"></param>
+        /// <param name="estatus"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult> ObtenerProductosAsync()
+        public async Task<ActionResult> ObtenerProductosAsync([FromQuery] FiltroPagina filtro, [FromQuery] string estatus = "todos")
         {
 
-            var lstProductos = await _productosServicios.ObtenerProductosAsync();
+            var lstProductos = await _productosServicios.ObtenerProductosAsync(filtro, estatus);
 
             if (lstProductos == null) return NoContent();
 
@@ -56,6 +63,11 @@ namespace SistemaVentas.Api.Controllers.v1
 
         }
 
+        /// <summary>
+        ///  OBTIENE PRODUCTO POR ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id:guid}", Name = "ObtenerProductosPorIdAsync")]
         public async Task<ActionResult> ObtenerProductosPorIdAsync([FromRoute] Guid id)
         {
@@ -68,6 +80,11 @@ namespace SistemaVentas.Api.Controllers.v1
 
         }
 
+        /// <summary>
+        /// CREAR PRODUCTO
+        /// </summary>
+        /// <param name="crearProductoDTO"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> CrearProductosAsync([FromForm] CrearProductoDTO crearProductoDTO)
         {
@@ -76,7 +93,7 @@ namespace SistemaVentas.Api.Controllers.v1
 
             if (productoExiste != null) return BadRequest("El producto ya esta registrado con el mismo codigo");
 
-            if(await _categoriaServicios.ObtenerCategoriaPorIdAsync(crearProductoDTO.Categoria) == null)
+            if (await _categoriaServicios.ObtenerCategoriaPorIdAsync(crearProductoDTO.Categoria) == null)
             {
 
                 return BadRequest("La categoria no es válida");
@@ -103,6 +120,12 @@ namespace SistemaVentas.Api.Controllers.v1
 
         }
 
+        /// <summary>
+        /// ACTUALIZA PRODUCTO
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="actualizarProductosDTO"></param>
+        /// <returns></returns>
         [HttpPut("{Id:guid}")]
         public async Task<ActionResult> ActualizarProductosAsync([FromRoute] Guid Id, [FromBody] ActualizarProductosDTO actualizarProductosDTO)
         {
@@ -123,6 +146,11 @@ namespace SistemaVentas.Api.Controllers.v1
 
         }
 
+        /// <summary>
+        /// ELIMINA PRODUCTO POR ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [HttpDelete("{Id:guid}")]
         public async Task<ActionResult> EliminarProductoAsync([FromRoute] Guid Id)
         {
@@ -136,6 +164,71 @@ namespace SistemaVentas.Api.Controllers.v1
             return Ok(_mapper.Map<ProductosDTO>(existeProducto));
 
         }
+
+        /// <summary>
+        /// FILTRA LISTA DE PRODUCTOS POR BUSQUEDA AVANZADA
+        /// </summary>
+        /// <param name="filtro"></param>
+        /// <returns></returns>
+        [HttpPost("filtrar")]
+        public async Task<ActionResult> FiltrarProductosAsync([FromBody] FiltroProductoDTO filtro)
+        {
+
+            var lstProductos = await _productosServicios.ObtenerProductosFiltroAsync(filtro.Nombre, filtro.Codigo);
+
+            if (lstProductos == null) return NoContent();
+
+            return Ok(_mapper.Map<List<ProductosDTO>>(lstProductos));
+
+        }
+
+        /// <summary>
+        /// CAMBIA IMAGEN DE PRODUCTO
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
+        [HttpPost("{Id:guid}/cambio-imagen")]
+        public async Task<ActionResult> CambiarImagenProducto([FromRoute] Guid Id,  [FromForm] ImagenDTO file)
+        {
+
+            var productoExiste = await _productosServicios.ObtenerProductoPorIdAsync(Id);
+
+            if (productoExiste == null) return NotFound("Producto no encontrado");
+
+            var destino = $"wwwroot\\assets\\img\\productos\\";
+            var rutaImagen = SubidaImagenProducto(file.Imagen, destino);
+
+            var respuesta = await _productosServicios.ActualizarImagenProductoAsync(Id, rutaImagen);
+
+            if (!respuesta) return BadRequest("No se pudo actualizar la imagen");
+
+            return Ok(rutaImagen);
+
+        }
+
+        /// <summary>
+        /// ACTIVA PRODUCTO DADO DE BAJA
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet("{Id:guid}/activar-producto")]
+        public async Task<ActionResult> ActivarProductoAsync([FromRoute] Guid Id)
+        {
+
+            var productoExiste = await _productosServicios.ObtenerProductoPorIdAsync(Id);
+
+            if (productoExiste == null) return NotFound("Producto no encontrado");
+
+            var respuesta = await _productosServicios.ActivarProductoAsync(Id);
+
+            if (!respuesta) return BadRequest("El producto no pudo activarse correctamente");
+
+            return NoContent();
+
+        }
+
+
         private string SubidaImagenProducto(IFormFile archivo, string ruta)
         {
 

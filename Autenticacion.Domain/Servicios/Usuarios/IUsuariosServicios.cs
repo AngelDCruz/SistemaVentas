@@ -51,10 +51,6 @@ namespace Autenticacion.Api.Servicios.Usuarios
 
         bool EliminarUsuarioRoleAsync(UsuariosRolesEntidad usuariosRoles);
 
-        /*
-         *  DATOS PERSONALES
-         */
-        Task<bool> ActualizarDatosPersonalesUsuarioAsync(DatosPersonalesEntidad datos, Guid idUsuario);
 
     }
 }

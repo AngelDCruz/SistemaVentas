@@ -155,9 +155,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
         public async Task<Guid> CrearUsuarioAsync(UsuariosEntidad usuario)
         {
 
-
-            
-
+            usuario.Estatus = "Act";
             usuario.FechaCreacion = DateTime.Now;
 
             return await _usuariosRepositorio.CrearUsuarioAsync(usuario);
@@ -200,20 +198,6 @@ namespace Autenticacion.Api.Servicios.Usuarios
 
         }
 
-        /// <summary>
-        /// ACTUALIZA LOS DATOS PERSONALES DE UN USUARIO EN ESPECIFICO
-        /// </summary>
-        /// <param name="datosPersonales"></param>
-        /// <param name="idUsuario"></param>
-        /// <returns></returns>
-        public async Task<bool> ActualizarDatosPersonalesUsuarioAsync(DatosPersonalesEntidad datosPersonales, Guid idUsuario)
-        {
-
-            var usuario = await _usuariosRepositorio.ObtenerUsuarioPorIdAsync(idUsuario);
-
-
-            return await _usuariosRepositorio.ActualizarDatosPersonalesUsuarioAsync(usuario);
-
-        }
+       
     }
 }

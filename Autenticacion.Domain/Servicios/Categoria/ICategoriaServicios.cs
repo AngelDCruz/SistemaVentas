@@ -10,7 +10,7 @@ namespace SistemaVentas.Dominio.Servicios.Categoria
     public interface ICategoriaServicios
     {
 
-        Task<List<CategoriasEntidad>> ObtenerCategoriasAsync(FiltroPagina filtro);
+        Task<List<CategoriasEntidad>> ObtenerCategoriasAsync(FiltroPagina filtro, string Estatus = "todos");
 
         Task<List<CategoriasEntidad>> ObtenerFiltroCategoriasAsync(string nombre);
 
@@ -23,6 +23,8 @@ namespace SistemaVentas.Dominio.Servicios.Categoria
         Task<bool> ActualizarCategoriaAsync(CategoriasEntidad categoria);
 
         Task<bool> EliminarCategoriaAsync(CategoriasEntidad categoria);
+
+        Task<bool> ActivarCategoriaAsync(Guid id);
 
     }
 }

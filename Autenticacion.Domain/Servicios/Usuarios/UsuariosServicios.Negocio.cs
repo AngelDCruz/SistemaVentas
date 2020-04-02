@@ -9,7 +9,7 @@ using Autenticacion.Aplicacion.DTO.Solicitudes.v1;
 
 using Autenticacion.Dominio.DTO.Solicitudes.v1;
 using Autenticacion.Dominio.Entidades;
-using DatosPersonalesDTO = Autenticacion.Aplicacion.DTO.Respuestas.v1.DatosPersonalesDTO;
+
 
 namespace Autenticacion.Api.Servicios.Usuarios
 {
@@ -204,33 +204,8 @@ namespace Autenticacion.Api.Servicios.Usuarios
             return lstRolesDTO;
         }
 
-        private DatosPersonalesDTO ObtenerDatosPersonalesUsuario(DatosPersonalesEntidad datosPersonales)
-        {
-
-            DatosPersonalesDTO datosPersonalesDTO = new DatosPersonalesDTO(); 
-
-            if (datosPersonales != null)
-            {
-
-                datosPersonalesDTO = new DatosPersonalesDTO
-                {
-                    Id = datosPersonales.Id,
-                    Nombre = datosPersonales.Nombre,
-                    ApellidoPaterno = datosPersonales.ApellidoPaterno,
-                    ApellidoMaterno = datosPersonales.ApellidoMaterno,
-                    Pais = datosPersonales.Pais,
-                    Ciudad = datosPersonales.Ciudad,
-                    Calle = datosPersonales.Calle,
-                    Telefono = datosPersonales.Telefono,
-                    UsuarioCreacion = datosPersonales.UsuarioCreacion,
-                    FechaCreacion = datosPersonales.FechaCreacion,
-                    Estatus = datosPersonales.Estatus
-                };
-
-            }
-
-            return datosPersonalesDTO;
-        }
+     
+     
 
     }
 }

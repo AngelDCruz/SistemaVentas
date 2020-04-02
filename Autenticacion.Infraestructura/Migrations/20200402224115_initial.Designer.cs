@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SistemaVentas.Infraestructura.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200324025235_categoriaproductos")]
-    partial class categoriaproductos
+    [Migration("20200402224115_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,51 +20,6 @@ namespace SistemaVentas.Infraestructura.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Autenticacion.Dominio.Entidades.DatosPersonalesEntidad", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApellidoMaterno")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("ApellidoPaterno")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Calle")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Ciudad")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Estatus")
-                        .IsRequired()
-                        .HasColumnType("CHAR(3)");
-
-                    b.Property<DateTime>("FechaCreacion");
-
-                    b.Property<DateTime>("FechaModificacion");
-
-                    b.Property<string>("Nombre")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Pais")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Telefono")
-                        .HasMaxLength(13);
-
-                    b.Property<Guid>("UsuarioCreacion")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.Property<Guid>("UsuarioModificacion")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DatosPersonales");
-                });
 
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.RolesEntidad", b =>
                 {
@@ -266,6 +221,138 @@ namespace SistemaVentas.Infraestructura.Migrations
                     b.ToTable("Categorias");
                 });
 
+            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.DetalleIngresoEntidad", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Cantidad");
+
+                    b.Property<string>("Estatus")
+                        .IsRequired()
+                        .HasColumnType("CHAR(3)");
+
+                    b.Property<DateTime>("FechaCreacion");
+
+                    b.Property<DateTime>("FechaModificacion");
+
+                    b.Property<Guid>("IngresosId");
+
+                    b.Property<double>("Precio");
+
+                    b.Property<Guid>("ProductosId");
+
+                    b.Property<Guid>("UsuarioCreacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<Guid>("UsuarioModificacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngresosId");
+
+                    b.HasIndex("ProductosId");
+
+                    b.ToTable("DetalleIngresos");
+                });
+
+            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.IngresoEntidad", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Estatus")
+                        .IsRequired()
+                        .HasColumnType("CHAR(3)");
+
+                    b.Property<DateTime>("FechaCreacion");
+
+                    b.Property<DateTime>("FechaModificacion");
+
+                    b.Property<double>("Impuesto");
+
+                    b.Property<Guid>("PersonasId");
+
+                    b.Property<string>("SerieComprobante");
+
+                    b.Property<string>("TipoComprobante");
+
+                    b.Property<double>("Total");
+
+                    b.Property<Guid>("UsuarioCreacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<Guid>("UsuarioModificacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<Guid?>("UsuariosEntidadId");
+
+                    b.Property<Guid>("UsuariosId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonasId");
+
+                    b.HasIndex("UsuariosEntidadId");
+
+                    b.ToTable("Ingresos");
+                });
+
+            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.PersonaEntidad", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("UNIQUEIDENTIFIER")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(60)");
+
+                    b.Property<string>("Estatus")
+                        .IsRequired()
+                        .HasColumnType("CHAR(3)");
+
+                    b.Property<DateTime>("FechaCreacion");
+
+                    b.Property<DateTime>("FechaModificacion");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("NumDocumento")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(20)");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(12)");
+
+                    b.Property<string>("TipoDocumento")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(60)");
+
+                    b.Property<string>("TipoPersona")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(50)");
+
+                    b.Property<Guid>("UsuarioCreacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<Guid>("UsuarioModificacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Personas");
+                });
+
             modelBuilder.Entity("SistemaVentas.Dominio.Entidades.ProductosEntidad", b =>
                 {
                     b.Property<Guid>("Id")
@@ -388,6 +475,31 @@ namespace SistemaVentas.Infraestructura.Migrations
                         .WithMany("Token")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.DetalleIngresoEntidad", b =>
+                {
+                    b.HasOne("SistemaVentas.Dominio.Entidades.IngresoEntidad", "Ingresos")
+                        .WithMany("DetalleIngresos")
+                        .HasForeignKey("IngresosId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SistemaVentas.Dominio.Entidades.ProductosEntidad", "Productos")
+                        .WithMany("DetalleIngresos")
+                        .HasForeignKey("ProductosId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.IngresoEntidad", b =>
+                {
+                    b.HasOne("SistemaVentas.Dominio.Entidades.PersonaEntidad", "Personas")
+                        .WithMany("Ingresos")
+                        .HasForeignKey("PersonasId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad")
+                        .WithMany("Ingresos")
+                        .HasForeignKey("UsuariosEntidadId");
                 });
 
             modelBuilder.Entity("SistemaVentas.Dominio.Entidades.ProductosEntidad", b =>

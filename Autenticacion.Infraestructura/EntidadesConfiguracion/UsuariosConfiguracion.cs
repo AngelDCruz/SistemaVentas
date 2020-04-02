@@ -37,6 +37,10 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
                 .HasForeignKey(u => u.UserId)
                 .IsRequired();
 
+            //entidad.HasMany(i => i.Ingresos)
+            //    .WithOne(u => u.Usuarios)
+            //    .HasForeignKey(i => i.UsuariosId);
+
         }
 
     }

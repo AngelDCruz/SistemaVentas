@@ -13,5 +13,7 @@ namespace SistemaVentas.Aplicacion.DTO.Respuestas.v1
 
         public string Descripcion { get; set; }
 
+        public string Estatus { get; set; }
+
     }
 }

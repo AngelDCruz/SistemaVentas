@@ -30,6 +30,10 @@ namespace SistemaVentas.Infraestructura.EntidadesConfiguracion
 
             entidad.Property(x => x.Imagen)
                 .HasColumnType("VARCHAR(MAX)");
+
+            entidad.HasMany(d => d.DetalleIngresos)
+                .WithOne(p => p.Productos)
+                .HasForeignKey(d => d.ProductosId);
       
         }
 

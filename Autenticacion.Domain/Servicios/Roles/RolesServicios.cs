@@ -49,6 +49,7 @@ namespace Autenticacion.Dominio.Servicios.Roles
         public async Task<RolesEntidad> CrearRoleAsync(RolesEntidad role)
         {
 
+            role.Estatus = "Act";
             return await _rolesInfoRepositorio.CrearRoleAsync(role);
 
         }

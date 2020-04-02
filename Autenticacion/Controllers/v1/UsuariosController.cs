@@ -235,44 +235,7 @@ namespace Autenticacion.Api.Controllers.v1
 
         }
 
-        /// <summary>
-        ///  ACTUALIZA DATOS PERSONALES DE USUARIO
-        /// </summary>
-        /// <param name="idUsuario"></param>
-        /// <param name="idDatos"></param>
-        /// <param name="datosPersonalesDTO"></param>
-        /// <returns></returns>
-        [HttpPut("{idUsuario:guid}/datos-personales")]
-        public async Task<ActionResult> ActualizarDatosPersonalesUsuariosAsync(
-            [FromRoute] Guid idUsuario, [FromBody] ActualizarDatosPersonalesDTO datosPersonalesDTO
-        )
-        {
-
-            if (idUsuario == null)
-            {
-
-                return BadRequest("Modelo no válido");
-
-            }
-
-            var usuario = await _usuariosServicios.ObtenerUsuarioIdAsync(idUsuario);
-
-            if (usuario == null) return BadRequest("Usuario no encontrado");
-
-            var datosPersonales = _mapper.Map<DatosPersonalesEntidad>(datosPersonalesDTO);
-
-            bool usuarioActualizado = await _usuariosServicios.ActualizarDatosPersonalesUsuarioAsync(datosPersonales, idUsuario);
-
-            if (!usuarioActualizado)
-            {
-
-                return BadRequest("El usuario no ha podido actualizarse");
-
-            }
-
-            return NoContent();
-
-        }
+        
 
 
         /// <summary>

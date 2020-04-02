@@ -17,6 +17,9 @@ namespace SistemaVentas.Aplicacion.DTO.Respuestas.v1
 
         public string Imagen { get; set; }
 
+        public Guid Categoria { get; set; }
+
+        public string Estatus { get; set; }
 
     }
 }

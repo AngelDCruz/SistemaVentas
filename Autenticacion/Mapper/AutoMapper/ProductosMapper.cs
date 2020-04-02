@@ -18,6 +18,8 @@ namespace SistemaVentas.Api.Mapper.AutoMapper
                 .ForMember(p => p.Codigo, opcion => opcion.MapFrom(x => x.Codigo))
                 .ForMember(p => p.Imagen, opcion => opcion.MapFrom(x => x.Imagen))
                 .ForMember(p => p.Descripcion, opcion => opcion.MapFrom(x => x.Descripcion))
+                .ForMember(p => p.Categoria, opcion => opcion.MapFrom(x => x.CategoriaId))
+                .ForMember(p => p.Estatus, opcion => opcion.MapFrom(x => x.Estatus))
                 .ReverseMap();
 
             CreateMap<ProductosEntidad, CrearProductoDTO>()

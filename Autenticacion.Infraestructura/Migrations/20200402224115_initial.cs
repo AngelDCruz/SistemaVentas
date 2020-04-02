@@ -30,17 +30,17 @@ namespace SistemaVentas.Infraestructura.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DatosPersonales",
+                name: "Personas",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Nombre = table.Column<string>(maxLength: 50, nullable: true),
-                    ApellidoPaterno = table.Column<string>(maxLength: 50, nullable: true),
-                    ApellidoMaterno = table.Column<string>(maxLength: 50, nullable: true),
-                    Pais = table.Column<string>(maxLength: 50, nullable: true),
-                    Ciudad = table.Column<string>(maxLength: 50, nullable: true),
-                    Calle = table.Column<string>(maxLength: 50, nullable: true),
-                    Telefono = table.Column<string>(maxLength: 13, nullable: true),
+                    Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false, defaultValueSql: "NEWID()"),
+                    Nombre = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    Direccion = table.Column<string>(type: "VARCHAR(100)", nullable: false),
+                    Telefono = table.Column<string>(type: "VARCHAR(12)", nullable: false),
+                    Email = table.Column<string>(type: "VARCHAR(60)", nullable: false),
+                    TipoDocumento = table.Column<string>(type: "VARCHAR(60)", nullable: false),
+                    NumDocumento = table.Column<string>(type: "VARCHAR(20)", nullable: false),
+                    TipoPersona = table.Column<string>(type: "VARCHAR(50)", nullable: false),
                     UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -49,7 +49,7 @@ namespace SistemaVentas.Infraestructura.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DatosPersonales", x => x.Id);
+                    table.PrimaryKey("PK_Personas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,31 +72,6 @@ namespace SistemaVentas.Infraestructura.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Productos",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false, defaultValueSql: "NEWID()"),
-                    Nombre = table.Column<string>(type: "VARCHAR(50)", nullable: false),
-                    Descripcion = table.Column<string>(type: "VARCHAR(100)", nullable: true),
-                    UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(nullable: false),
-                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
-                    FechaModificacion = table.Column<DateTime>(nullable: false),
-                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false),
-                    CategoriaId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Productos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Productos_Categorias_CategoriaId",
-                        column: x => x.CategoriaId,
-                        principalTable: "Categorias",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
                 {
@@ -112,16 +87,36 @@ namespace SistemaVentas.Infraestructura.Migrations
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     FechaModificacion = table.Column<DateTime>(nullable: false),
-                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false),
-                    DatosPersonalesId = table.Column<Guid>(nullable: true)
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Productos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false, defaultValueSql: "NEWID()"),
+                    Nombre = table.Column<string>(type: "VARCHAR(50)", nullable: false),
+                    Codigo = table.Column<string>(type: "CHAR(10)", nullable: false),
+                    Descripcion = table.Column<string>(type: "VARCHAR(100)", nullable: true),
+                    Imagen = table.Column<string>(type: "VARCHAR(MAX)", nullable: true),
+                    UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false),
+                    CategoriaId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Productos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Usuarios_DatosPersonales_DatosPersonalesId",
-                        column: x => x.DatosPersonalesId,
-                        principalTable: "DatosPersonales",
+                        name: "FK_Productos_Categorias_CategoriaId",
+                        column: x => x.CategoriaId,
+                        principalTable: "Categorias",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -151,6 +146,41 @@ namespace SistemaVentas.Infraestructura.Migrations
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ingresos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UsuariosId = table.Column<Guid>(nullable: false),
+                    TipoComprobante = table.Column<string>(nullable: true),
+                    SerieComprobante = table.Column<string>(nullable: true),
+                    Impuesto = table.Column<double>(nullable: false),
+                    Total = table.Column<double>(nullable: false),
+                    UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false),
+                    PersonasId = table.Column<Guid>(nullable: false),
+                    UsuariosEntidadId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingresos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ingresos_Personas_PersonasId",
+                        column: x => x.PersonasId,
+                        principalTable: "Personas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ingresos_Usuarios_UsuariosEntidadId",
+                        column: x => x.UsuariosEntidadId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -234,11 +264,62 @@ namespace SistemaVentas.Infraestructura.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "DetalleIngresos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IngresosId = table.Column<Guid>(nullable: false),
+                    ProductosId = table.Column<Guid>(nullable: false),
+                    Cantidad = table.Column<int>(nullable: false),
+                    Precio = table.Column<double>(nullable: false),
+                    UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DetalleIngresos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DetalleIngresos_Ingresos_IngresosId",
+                        column: x => x.IngresosId,
+                        principalTable: "Ingresos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DetalleIngresos_Productos_ProductosId",
+                        column: x => x.ProductosId,
+                        principalTable: "Productos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetalleIngresos_IngresosId",
+                table: "DetalleIngresos",
+                column: "IngresosId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetalleIngresos_ProductosId",
+                table: "DetalleIngresos",
+                column: "ProductosId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingresos_PersonasId",
+                table: "Ingresos",
+                column: "PersonasId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingresos_UsuariosEntidadId",
+                table: "Ingresos",
+                column: "UsuariosEntidadId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Productos_CategoriaId",
                 table: "Productos",
-                column: "CategoriaId",
-                unique: true);
+                column: "CategoriaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleReclamaciones_RoleId",
@@ -258,11 +339,6 @@ namespace SistemaVentas.Infraestructura.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_DatosPersonalesId",
-                table: "Usuarios",
-                column: "DatosPersonalesId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UsuariosRoles_RoleId",
                 table: "UsuariosRoles",
                 column: "RoleId");
@@ -277,7 +353,7 @@ namespace SistemaVentas.Infraestructura.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Productos");
+                name: "DetalleIngresos");
 
             migrationBuilder.DropTable(
                 name: "RoleReclamaciones");
@@ -293,16 +369,22 @@ namespace SistemaVentas.Infraestructura.Migrations
                 schema: "Autenticacion");
 
             migrationBuilder.DropTable(
-                name: "Categorias");
+                name: "Ingresos");
+
+            migrationBuilder.DropTable(
+                name: "Productos");
 
             migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
+                name: "Personas");
+
+            migrationBuilder.DropTable(
                 name: "Usuarios");
 
             migrationBuilder.DropTable(
-                name: "DatosPersonales");
+                name: "Categorias");
         }
     }
 }
