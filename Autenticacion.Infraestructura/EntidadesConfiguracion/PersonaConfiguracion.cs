@@ -48,9 +48,9 @@ namespace SistemaVentas.Infraestructura.EntidadesConfiguracion
                .HasColumnType("VARCHAR(50)")
                .IsRequired();
 
-            //entidad.HasMany(i => i.Ingresos)
-            //    .WithOne(p => p.Personas)
-            //    .HasForeignKey(i => i.PersonasId);
+            entidad.HasMany(i => i.Ingresos)
+                .WithOne(p => p.Personas)
+                .HasForeignKey(i => i.PersonasId);
 
         }
 

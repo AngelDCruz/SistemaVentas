@@ -15,6 +15,8 @@ namespace SistemaVentas.Dominio.Entidades
 
         public Guid UsuariosId { get; set; }
 
+        public Guid PersonasId { get; set; }
+
         public string TipoComprobante { get; set; }
 
         public string SerieComprobante { get; set; }
@@ -42,9 +44,9 @@ namespace SistemaVentas.Dominio.Entidades
 
         public List<DetalleIngresoEntidad> DetalleIngresos { get; set; }
 
-        public Guid PersonasId { get; set; }
-
         public PersonaEntidad Personas { get; set; }
+
+        public UsuariosEntidad Usuarios { get; set; }
 
     }
 }

@@ -130,6 +130,8 @@ namespace SistemaVentas.Infraestructura.Repositorio
         public async Task<IngresoEntidad> CrearIngresoDetalle(IngresoEntidad ingreso)
         {
 
+            ingreso.UsuariosId = _context.UsuarioAutenticado();
+
             await _context.Ingresos.AddAsync(ingreso);
 
             return await _context.SaveChangesAsync() > 0 ? ingreso : null;

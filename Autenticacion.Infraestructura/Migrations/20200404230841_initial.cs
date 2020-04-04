@@ -154,6 +154,7 @@ namespace SistemaVentas.Infraestructura.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     UsuariosId = table.Column<Guid>(nullable: false),
+                    PersonasId = table.Column<Guid>(nullable: false),
                     TipoComprobante = table.Column<string>(nullable: true),
                     SerieComprobante = table.Column<string>(nullable: true),
                     Impuesto = table.Column<double>(nullable: false),
@@ -162,9 +163,7 @@ namespace SistemaVentas.Infraestructura.Migrations
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     FechaModificacion = table.Column<DateTime>(nullable: false),
-                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false),
-                    PersonasId = table.Column<Guid>(nullable: false),
-                    UsuariosEntidadId = table.Column<Guid>(nullable: true)
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -176,11 +175,11 @@ namespace SistemaVentas.Infraestructura.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Ingresos_Usuarios_UsuariosEntidadId",
-                        column: x => x.UsuariosEntidadId,
+                        name: "FK_Ingresos_Usuarios_UsuariosId",
+                        column: x => x.UsuariosId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -312,9 +311,9 @@ namespace SistemaVentas.Infraestructura.Migrations
                 column: "PersonasId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ingresos_UsuariosEntidadId",
+                name: "IX_Ingresos_UsuariosId",
                 table: "Ingresos",
-                column: "UsuariosEntidadId");
+                column: "UsuariosId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Productos_CategoriaId",

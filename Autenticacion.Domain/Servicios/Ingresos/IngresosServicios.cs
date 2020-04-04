@@ -24,18 +24,6 @@ namespace SistemaVentas.Dominio.Servicios.Ingresos
         {
 
 
-            var ingresos = new IngresoEntidad();
-
-            var id = Guid.NewGuid();
-
-            ingresos.Id = id;
-            ingresos.TipoComprobante = "Factura";
-            ingresos.SerieComprobante = "AKASASJS12AS";
-            ingresos.Impuesto = 16;
-            ingresos.Total = 1200;
-
-            ingresos.UsuariosId = Guid.NewGuid();
-            ingresos.Estatus = "Act";
             //ingreso.DetalleIngresos = new List<DetalleIngresoEntidad> {
             //    new DetalleIngresoEntidad
             //        {
@@ -45,21 +33,10 @@ namespace SistemaVentas.Dominio.Servicios.Ingresos
             //            Estatus = "Act"
             //        }
             //};
-            ////ingresos.Personas = new PersonaEntidad
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Direccion = "asdasdasd",
-            //    Email = "test@test.com",
-            //    Telefono = "1231231231",
-            //    Nombre = "asjasdnsd dasdasdasd",
-            //    TipoPersona = "proveedores",
-            //    TipoDocumento = "CURP",
-            //    NumDocumento = "sKASDK12KSDAS",
-            //    Estatus = "Act"
-            //};
+ 
             //await _ingresoRepositorio.CrearDetalleIngreso();
 
-            return await _ingresoRepositorio.CrearIngresoDetalle(ingresos);
+            return await _ingresoRepositorio.CrearIngresoDetalle(ingreso);
 
         }
 

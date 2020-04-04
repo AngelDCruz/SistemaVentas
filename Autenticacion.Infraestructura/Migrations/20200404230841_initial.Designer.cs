@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SistemaVentas.Infraestructura.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200402224115_initial")]
+    [Migration("20200404230841_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -286,15 +286,13 @@ namespace SistemaVentas.Infraestructura.Migrations
                     b.Property<Guid>("UsuarioModificacion")
                         .HasColumnType("UNIQUEIDENTIFIER");
 
-                    b.Property<Guid?>("UsuariosEntidadId");
-
                     b.Property<Guid>("UsuariosId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PersonasId");
 
-                    b.HasIndex("UsuariosEntidadId");
+                    b.HasIndex("UsuariosId");
 
                     b.ToTable("Ingresos");
                 });
@@ -497,9 +495,10 @@ namespace SistemaVentas.Infraestructura.Migrations
                         .HasForeignKey("PersonasId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad")
+                    b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad", "Usuarios")
                         .WithMany("Ingresos")
-                        .HasForeignKey("UsuariosEntidadId");
+                        .HasForeignKey("UsuariosId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("SistemaVentas.Dominio.Entidades.ProductosEntidad", b =>
