@@ -25,7 +25,7 @@ namespace SistemaVentas.Aplicacion.DTO.Solicitudes.v1
         public string Codigo { get; set; }
 
         [Required(ErrorMessage = "La categoría es requerida")]
-        public Guid Categoria { get; set; }
+        public Guid CategoriaId { get; set; }
 
     }
 }

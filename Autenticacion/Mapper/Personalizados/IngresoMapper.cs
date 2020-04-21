@@ -15,8 +15,9 @@ namespace SistemaVentas.Api.Mapper.Personalizados
         {
 
             IngresoEntidad ingreso = new IngresoEntidad();
+            List<DetalleIngresoEntidad> lstDetalle = new List<DetalleIngresoEntidad>();
 
-            if( ingresoDTO != null )
+            if ( ingresoDTO != null )
             {
 
                 ingreso.PersonasId = ingresoDTO.PersonaId;
@@ -25,6 +26,27 @@ namespace SistemaVentas.Api.Mapper.Personalizados
                 ingreso.Impuesto = ingresoDTO.Impuesto;
                 ingreso.Total = ingresoDTO.Total;
                 ingreso.Estatus = "Act";
+
+                if(ingresoDTO.Detalles != null)
+                {
+
+                    foreach(var item in ingresoDTO.Detalles)
+                    {
+
+                        lstDetalle.Add(
+                            new DetalleIngresoEntidad
+                            {
+                                 ProductosId = item.ProductoId,
+                                 Cantidad = item.Cantidad,
+                                 Precio  = item.Precio
+                            }    
+                        );
+
+                    }
+
+                }
+
+                ingreso.DetalleIngresos = lstDetalle;
 
             }
 

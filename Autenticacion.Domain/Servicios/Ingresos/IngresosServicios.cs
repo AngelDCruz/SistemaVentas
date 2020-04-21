@@ -12,29 +12,21 @@ namespace SistemaVentas.Dominio.Servicios.Ingresos
     {
 
         private readonly IIngresoRepositorio _ingresoRepositorio;
+        private readonly IDetallesIngresoRepositorio _detallesIngresoRepositorio;
 
-        public IngresosServicios(IIngresoRepositorio ingresoRepositorio)
+        public IngresosServicios(
+            IIngresoRepositorio ingresoRepositorio,
+            IDetallesIngresoRepositorio detallesIngresoRepositorio
+         )
         {
 
             _ingresoRepositorio = ingresoRepositorio;
+            _detallesIngresoRepositorio = detallesIngresoRepositorio;
 
         }
 
         public async Task<IngresoEntidad> CrearIngresoDetalle(IngresoEntidad ingreso)
         {
-
-
-            //ingreso.DetalleIngresos = new List<DetalleIngresoEntidad> {
-            //    new DetalleIngresoEntidad
-            //        {
-            //            ProductosId = Guid.NewGuid(),
-            //            Cantidad = 4,
-            //            Precio = 20,
-            //            Estatus = "Act"
-            //        }
-            //};
- 
-            //await _ingresoRepositorio.CrearDetalleIngreso();
 
             return await _ingresoRepositorio.CrearIngresoDetalle(ingreso);
 
@@ -48,6 +40,13 @@ namespace SistemaVentas.Dominio.Servicios.Ingresos
 
            return await _ingresoRepositorio.ActualizarIngresoAsync(ingreso);
           
+        }
+
+        public Task<List<FacturaDetalleIngreso>> ObtenerDetallesIngresosIdAsync(Guid idIngreso)
+        {
+
+            return _detallesIngresoRepositorio.ObtenerDetallesIngresosIdAsync(idIngreso);
+
         }
 
         public async Task<FacturaIngreso> ObtenerIngresoIdAsync(Guid Id)

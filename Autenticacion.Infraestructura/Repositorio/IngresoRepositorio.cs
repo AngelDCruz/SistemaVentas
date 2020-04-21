@@ -105,8 +105,9 @@ namespace SistemaVentas.Infraestructura.Repositorio
                 Usuario = reader["Usuario"].ToString(),
                 TipoComprobante = reader["TipoComprobante"].ToString(),
                 SerieComprobante = reader["SerieComprobante"].ToString(),
-                Fecha = reader["FechaCreacion"].ToString(),
+                Impuesto = (double)reader["Impuesto"],
                 Total = (double)reader["Total"],
+                Fecha = reader["FechaCreacion"].ToString(),
                 Estatus = reader["Estatus"].ToString()
             };
         }

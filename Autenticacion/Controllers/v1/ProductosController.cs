@@ -93,7 +93,7 @@ namespace SistemaVentas.Api.Controllers.v1
 
             if (productoExiste != null) return BadRequest("El producto ya esta registrado con el mismo codigo");
 
-            if (await _categoriaServicios.ObtenerCategoriaPorIdAsync(crearProductoDTO.Categoria) == null)
+            if (await _categoriaServicios.ObtenerCategoriaPorIdAsync(crearProductoDTO.CategoriaId) == null)
             {
 
                 return BadRequest("La categoria no es válida");
@@ -103,12 +103,17 @@ namespace SistemaVentas.Api.Controllers.v1
             var crearProducto = _mapper.Map<ProductosEntidad>(crearProductoDTO);
 
 
-            // CARGA DE IMAGEN
-            //var raizProyecto = _hostingEnvironment.ContentRootPath;
-            var destino = $"wwwroot\\assets\\img\\productos\\";
-            var imagenFinal = SubidaImagenProducto(crearProductoDTO.Imagen, destino);
 
-            crearProducto.Imagen = imagenFinal;
+            if (crearProducto.Imagen != null)
+            {
+                // CARGA DE IMAGEN
+                //var raizProyecto = _hostingEnvironment.ContentRootPath;
+                var destino = $"wwwroot\\assets\\img\\productos\\";
+                var imagenFinal = SubidaImagenProducto(crearProductoDTO.Imagen, destino);
+
+                crearProducto.Imagen = imagenFinal;
+            
+            }
 
             var respuesta = await _productosServicios.CrearProductoAsync(crearProducto);
 

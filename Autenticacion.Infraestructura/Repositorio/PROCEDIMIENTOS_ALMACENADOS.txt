@@ -1,0 +1,66 @@
+
+
+// LISTA DE PROCEDIMIENTOS ALMACENADOS
+
+CREATE PROCEDURE IngresosRegistros
+AS
+			 SELECT  
+	DISTINCT  
+	I.Id,
+	P.Nombre AS Proveedor,
+	U.Usuario,
+	I.TipoComprobante,
+	I.SerieComprobante,
+	I.Impuesto,
+	I.FechaCreacion,
+	I.Total,
+	I.Estatus
+  FROM Ingresos AS I 
+  INNER JOIN DetalleIngresos AS DT 
+  ON I.Id = DT.IngresosId
+  INNER JOIN Usuarios AS U
+  ON U.Id = I.UsuariosId 
+  INNER JOIN Personas AS P
+  ON P.Id = I.PersonasId
+  ORDER BY I.Estatus ASC
+
+	GO
+
+CREATE PROCEDURE IngresosRegistrosPorId
+	@Id uniqueidentifier 
+ AS
+		SELECT 
+		I.Id,
+		P.Nombre AS Proveedor,
+		U.Usuario,
+		I.TipoComprobante,
+		I.SerieComprobante,
+		I.Impuesto,
+		I.FechaCreacion,
+		I.Total,
+		I.Estatus
+	  FROM Ingresos AS I 
+	  INNER JOIN DetalleIngresos AS DT 
+	  ON I.Id = DT.IngresosId
+	  INNER JOIN Usuarios AS U
+	  ON U.Id = I.UsuariosId 
+	  INNER JOIN Personas AS P
+	  ON P.Id = I.PersonasId WHERE I.Id = @Id;
+ GO
+
+ CREATE PROCEDURE ObtenerDetallesIngresosId 
+	@Id UNIQUEIDENTIFIER
+AS
+	SELECT 
+		p.Id,
+		P.Nombre AS Producto,
+		D.Cantidad,
+		D.Precio,
+		D.FechaCreacion,
+		D.Estatus
+	 FROM DetalleIngresos AS D
+	INNER JOIN Productos AS P 
+	ON P.Id = D.ProductosId
+	WHERE D.IngresosId = @Id
+
+GO

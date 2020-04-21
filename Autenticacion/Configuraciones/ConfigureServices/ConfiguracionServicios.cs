@@ -131,6 +131,8 @@ namespace Autenticacion.Api.Startup.ConfigureServices
             services.AddScoped<IProductosRepositorio, ProductosRepositorio>();
             services.AddScoped<IPersonaRepositorio, PersonaRepositorio>();
             services.AddScoped<IIngresoRepositorio, IngresoRepositorio>();
+            services.AddScoped<IDetallesIngresoRepositorio, DetalleIngresoRepositorio>();
+
 
             return services;
 

@@ -17,5 +17,7 @@ namespace SistemaVentas.Aplicacion.DTO.Solicitudes.v1
 
         public double Total { get; set; }
 
+        public List< CrearDetalleIngresoDTO> Detalles { get; set; }
+
     }
 }

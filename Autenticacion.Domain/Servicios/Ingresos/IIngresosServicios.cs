@@ -18,5 +18,7 @@ namespace SistemaVentas.Dominio.Servicios.Ingresos
 
         Task<IngresoEntidad> CrearIngresoDetalle(IngresoEntidad ingreso);
 
+        Task<List<FacturaDetalleIngreso>> ObtenerDetallesIngresosIdAsync(Guid idIngreso);
+
     }
 }

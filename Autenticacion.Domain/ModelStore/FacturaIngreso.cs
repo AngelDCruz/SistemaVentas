@@ -17,9 +17,11 @@ namespace SistemaVentas.Dominio.ModelStore
 
         public string SerieComprobante { get; set; }
 
-        public string Fecha { get; set; }
-
         public double Total { get; set; }
+
+        public double Impuesto { get; set; }
+
+        public string Fecha { get; set; }
 
         public string Estatus { get; set; }
 
