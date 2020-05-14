@@ -24,5 +24,7 @@ namespace Autenticacion.Dominio.Repositorio
 
         Task<bool> EliminarRoleIdAsync(RolesEntidad Role);
 
+        Task<List<RolesEntidad>> ObtenerRolesNombreBusquedaAsync(string nombre);
+
     }
 }

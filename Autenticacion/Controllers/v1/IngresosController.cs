@@ -145,6 +145,26 @@ namespace SistemaVentas.Api.Controllers.v1
 
         }
 
+        [HttpGet("ingreso-dia")]
+        public async Task<ActionResult> ObtenerTotalIngresoDiaAsync()
+        {
+
+            var ingreso = await _ingresosServicios.TotalIngresoDiaAsync();
+
+            return Ok(ingreso);
+
+        }
+
+        [HttpGet("ingresos-dias")]
+        public async Task<ActionResult> IngresoUltimo10DiasAsync()
+        {
+
+            var ingreso = await _ingresosServicios.IngresoUltimo10DiasAsync();
+
+            return Ok(ingreso);
+
+        }
+
 
     }
 }

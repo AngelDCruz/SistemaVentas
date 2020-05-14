@@ -8,24 +8,22 @@ using System.Text;
 
 namespace SistemaVentas.Dominio.Entidades
 {
-    public class PersonaEntidad : IAuditoria
+    public class VentaEntidad : IAuditoria
     {
 
         public Guid Id { get; set; }
 
-        public string  Nombre { get; set; }
+        public Guid PersonaId { get; set; }
 
-        public string Direccion { get; set; }
+        public Guid UsuariosId { get; set; }
 
-        public string Telefono { get; set; }
+        public string TipoComprobante { get; set; }
 
-        public string Email { get; set; }
+        public string SerieComprobante { get; set; }
 
-        public string TipoDocumento { get; set; }
+        public double Impuesto { get; set; }
 
-        public string NumDocumento { get; set; }
-
-        public string TipoPersona { get; set; }
+        public double Total { get; set; }
 
         [Required]
         [Column(TypeName = "UNIQUEIDENTIFIER")]
@@ -44,9 +42,11 @@ namespace SistemaVentas.Dominio.Entidades
         [Column(TypeName = "CHAR(3)")]
         public string Estatus { get; set; }
 
-        public List<IngresoEntidad> Ingresos { get; set; }
+        public PersonaEntidad Personas { get; set; }
 
-        public List<VentaEntidad> Ventas { get; set; }
+        public UsuariosEntidad Usuarios { get; set; }
+
+        public List<DetalleVentaEntidad> DetalleVentas { get; set; }
 
     }
 }

@@ -32,7 +32,7 @@ namespace Autenticacion.Infraestructura.Repositorio
         {
 
             return await _autenticacionDbContext.Roles.OfType<RolesEntidad>()
-                .Where(x => x.Estatus != "Baj").ToListAsync();
+                .OrderBy(x => x.Estatus).ToListAsync();
 
         }
 
@@ -42,7 +42,7 @@ namespace Autenticacion.Infraestructura.Repositorio
             return await _autenticacionDbContext.
                 Roles
                 .Include(x => x.UsuariosRoles)
-                .FirstOrDefaultAsync(x => x.Id == id && x.Estatus != "Baj");
+                .FirstOrDefaultAsync(x => x.Id == id);
 
         }
 
@@ -50,7 +50,7 @@ namespace Autenticacion.Infraestructura.Repositorio
         {
 
             return await _autenticacionDbContext.
-                Roles.FirstOrDefaultAsync(x => x.Name == nombre && x.Estatus != "Baj");
+                Roles.FirstOrDefaultAsync(x => x.Name == nombre);
 
         }
 
@@ -91,5 +91,12 @@ namespace Autenticacion.Infraestructura.Repositorio
 
         }
 
+        public async Task<List<RolesEntidad>> ObtenerRolesNombreBusquedaAsync(string nombre)
+        {
+
+            return await _autenticacionDbContext.Roles.OfType<RolesEntidad>()
+                .Where(x => x.Name.Contains(nombre)).ToListAsync();
+
+        }
     }
 }

@@ -41,15 +41,14 @@ namespace Autenticacion.Infraestructura.Repositorio
 
             return await _context.Usuarios
                 .Include(x=>x.UsuariosRoles)
-                .FirstOrDefaultAsync(x => x.Id == id && x.Estatus != "Baj");
+                .FirstOrDefaultAsync(x => x.Id == id);
 
         }
 
         public async Task<UsuariosEntidad> ObtenerUsuarioEmailAsync(string email)
         {
 
-            return await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email && 
-            x.Estatus != "Baj");
+            return await _context.Usuarios.FirstOrDefaultAsync(x => x.Email == email);
 
         }
 

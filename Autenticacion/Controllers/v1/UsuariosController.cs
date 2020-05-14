@@ -21,6 +21,7 @@ using Common.Decoradores;
 
 using Autenticacion.Aplicacion.DTO.Solicitudes.v1;
 using Autenticacion.Aplicacion.DTO.Respuestas.v1;
+using SistemaVentas.Aplicacion.DTO.Solicitudes.v1;
 
 namespace Autenticacion.Api.Controllers.v1
 {
@@ -274,6 +275,36 @@ namespace Autenticacion.Api.Controllers.v1
             if (!respuesta) return NotFound("El nombre de usuario no se ha podido actualizar");
 
             return NoContent();
+
+        }
+
+        [HttpGet("{Id:guid}/activar-usuario")]
+        public async Task<ActionResult> ActivarUsuarioAsync([FromRoute] Guid Id)
+        {
+
+            var usuario = await _usuariosServicios.ObtenerUsuarioIdAsync(Id);
+
+            if (usuario == null) return BadRequest("Usuario no encontrado");
+
+            var respuesta = await _usuariosServicios.ActivarUsuarioAsync(Id);
+
+            if (!respuesta) return BadRequest("El usuario no se activo correctamente");
+
+            return NoContent();
+
+        }
+
+        [HttpPut("filtrar")]
+        public async Task<ActionResult> FiltrarUsuariosAsync([FromBody] FiltroUsuarioDTO filtro)
+        {
+
+            var lstUsuarios = await _usuariosServicios.FiltrarUsuariosAsync(filtro);
+
+            if (lstUsuarios == null) return NoContent();
+
+            var lstUsuarioDTO = _mapper.Map<List<UsuariosDTO>>(lstUsuarios);
+
+            return Ok(lstUsuarioDTO);
 
         }
 

@@ -23,5 +23,9 @@ namespace Autenticacion.Dominio.Servicios.Roles
 
         Task<bool> EliminarRoleAsync(RolesEntidad role);
 
+        Task<bool> ActivarRolePorIdAsync(Guid id);
+
+        Task<List<RolesEntidad>> BusquedaRoleAsync(string nombre);
+
     }
 }

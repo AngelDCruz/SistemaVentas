@@ -99,6 +99,8 @@ namespace Autenticacion.Infraestructura
         public bool Autenticado()
         {
 
+            if (_httpContextAccessor.HttpContext == null) return false;
+
             return _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated ? true : false;
 
         }
@@ -106,7 +108,7 @@ namespace Autenticacion.Infraestructura
         public Guid UsuarioAutenticado()
         {
 
-            if (!_httpContextAccessor.HttpContext.User.Identity.IsAuthenticated) return Guid.NewGuid();
+            if (!Autenticado()) return Guid.NewGuid();
 
             return Guid.Parse(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "Id").Value);
 

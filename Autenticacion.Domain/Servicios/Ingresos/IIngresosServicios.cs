@@ -20,5 +20,9 @@ namespace SistemaVentas.Dominio.Servicios.Ingresos
 
         Task<List<FacturaDetalleIngreso>> ObtenerDetallesIngresosIdAsync(Guid idIngreso);
 
+        Task<decimal> TotalIngresoDiaAsync();
+
+        Task<List<IngresoUltimos10Dias>> IngresoUltimo10DiasAsync();
+
     }
 }

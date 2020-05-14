@@ -62,5 +62,19 @@ namespace SistemaVentas.Dominio.Servicios.Ingresos
             return await _ingresoRepositorio.ObtenerIngresoAsync();
 
         }
+
+        public async Task<decimal> TotalIngresoDiaAsync()
+        {
+
+            return await _ingresoRepositorio.TotalIngresoDiaAsync();
+
+        }
+
+        public async Task<List<IngresoUltimos10Dias>> IngresoUltimo10DiasAsync()
+        {
+
+            return await _ingresoRepositorio.TotalIngresoUltimo10DiasAsync();
+
+        }
     }
 }

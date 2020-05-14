@@ -41,6 +41,10 @@ namespace Autenticacion.Infraestructura.EntidadesConfiguracion
                 .WithOne(u => u.Usuarios)
                 .HasForeignKey(i => i.UsuariosId);
 
+            entidad.HasMany(v => v.Ventas)
+                .WithOne(u => u.Usuarios)
+                .HasForeignKey(v => v.UsuariosId);
+
         }
 
     }

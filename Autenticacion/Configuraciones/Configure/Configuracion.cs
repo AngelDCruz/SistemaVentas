@@ -1,6 +1,8 @@
-﻿using Common.Middlewares;
+﻿using Autenticacion.Infraestructura;
+using Common.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using SistemaVentas.Infraestructura;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ namespace Autenticacion.Api.Startup.Configure
 {
     public static class Configuracion
     {
-        public static IApplicationBuilder Extenciones(this IApplicationBuilder app, IHostingEnvironment env)
+        public static IApplicationBuilder Extenciones(this IApplicationBuilder app, IHostingEnvironment env,  AppDbContext context)
         {
 
             if (env.IsDevelopment())
@@ -20,8 +22,8 @@ namespace Autenticacion.Api.Startup.Configure
 
             }
 
-            app.UseStaticFiles();
 
+            app.UseStaticFiles();
 
             app.UseAuthentication();
 
@@ -32,6 +34,8 @@ namespace Autenticacion.Api.Startup.Configure
              Swagger(app);
 
             app.UseMvc();
+
+            InicializarDatos.CrearDatos(context);
 
             return app;
 

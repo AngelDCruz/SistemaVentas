@@ -11,6 +11,7 @@ using Autenticacion.Dominio.DTO.Solicitudes.v1;
 using Autenticacion.Dominio.Entidades;
 
 using Common.Paginacion;
+using SistemaVentas.Aplicacion.DTO.Solicitudes.v1;
 
 namespace Autenticacion.Api.Servicios.Usuarios
 {
@@ -40,6 +41,9 @@ namespace Autenticacion.Api.Servicios.Usuarios
 
         Task<bool> EliminarUsuarioAsync(UsuariosEntidad usuario);
 
+        Task<bool> ActivarUsuarioAsync(Guid id);
+
+        Task<List<UsuariosEntidad>> FiltrarUsuariosAsync(FiltroUsuarioDTO filtro);
 
         /*
          * USUARIOS ROLES

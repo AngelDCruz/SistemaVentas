@@ -50,13 +50,17 @@ namespace Autenticacion.Infraestructura
     
             UsuariosConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosEntidad>());
             RolesConfiguracion.AplicarConfiguracion(builder.Entity<RolesEntidad>());
-            UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamacionesEntidad>());
+            RolesReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<RolesReclamacionesEntidad>());
             UsuariosReclamacionesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosReclamacionesEntidad>());
             UsuariosRolesConfiguracion.AplicarConfiguracion(builder.Entity<UsuariosRolesEntidad>());
 
             CategoriasConfiguracion.AplicarConfiguracion(builder.Entity<CategoriasEntidad>());
             ProductosConfiguracion.AplicarConfiguracion(builder.Entity<ProductosEntidad>());
             PersonaConfiguracion.AplicarConfiguracion(builder.Entity<PersonaEntidad>());
+            IngresosConfiguracion.AplicarConfiguracion(builder.Entity<IngresoEntidad>());
+            DetalleIngresosConfiguracion.AplicarConfiguracion(builder.Entity<DetalleIngresoEntidad>());
+            VentaConfiguracion.AplicarConfiguracion(builder.Entity<VentaEntidad>());
+            DetalleVentasConfiguracion.AplicarConfiguracion(builder.Entity<DetalleVentaEntidad>());
 
         }
     }

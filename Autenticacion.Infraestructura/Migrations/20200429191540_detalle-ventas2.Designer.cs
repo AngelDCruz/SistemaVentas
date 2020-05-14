@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SistemaVentas.Infraestructura.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200404230841_initial")]
-    partial class initial
+    [Migration("20200429191540_detalle-ventas2")]
+    partial class detalleventas2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -125,7 +125,7 @@ namespace SistemaVentas.Infraestructura.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Token","Autenticacion");
+                    b.ToTable("Token");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -224,9 +224,12 @@ namespace SistemaVentas.Infraestructura.Migrations
             modelBuilder.Entity("SistemaVentas.Dominio.Entidades.DetalleIngresoEntidad", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("UNIQUEIDENTIFIER")
+                        .HasDefaultValueSql("NEWID()");
 
-                    b.Property<int>("Cantidad");
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("INT");
 
                     b.Property<string>("Estatus")
                         .IsRequired()
@@ -238,7 +241,9 @@ namespace SistemaVentas.Infraestructura.Migrations
 
                     b.Property<Guid>("IngresosId");
 
-                    b.Property<double>("Precio");
+                    b.Property<decimal>("Precio")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
+                        .HasColumnType("DECIMAL(4,2)");
 
                     b.Property<Guid>("ProductosId");
 
@@ -257,10 +262,19 @@ namespace SistemaVentas.Infraestructura.Migrations
                     b.ToTable("DetalleIngresos");
                 });
 
-            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.IngresoEntidad", b =>
+            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.DetalleVentaEntidad", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("UNIQUEIDENTIFIER")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("INT");
+
+                    b.Property<decimal>("Descuento")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
+                        .HasColumnType("DECIMAL(4,2)");
 
                     b.Property<string>("Estatus")
                         .IsRequired()
@@ -270,15 +284,63 @@ namespace SistemaVentas.Infraestructura.Migrations
 
                     b.Property<DateTime>("FechaModificacion");
 
-                    b.Property<double>("Impuesto");
+                    b.Property<decimal>("Precio")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
+                        .HasColumnType("DECIMAL(4,2)");
+
+                    b.Property<Guid>("ProductoId")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<Guid>("UsuarioCreacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<Guid>("UsuarioModificacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<Guid>("VentaId")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductoId");
+
+                    b.HasIndex("VentaId");
+
+                    b.ToTable("DetalleVentas");
+                });
+
+            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.IngresoEntidad", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("UNIQUEIDENTIFIER")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("Estatus")
+                        .IsRequired()
+                        .HasColumnType("CHAR(3)");
+
+                    b.Property<DateTime>("FechaCreacion");
+
+                    b.Property<DateTime>("FechaModificacion");
+
+                    b.Property<decimal>("Impuesto")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
+                        .HasColumnType("DECIMAL(4, 2)");
 
                     b.Property<Guid>("PersonasId");
 
-                    b.Property<string>("SerieComprobante");
+                    b.Property<string>("SerieComprobante")
+                        .IsRequired()
+                        .HasColumnType("CHAR(12)");
 
-                    b.Property<string>("TipoComprobante");
+                    b.Property<string>("TipoComprobante")
+                        .IsRequired()
+                        .HasColumnType("CHAR(10)");
 
-                    b.Property<double>("Total");
+                    b.Property<decimal>("Total")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
+                        .HasColumnType("DECIMAL(11, 2)");
 
                     b.Property<Guid>("UsuarioCreacion")
                         .HasColumnType("UNIQUEIDENTIFIER");
@@ -395,6 +457,54 @@ namespace SistemaVentas.Infraestructura.Migrations
                     b.ToTable("Productos");
                 });
 
+            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.VentaEntidad", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Estatus")
+                        .IsRequired()
+                        .HasColumnType("CHAR(3)");
+
+                    b.Property<DateTime>("FechaCreacion");
+
+                    b.Property<DateTime>("FechaModificacion");
+
+                    b.Property<decimal>("Impuesto")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
+                        .HasColumnType("DECIMAL(4, 2)");
+
+                    b.Property<Guid>("PersonaId");
+
+                    b.Property<string>("SerieComprobante")
+                        .IsRequired()
+                        .HasColumnType("CHAR(12)");
+
+                    b.Property<string>("TipoComprobante")
+                        .IsRequired()
+                        .HasColumnType("CHAR(10)");
+
+                    b.Property<decimal>("Total")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
+                        .HasColumnType("DECIMAL(11, 2)");
+
+                    b.Property<Guid>("UsuarioCreacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<Guid>("UsuarioModificacion")
+                        .HasColumnType("UNIQUEIDENTIFIER");
+
+                    b.Property<Guid>("UsuariosId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonaId");
+
+                    b.HasIndex("UsuariosId");
+
+                    b.ToTable("Ventas");
+                });
+
             modelBuilder.Entity("Autenticacion.Dominio.Entidades.RolesReclamacionesEntidad", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>");
@@ -414,6 +524,8 @@ namespace SistemaVentas.Infraestructura.Migrations
                         .HasColumnType("UNIQUEIDENTIFIER");
 
                     b.HasIndex("RoleId");
+
+                    b.ToTable("RolesReclamaciones");
 
                     b.HasDiscriminator().HasValue("RolesReclamacionesEntidad");
                 });
@@ -488,6 +600,19 @@ namespace SistemaVentas.Infraestructura.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.DetalleVentaEntidad", b =>
+                {
+                    b.HasOne("SistemaVentas.Dominio.Entidades.ProductosEntidad", "Productos")
+                        .WithMany("DetalleVentas")
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("SistemaVentas.Dominio.Entidades.VentaEntidad", "Ventas")
+                        .WithMany("DetalleVentas")
+                        .HasForeignKey("VentaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("SistemaVentas.Dominio.Entidades.IngresoEntidad", b =>
                 {
                     b.HasOne("SistemaVentas.Dominio.Entidades.PersonaEntidad", "Personas")
@@ -506,6 +631,19 @@ namespace SistemaVentas.Infraestructura.Migrations
                     b.HasOne("SistemaVentas.Dominio.Entidades.CategoriasEntidad", "Categorias")
                         .WithMany("Productos")
                         .HasForeignKey("CategoriaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.VentaEntidad", b =>
+                {
+                    b.HasOne("SistemaVentas.Dominio.Entidades.PersonaEntidad", "Personas")
+                        .WithMany("Ventas")
+                        .HasForeignKey("PersonaId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Autenticacion.Dominio.Entidades.UsuariosEntidad", "Usuarios")
+                        .WithMany("Ventas")
+                        .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

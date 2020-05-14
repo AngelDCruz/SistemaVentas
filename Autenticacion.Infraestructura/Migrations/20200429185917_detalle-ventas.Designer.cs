@@ -4,14 +4,16 @@ using Autenticacion.Infraestructura;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace SistemaVentas.Infraestructura.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200429185917_detalle-ventas")]
+    partial class detalleventas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,11 +300,13 @@ namespace SistemaVentas.Infraestructura.Migrations
                     b.Property<Guid>("VentaId")
                         .HasColumnType("UNIQUEIDENTIFIER");
 
+                    b.Property<Guid?>("VentasId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductoId");
 
-                    b.HasIndex("VentaId");
+                    b.HasIndex("VentasId");
 
                     b.ToTable("DetalleVentas");
                 });
@@ -607,8 +611,7 @@ namespace SistemaVentas.Infraestructura.Migrations
 
                     b.HasOne("SistemaVentas.Dominio.Entidades.VentaEntidad", "Ventas")
                         .WithMany("DetalleVentas")
-                        .HasForeignKey("VentaId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("VentasId");
                 });
 
             modelBuilder.Entity("SistemaVentas.Dominio.Entidades.IngresoEntidad", b =>

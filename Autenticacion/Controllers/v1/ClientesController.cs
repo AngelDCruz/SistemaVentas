@@ -57,11 +57,11 @@ namespace SistemaVentas.Api.Controllers.v1
         /// <param name="Id"></param>
         /// <returns></returns>
 
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult> ObtenerClienteIdAsync([FromRoute] Guid id)
+        [HttpGet("{Id:guid}", Name = "ObtenerClienteIdAsync")]
+        public async Task<ActionResult> ObtenerClienteIdAsync([FromRoute] Guid Id)
         {
 
-            var persona = await _clientesServicios.ObtenerClienteIdAsync(id);
+            var persona = await _clientesServicios.ObtenerClienteIdAsync(Id);
 
             if (persona == null) return NotFound("Cliente no encontrado");
 
@@ -91,7 +91,7 @@ namespace SistemaVentas.Api.Controllers.v1
 
             var clienteRespuestDTO = _mapper.Map<PersonasDTO>(respuesta);
 
-            return CreatedAtRoute(nameof(ObtenerClienteIdAsync), new { id = clienteRespuestDTO.Id }, clienteRespuestDTO);
+            return CreatedAtRoute("ObtenerClienteIdAsync", new { id = clienteRespuestDTO.Id }, clienteRespuestDTO);
 
         }
 

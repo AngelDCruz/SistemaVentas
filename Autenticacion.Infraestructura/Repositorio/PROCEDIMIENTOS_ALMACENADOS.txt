@@ -2,6 +2,8 @@
 
 // LISTA DE PROCEDIMIENTOS ALMACENADOS
 
+// INGRESOS
+
 CREATE PROCEDURE IngresosRegistros
 AS
 			 SELECT  
@@ -64,3 +66,91 @@ AS
 	WHERE D.IngresosId = @Id
 
 GO
+
+CREATE PROCEDURE TotalDiaIngreso
+AS
+	SELECT ISNULL(SUM(Total),0) AS Total FROM Ingresos WHERE CONVERT(DATE, FechaCreacion) = CONVERT(DATE, GETDATE());
+GO
+
+CREATE PROCEDURE TotalIngreso10Dias
+AS
+
+	SELECT TOP 10 CONVERT(DATE, FechaCreacion) AS Dia, SUM(Total) AS Total FROM Ingresos
+	GROUP BY CONVERT(DATE, FechaCreacion) ORDER BY MAX(FechaCreacion) DESC;
+
+GO
+
+
+// VENTAS
+
+
+CREATE PROCEDURE RegistrosVentas
+AS
+	SELECT
+	VE.Id,
+	PE.Nombre AS Cliente, 
+	US.Usuario,
+	VE.TipoComprobante,
+	VE.SerieComprobante,
+	VE.Impuesto,
+	VE.Total,
+	VE.FechaCreacion AS Fecha,
+	VE.Estatus
+FROM Ventas AS VE 
+INNER JOIN Usuarios AS US
+ON US.Id = VE.UsuariosId
+INNER JOIN Personas AS PE
+ON PE.Id = VE.PersonaId
+GO
+
+CREATE PROCEDURE RegistrosVentasPorId
+@Id UNIQUEIDENTIFIER
+AS
+	SELECT
+	VE.Id,
+	PE.Nombre AS Cliente, 
+	US.Usuario,
+	VE.TipoComprobante,
+	VE.SerieComprobante,
+	VE.Impuesto,
+	VE.Total,
+	VE.FechaCreacion AS Fecha,
+	VE.Estatus
+FROM Ventas AS VE 
+INNER JOIN Usuarios AS US
+ON US.Id = VE.UsuariosId
+INNER JOIN Personas AS PE
+ON PE.Id = VE.PersonaId
+WHERE VE.Id = @Id
+GO
+
+
+   CREATE PROCEDURE ObtenerDetallesVentaId 
+	@Id UNIQUEIDENTIFIER
+AS
+	SELECT 
+		p.Id,
+		P.Nombre AS Producto,
+		D.Cantidad,
+		D.Precio,
+		D.FechaCreacion AS Fecha,
+		D.Estatus
+	 FROM DetalleVentas AS D
+	INNER JOIN Productos AS P 
+	ON P.Id = D.ProductoId
+	WHERE D.VentaId = @Id
+
+GO
+
+CREATE PROCEDURE TotalDiaVenta
+AS
+	  SELECT ISNULL(SUM(Total), 0) AS Total FROM Ventas WHERE CONVERT(DATE, FechaCreacion) = CONVERT(DATE,GETDATE());
+GO
+
+
+CREATE PROCEDURE VentasUltimo10Dias
+AS
+	SELECT TOP 10 CONVERT(DATE, FechaCreacion) AS Dia, SUM(Total) AS Total FROM Ventas GROUP BY CONVERT(DATE,FechaCreacion) ORDER BY MAX(FechaCreacion) DESC;
+GO
+
+

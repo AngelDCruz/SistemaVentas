@@ -7,7 +7,8 @@ using System.Text;
 
 namespace Autenticacion.Infraestructura.EntidadesConfiguracion
 {
-    [Table(name: "Token", Schema ="Autenticacion")]
+    [Table(name: "Token")]
+    //[Table(name: "Token", Schema ="Autenticacion")]
     public class TokenEntidad
     {
 

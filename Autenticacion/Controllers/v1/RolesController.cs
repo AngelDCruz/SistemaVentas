@@ -13,6 +13,7 @@ using Autenticacion.Aplicacion.DTO.Respuestas.v1;
 using Autenticacion.Aplicacion.DTO.Solicitudes.v1;
 
 using AutoMapper;
+using SistemaVentas.Aplicacion.DTO.Solicitudes.v1;
 
 namespace Autenticacion.Api.Controllers.v1
 {
@@ -143,6 +144,38 @@ namespace Autenticacion.Api.Controllers.v1
 
         }
 
+        /// <summary>
+        ///  ACTIVA ROLE MEDIANTE EL ID
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet("{Id:guid}/activar-role")]
+        public async  Task<ActionResult> ActivarRoleAsync([FromRoute] Guid Id)
+        {
+
+            var role = await _rolesServicios.ObtenerRoleIdAsync(Id);
+
+            if (role == null) return NotFound("Role no encontrado");
+
+            var respuesta = await _rolesServicios.ActivarRolePorIdAsync(Id);
+
+            if (!respuesta) return BadRequest("El rol no se pudo activar correctamente");
+
+            return NoContent();
+
+        }
+
+        [HttpPost("busqueda")]
+        public async Task<ActionResult> BusquedaRoleNombre([FromBody] FiltroRoleDTO roleDTO)
+        {
+
+            var lstRoles = await _rolesServicios.BusquedaRoleAsync(roleDTO.Nombre);
+
+            if (lstRoles == null) return NoContent();
+
+            return Ok(_mapper.Map<List<RolesDTO>>(lstRoles));
+
+        }
 
     }
 }

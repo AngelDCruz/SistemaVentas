@@ -14,7 +14,7 @@ namespace Autenticacion.Api.Mapper.Personalizados
         {
 
             UsuariosEntidad usuario = new UsuariosEntidad();
-            var lstUsuariosRoles = new List<UsuariosRolesEntidad>();
+            //var lstUsuariosRoles = new List<UsuariosRolesEntidad>();
 
             if(entidad != null)
             {
@@ -24,23 +24,23 @@ namespace Autenticacion.Api.Mapper.Personalizados
                 usuario.Email = entidad.Email;
 
 
-                if (entidad.Roles.Count > 0)
-                {
+                //if (entidad.Roles.Count > 0)
+                //{
 
-                    foreach (var role in entidad.Roles)
-                    {
+                //    foreach (var role in entidad.Roles)
+                //    {
 
-                        lstUsuariosRoles.Add(new UsuariosRolesEntidad
-                        {
-                            UserId = usuario.Id,
-                            RoleId = role
-                        });
+                //        lstUsuariosRoles.Add(new UsuariosRolesEntidad
+                //        {
+                //            UserId = usuario.Id,
+                //            RoleId = role
+                //        });
 
-                    }
+                //    }
 
-                    usuario.UsuariosRoles = lstUsuariosRoles;
+                //    usuario.UsuariosRoles = lstUsuariosRoles;
 
-                }
+                //}
 
             
 

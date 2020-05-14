@@ -13,6 +13,7 @@ using Common.Paginacion;
 
 using Autenticacion.Dominio.Servicios.Roles;
 using Autenticacion.Aplicacion.DTO.Respuestas.v1;
+using SistemaVentas.Aplicacion.DTO.Solicitudes.v1;
 
 namespace Autenticacion.Api.Servicios.Usuarios
 {
@@ -47,9 +48,7 @@ namespace Autenticacion.Api.Servicios.Usuarios
         public async Task<List<UsuariosDTO>> ObtenerUsuariosAsync(IncluirUsuariosDTO incluir, FiltroPagina filtro)
         {
 
-            var lstUsuarios = _usuariosRepositorio.ObtenerUsuariosAsync()
-                              .Include(x => x.UsuariosRoles)
-                              .Where(x => x.Estatus != "Baj");
+            var lstUsuarios = _usuariosRepositorio.ObtenerUsuariosAsync();
 
             if (lstUsuarios == null) return null;
             
@@ -198,6 +197,37 @@ namespace Autenticacion.Api.Servicios.Usuarios
 
         }
 
-       
+        public async Task<bool> ActivarUsuarioAsync(Guid id)
+        {
+
+            var usuario = await _usuariosRepositorio.ObtenerUsuarioPorIdAsync(id);
+            usuario.Estatus = "Act";
+
+            return await _usuariosRepositorio.ActualizarUsuarioAsync(usuario);
+
+        }
+
+        public async Task<List<UsuariosEntidad>> FiltrarUsuariosAsync(FiltroUsuarioDTO filtro)
+        {
+
+            var lstUsuarios =  _usuariosRepositorio.ObtenerUsuariosAsync();
+
+            if(!string.IsNullOrEmpty(filtro.Usuario))
+            {
+
+                lstUsuarios = lstUsuarios.Where(x => x.UserName.Contains(filtro.Usuario));
+
+            }
+
+            if(!string.IsNullOrEmpty(filtro.Email))
+            {
+
+                lstUsuarios = lstUsuarios.Where(x => x.Email.Contains(filtro.Email));
+
+            }
+
+            return await lstUsuarios.ToListAsync();
+
+        }
     }
 }

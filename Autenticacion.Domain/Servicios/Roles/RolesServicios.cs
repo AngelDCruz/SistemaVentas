@@ -68,5 +68,21 @@ namespace Autenticacion.Dominio.Servicios.Roles
 
         }
 
+        public async Task<bool> ActivarRolePorIdAsync(Guid id)
+        {
+
+            var role = await _rolesInfoRepositorio.ObtenerRoleIdAsync(id);
+            role.Estatus = "Act";
+
+            return await _rolesInfoRepositorio.ActualizarRoleAsync(role);
+
+        }
+
+        public async Task<List<RolesEntidad>> BusquedaRoleAsync(string nombre)
+        {
+
+            return await _rolesInfoRepositorio.ObtenerRolesNombreBusquedaAsync(nombre);
+
+        }
     }
 }

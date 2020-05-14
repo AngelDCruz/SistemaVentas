@@ -34,6 +34,10 @@ namespace SistemaVentas.Infraestructura.EntidadesConfiguracion
             entidad.HasMany(d => d.DetalleIngresos)
                 .WithOne(p => p.Productos)
                 .HasForeignKey(d => d.ProductosId);
+
+            entidad.HasMany(d => d.DetalleVentas)
+                .WithOne(p => p.Productos)
+                .HasForeignKey(d => d.ProductoId);
       
         }
 

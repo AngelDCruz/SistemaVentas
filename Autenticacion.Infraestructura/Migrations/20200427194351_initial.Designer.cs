@@ -4,14 +4,16 @@ using Autenticacion.Infraestructura;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace SistemaVentas.Infraestructura.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200427194351_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,53 +260,6 @@ namespace SistemaVentas.Infraestructura.Migrations
                     b.HasIndex("ProductosId");
 
                     b.ToTable("DetalleIngresos");
-                });
-
-            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.DetalleVentaEntidad", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("UNIQUEIDENTIFIER")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<int>("Cantidad")
-                        .HasColumnType("INT");
-
-                    b.Property<decimal>("Descuento")
-                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
-                        .HasColumnType("DECIMAL(4,2)");
-
-                    b.Property<string>("Estatus")
-                        .IsRequired()
-                        .HasColumnType("CHAR(3)");
-
-                    b.Property<DateTime>("FechaCreacion");
-
-                    b.Property<DateTime>("FechaModificacion");
-
-                    b.Property<decimal>("Precio")
-                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
-                        .HasColumnType("DECIMAL(4,2)");
-
-                    b.Property<Guid>("ProductoId")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.Property<Guid>("UsuarioCreacion")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.Property<Guid>("UsuarioModificacion")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.Property<Guid>("VentaId")
-                        .HasColumnType("UNIQUEIDENTIFIER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductoId");
-
-                    b.HasIndex("VentaId");
-
-                    b.ToTable("DetalleVentas");
                 });
 
             modelBuilder.Entity("SistemaVentas.Dominio.Entidades.IngresoEntidad", b =>
@@ -595,19 +550,6 @@ namespace SistemaVentas.Infraestructura.Migrations
                     b.HasOne("SistemaVentas.Dominio.Entidades.ProductosEntidad", "Productos")
                         .WithMany("DetalleIngresos")
                         .HasForeignKey("ProductosId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SistemaVentas.Dominio.Entidades.DetalleVentaEntidad", b =>
-                {
-                    b.HasOne("SistemaVentas.Dominio.Entidades.ProductosEntidad", "Productos")
-                        .WithMany("DetalleVentas")
-                        .HasForeignKey("ProductoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SistemaVentas.Dominio.Entidades.VentaEntidad", "Ventas")
-                        .WithMany("DetalleVentas")
-                        .HasForeignKey("VentaId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

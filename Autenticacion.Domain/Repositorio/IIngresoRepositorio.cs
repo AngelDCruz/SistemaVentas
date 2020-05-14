@@ -24,5 +24,9 @@ namespace SistemaVentas.Dominio.Repositorio
 
         Task<DetalleIngresoEntidad> CrearDetalleIngreso(DetalleIngresoEntidad detalleIngreso);
 
+        Task<decimal> TotalIngresoDiaAsync();
+
+        Task<List<IngresoUltimos10Dias>> TotalIngresoUltimo10DiasAsync();
+
     }
 }

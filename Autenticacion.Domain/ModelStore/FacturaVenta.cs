@@ -4,12 +4,12 @@ using System.Text;
 
 namespace SistemaVentas.Dominio.ModelStore
 {
-    public class FacturaIngreso
+    public class FacturaVenta
     {
 
         public Guid Id { get; set; }
 
-        public string Proveedor { get; set; }
+        public string Cliente { get; set; }
 
         public string Usuario { get; set; }
 
@@ -17,11 +17,11 @@ namespace SistemaVentas.Dominio.ModelStore
 
         public string SerieComprobante { get; set; }
 
-        public decimal Total { get; set; }
-
         public decimal Impuesto { get; set; }
 
-        public string Fecha { get; set; }
+        public decimal Total { get; set; }
+
+        public DateTime Fecha { get; set; }
 
         public string Estatus { get; set; }
 

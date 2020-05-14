@@ -44,5 +44,7 @@ namespace Autenticacion.Dominio.Entidades
 
         public List<IngresoEntidad> Ingresos { get; set; }
 
+        public List<VentaEntidad> Ventas { get; set; }
+
     }
 }

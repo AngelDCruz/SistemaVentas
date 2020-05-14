@@ -8,9 +8,6 @@ namespace SistemaVentas.Infraestructura.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "Autenticacion");
-
             migrationBuilder.CreateTable(
                 name: "Categorias",
                 columns: table => new
@@ -152,13 +149,13 @@ namespace SistemaVentas.Infraestructura.Migrations
                 name: "Ingresos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false, defaultValueSql: "NEWID()"),
                     UsuariosId = table.Column<Guid>(nullable: false),
                     PersonasId = table.Column<Guid>(nullable: false),
-                    TipoComprobante = table.Column<string>(nullable: true),
-                    SerieComprobante = table.Column<string>(nullable: true),
-                    Impuesto = table.Column<double>(nullable: false),
-                    Total = table.Column<double>(nullable: false),
+                    TipoComprobante = table.Column<string>(type: "CHAR(10)", nullable: false),
+                    SerieComprobante = table.Column<string>(type: "CHAR(12)", nullable: false),
+                    Impuesto = table.Column<decimal>(type: "DECIMAL(4, 2)", nullable: false),
+                    Total = table.Column<decimal>(type: "DECIMAL(11, 2)", nullable: false),
                     UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -177,6 +174,29 @@ namespace SistemaVentas.Infraestructura.Migrations
                     table.ForeignKey(
                         name: "FK_Ingresos_Usuarios_UsuariosId",
                         column: x => x.UsuariosId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Token",
+                columns: table => new
+                {
+                    Token = table.Column<string>(nullable: false),
+                    JwtId = table.Column<string>(nullable: true),
+                    Usado = table.Column<bool>(nullable: false),
+                    Valido = table.Column<bool>(nullable: false),
+                    FechaCreacion = table.Column<DateTime>(nullable: false),
+                    Expiracion = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Token", x => x.Token);
+                    table.ForeignKey(
+                        name: "FK_Token_Usuarios_UserId",
+                        column: x => x.UserId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -240,24 +260,34 @@ namespace SistemaVentas.Infraestructura.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Token",
-                schema: "Autenticacion",
+                name: "Ventas",
                 columns: table => new
                 {
-                    Token = table.Column<string>(nullable: false),
-                    JwtId = table.Column<string>(nullable: true),
-                    Usado = table.Column<bool>(nullable: false),
-                    Valido = table.Column<bool>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    PersonaId = table.Column<Guid>(nullable: false),
+                    UsuariosId = table.Column<Guid>(nullable: false),
+                    TipoComprobante = table.Column<string>(type: "CHAR(10)", nullable: false),
+                    SerieComprobante = table.Column<string>(type: "CHAR(12)", nullable: false),
+                    Impuesto = table.Column<decimal>(type: "DECIMAL(4, 2)", nullable: false),
+                    Total = table.Column<decimal>(type: "DECIMAL(11, 2)", nullable: false),
+                    UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
-                    Expiracion = table.Column<DateTime>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false)
+                    UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(nullable: false),
+                    Estatus = table.Column<string>(type: "CHAR(3)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Token", x => x.Token);
+                    table.PrimaryKey("PK_Ventas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Token_Usuarios_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Ventas_Personas_PersonaId",
+                        column: x => x.PersonaId,
+                        principalTable: "Personas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ventas_Usuarios_UsuariosId",
+                        column: x => x.UsuariosId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -267,11 +297,11 @@ namespace SistemaVentas.Infraestructura.Migrations
                 name: "DetalleIngresos",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false, defaultValueSql: "NEWID()"),
                     IngresosId = table.Column<Guid>(nullable: false),
                     ProductosId = table.Column<Guid>(nullable: false),
-                    Cantidad = table.Column<int>(nullable: false),
-                    Precio = table.Column<double>(nullable: false),
+                    Cantidad = table.Column<int>(type: "INT", nullable: false),
+                    Precio = table.Column<decimal>(type: "DECIMAL(4,2)", nullable: false),
                     UsuarioCreacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
                     FechaCreacion = table.Column<DateTime>(nullable: false),
                     UsuarioModificacion = table.Column<Guid>(type: "UNIQUEIDENTIFIER", nullable: false),
@@ -333,6 +363,11 @@ namespace SistemaVentas.Infraestructura.Migrations
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Token_UserId",
+                table: "Token",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UsuarioReclamaciones_UserId",
                 table: "UsuarioReclamaciones",
                 column: "UserId");
@@ -343,10 +378,14 @@ namespace SistemaVentas.Infraestructura.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Token_UserId",
-                schema: "Autenticacion",
-                table: "Token",
-                column: "UserId");
+                name: "IX_Ventas_PersonaId",
+                table: "Ventas",
+                column: "PersonaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ventas_UsuariosId",
+                table: "Ventas",
+                column: "UsuariosId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -358,14 +397,16 @@ namespace SistemaVentas.Infraestructura.Migrations
                 name: "RoleReclamaciones");
 
             migrationBuilder.DropTable(
+                name: "Token");
+
+            migrationBuilder.DropTable(
                 name: "UsuarioReclamaciones");
 
             migrationBuilder.DropTable(
                 name: "UsuariosRoles");
 
             migrationBuilder.DropTable(
-                name: "Token",
-                schema: "Autenticacion");
+                name: "Ventas");
 
             migrationBuilder.DropTable(
                 name: "Ingresos");

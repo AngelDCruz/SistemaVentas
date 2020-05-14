@@ -8,19 +8,20 @@ using System.Text;
 
 namespace SistemaVentas.Dominio.Entidades
 {
-    public class VentasEntidad : IAuditoria
+    public class DetalleVentaEntidad : IAuditoria
     {
-
 
         public Guid Id { get; set; }
 
-        public Guid UsuarioId { get; set; }
+        public Guid VentaId { get; set; }
 
-        public string TipoComprobante { get; set; }
+        public Guid ProductoId { get; set; }
 
-        public string SerieComprobante { get; set; }
+        public int Cantidad { get; set; }
 
-        public double Impuesto { get; set;  }
+        public double Precio { get; set; }
+
+        public double Descuento { get; set; }
 
         [Required]
         [Column(TypeName = "UNIQUEIDENTIFIER")]
@@ -38,6 +39,10 @@ namespace SistemaVentas.Dominio.Entidades
         [DefaultValue("Act")]
         [Column(TypeName = "CHAR(3)")]
         public string Estatus { get; set; }
+
+        public VentaEntidad Ventas { get; set; }
+
+        public ProductosEntidad Productos { get; set; }
 
     }
 }

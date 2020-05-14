@@ -12,14 +12,13 @@ using System.Threading.Tasks;
 
 namespace SistemaVentas.Infraestructura.Repositorio
 {
-    public class IngresoRepositorio : IIngresoRepositorio
+    public class VentaRepositorio : IVentasRepositorio
     {
 
         private readonly AppDbContext _context;
         private readonly string _conexionSql;
 
-
-        public IngresoRepositorio(
+        public VentaRepositorio(
             AppDbContext context,
             IConfiguration configuration
          )
@@ -28,131 +27,112 @@ namespace SistemaVentas.Infraestructura.Repositorio
             _conexionSql = configuration.GetConnectionString("Autenticacion");
         }
 
-        public async Task<List<FacturaIngreso>> ObtenerIngresoAsync()
+        public async Task<bool> CrearVentaAsync(VentaEntidad venta)
         {
 
-            using (SqlConnection sql = new SqlConnection(_conexionSql))
-            {
-                using (SqlCommand cmd = new SqlCommand("IngresosRegistros", sql))
-                {
+            venta.UsuariosId = _context.UsuarioAutenticado();
 
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    var response = new List<FacturaIngreso>();
-
-                    await sql.OpenAsync();
-
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-
-                        while (await reader.ReadAsync())
-                        {
-                            response.Add(MapToFacturaIngreso(reader));
-                        }
-
-                    }
-
-                    return response;
-
-                }
-            }
-
-        }
-
-        public async Task<bool> EliminarIngresoAsync(IngresoEntidad ingreso)
-        {
-
-            _context.Ingresos.Remove(ingreso);
+            await _context.Ventas.AddAsync(venta);
 
             return await _context.SaveChangesAsync() > 0 ? true : false;
 
         }
 
-        public async Task<FacturaIngreso> ObtenerIngresoIdAsync(Guid id)
+        public async Task<bool> EliminarVentaAsync(VentaEntidad venta)
         {
 
+            _context.Ventas.Remove(venta);
+
+           return await _context.SaveChangesAsync() > 0 ? true : false;
+
+        }
+
+        public async Task<List<FacturaVenta>> ObtenerVentasAsync()
+        {
             using (SqlConnection sql = new SqlConnection(_conexionSql))
             {
-                using (SqlCommand cmd = new SqlCommand("IngresosRegistrosPorId", sql))
+                using (SqlCommand cmd = new SqlCommand("RegistrosVentas", sql))
                 {
 
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("@Id", id));
-
-                    FacturaIngreso response = null;
+                    var response = new List<FacturaVenta>();
 
                     await sql.OpenAsync();
 
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
-                        while (await reader.ReadAsync())
+
+                        while(await reader.ReadAsync())
                         {
-                            response = MapToFacturaIngreso(reader);
+                            response.Add(MapToFacturaVentas(reader));
+                        };
+
+                    };
+
+                    return response;
+
+                }
+            };
+        }
+
+        public async Task<FacturaVenta> ObtenerVentasPorIdAsync(Guid id)
+        {
+
+            using (SqlConnection sql = new SqlConnection(_conexionSql))
+            {
+                using (SqlCommand cmd = new SqlCommand("RegistrosVentasPorId",  sql))
+                {
+
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@Id",  id));
+
+                    FacturaVenta response = null;
+
+                    await sql.OpenAsync();
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while(await reader.ReadAsync())
+                        {
+                            response = MapToFacturaVentas(reader);
                         }
                     }
 
                     return response;
+
                 }
             }
 
         }
 
-        private FacturaIngreso MapToFacturaIngreso(SqlDataReader reader)
+        public FacturaVenta MapToFacturaVentas(SqlDataReader reader)
         {
-            return new FacturaIngreso
+            return new FacturaVenta
             {
                 Id = (Guid)reader["Id"],
-                Proveedor = reader["Proveedor"].ToString(),
+                Cliente = reader["Cliente"].ToString(),
                 Usuario = reader["Usuario"].ToString(),
                 TipoComprobante = reader["TipoComprobante"].ToString(),
                 SerieComprobante = reader["SerieComprobante"].ToString(),
                 Impuesto = (decimal)reader["Impuesto"],
                 Total = (decimal)reader["Total"],
-                Fecha = reader["FechaCreacion"].ToString(),
+                Fecha = (DateTime)reader["Fecha"],
                 Estatus = reader["Estatus"].ToString()
             };
         }
 
-        public async Task<IngresoEntidad> ObtenerIngresoPorIdAsync(Guid id)
+        public async Task<VentaEntidad> ObtenerVentaPorIdAsync(Guid Id)
         {
-
-            return await _context.Ingresos.FirstOrDefaultAsync(x => x.Id == id);
-
+            return await _context.Ventas.FirstOrDefaultAsync(x => x.Id == Id);
         }
 
-        public async Task<bool> ActualizarIngresoAsync(IngresoEntidad ingreso)
+        public async Task<decimal> TotalVentasDiaAsync()
         {
-
-            _context.Ingresos.Update(ingreso);
-
-            return await _context.SaveChangesAsync() > 0 ? true : false;
-
-        }
-
-        public async Task<IngresoEntidad> CrearIngresoDetalle(IngresoEntidad ingreso)
-        {
-
-            ingreso.UsuariosId = _context.UsuarioAutenticado();
-
-            await _context.Ingresos.AddAsync(ingreso);
-
-            return await _context.SaveChangesAsync() > 0 ? ingreso : null;
-
-        }
-
-        public async Task<DetalleIngresoEntidad> CrearDetalleIngreso(DetalleIngresoEntidad detalleIngreso)
-        {
-
-            await _context.DetalleIngresos.AddAsync(detalleIngreso);
-
-            return await _context.SaveChangesAsync() > 0 ? detalleIngreso : null;
-
-        }
-
-        public async Task<decimal> TotalIngresoDiaAsync()
-        {
-            using (SqlConnection sql = new SqlConnection(_conexionSql))
+           
+            using(SqlConnection sql = new SqlConnection(_conexionSql))
             {
-                using (SqlCommand cmd = new SqlCommand("TotalDiaIngreso", sql))
+
+                using (SqlCommand cmd = new SqlCommand("TotalDiaVenta", sql))
                 {
 
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -160,15 +140,14 @@ namespace SistemaVentas.Infraestructura.Repositorio
 
                     await sql.OpenAsync();
 
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using(var reader = await cmd.ExecuteReaderAsync())
                     {
 
-                        while (await reader.ReadAsync())
+                        while(await reader.ReadAsync())
                         {
                             if (reader["Total"] == null) response = 0;
 
                             response = (decimal)reader["Total"];
-
                         }
 
                     }
@@ -176,19 +155,21 @@ namespace SistemaVentas.Infraestructura.Repositorio
                     return response;
 
                 }
+
             }
+
         }
 
-        public async Task<List<IngresoUltimos10Dias>> TotalIngresoUltimo10DiasAsync()
+        public async Task<List<VentaUltimos10Dias>>TotalUltimos10DiasAsync()
         {
-
             using (SqlConnection sql = new SqlConnection(_conexionSql))
             {
-                using (SqlCommand cmd = new SqlCommand("TotalIngreso10Dias", sql))
+
+                using (SqlCommand cmd = new SqlCommand("VentasUltimo10Dias", sql))
                 {
 
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    var response = new List<IngresoUltimos10Dias>();
+                    List< VentaUltimos10Dias> response = new List<VentaUltimos10Dias>();
 
                     await sql.OpenAsync();
 
@@ -197,7 +178,9 @@ namespace SistemaVentas.Infraestructura.Repositorio
 
                         while (await reader.ReadAsync())
                         {
-                            response.Add(MapToIngreso10Dias(reader));
+
+                            response.Add(MapToTotalUltimos10Dias(reader));
+
                         }
 
                     }
@@ -205,16 +188,18 @@ namespace SistemaVentas.Infraestructura.Repositorio
                     return response;
 
                 }
-            }
 
+            }
         }
 
-        private IngresoUltimos10Dias MapToIngreso10Dias(SqlDataReader reader)
+        public VentaUltimos10Dias MapToTotalUltimos10Dias(SqlDataReader reader)
         {
-           return new IngresoUltimos10Dias {
-               Fecha = reader["Dia"].ToString().Substring(0, 10),
-               Total = (decimal) reader["Total"]
+            return new VentaUltimos10Dias
+            {
+                Fecha = reader["Dia"].ToString().Substring(0, 10),
+                Total = (decimal)reader["Total"]
             };
         }
+
     }
 }

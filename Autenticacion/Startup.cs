@@ -9,6 +9,7 @@ using AutoMapper;
 using Autenticacion.Api.Startup.Configure;
 using Autenticacion.Api.Startup.ConfigureServices;
 using Microsoft.AspNetCore.Http;
+using Autenticacion.Infraestructura;
 
 namespace Autenticacion
 {
@@ -33,10 +34,10 @@ namespace Autenticacion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, AppDbContext context)
         {
 
-            Configuracion.Extenciones(app, env);
+            Configuracion.Extenciones(app, env, context);
 
         }
     }
