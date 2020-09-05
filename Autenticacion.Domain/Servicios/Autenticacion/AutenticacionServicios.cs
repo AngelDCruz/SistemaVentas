@@ -280,11 +280,10 @@ namespace Autenticacion.Dominio.Servicios.Autenticacion
 
                 var tokenComprobacion = tokenHandler.ValidateToken(token, _tokenValidationParameters, out var validarToken);
 
-
                 if (!ComprobarAlgoritmoJWTBearer(validarToken))
                 {
 
-                    throw new Excepcion("El token que ingreso no es valido");
+                    return null;
 
                 }
 
@@ -305,7 +304,7 @@ namespace Autenticacion.Dominio.Servicios.Autenticacion
         /// </summary>
         /// <param name="validacion"></param>
         /// <returns></returns>
-        private bool ComprobarAlgoritmoJWTBearer(SecurityToken validacion)
+            private bool ComprobarAlgoritmoJWTBearer(SecurityToken validacion)
         {
 
             return (validacion is JwtSecurityToken jwtSecurityToken) &&
